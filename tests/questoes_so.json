@@ -1,0 +1,1054 @@
+{
+  "metadados": {
+    "criado_em": "2026-09-26",
+    "total": 50,
+    "descricao": "Banco de questões de Sistemas Operacionais pesquisadas na web, com gabarito, justificativa e fonte verificada, usado como casos do teste de impacto do RAG (readme.py).",
+    "livro_referencia": "Sistemas Operacionais Modernos (Tanenbaum, Bos)",
+    "fontes_distintas": 36,
+    "gabaritos_publicados_pela_fonte": 8
+  },
+  "questoes": [
+    {
+      "id": "so_a01",
+      "tema": "Escalonamento de CPU - Round-Robin (quantum) e taxa de resposta",
+      "enunciado": "Considerando-se o algoritmo de escalonamento por alternância circular (round-robin) aplicado a sistemas interativos, que problema pode ocorrer quando um quantum muito longo é adotado?",
+      "alternativas": [
+        "a) Aumento do número médio de preempções.",
+        "b) Aumento do número de alternância de processos.",
+        "c) Aumento do número de timeouts de processos ociosos.",
+        "d) Redução na eficiência da CPU.",
+        "e) Degradação no tempo de resposta às requisições interativas curtas."
+      ],
+      "gabarito": "E",
+      "gabarito_publicado_pela_fonte": false,
+      "justificativa": "Com um quantum muito longo o round-robin deixa de intercalar frequentemente os processos e se aproxima do FCFS, fazendo com que requisições curtas e interativas esperem muito tempo para voltar à CPU, o que degrada o tempo de resposta. Um quantum longo não aumenta preempções nem alternâncias (pelo contrário, reduz o número de trocas de contexto) e tampouco reduz a eficiência da CPU, já que há menos overhead de troca de contexto.",
+      "fonte": {
+        "titulo": "Q5966 - Escalonamento por alternância circular (round-robin): problema com quantum muito longo",
+        "instituicao": "CESGRANRIO - BNDES (Prova Profissional Básico - Análise de Sistemas/Suporte, 2008), via banco de questões QConcursos",
+        "tipo": "Questão de concurso público (banco de questões online)",
+        "url": "https://www.qconcursos.com/questoes-de-concursos/questoes/bac25d96-9a",
+        "data_acesso": "2026-09-26"
+      },
+      "consulta_livro": "escalonamento circular quantum tempo resposta interativo"
+    },
+    {
+      "id": "so_a02",
+      "tema": "Escalonamento de CPU - SJF x FCFS (tempo de espera médio)",
+      "enunciado": "Considerando que os processos P1, P2, P3, P4 e P5 tenham tempo de burst de CPU, em milissegundos, iguais a 10, 1, 2, 3 e 5, respectivamente, se os processos chegarem na CPU simultaneamente no instante 0, o tempo de espera médio dos cinco processos, se eles forem escalonados para a CPU por meio de um algoritmo de escalonamento do tipo SJF (shortest job first), será maior do que se eles forem escalonados por um algoritmo FCFS (first come, first served), considerando a ordem de chegada P1, P2, P3, P4 e P5, e que o processo P1 tenha chegado no instante 0.",
+      "alternativas": [
+        "a) Certo",
+        "b) Errado"
+      ],
+      "gabarito": "Errado",
+      "gabarito_publicado_pela_fonte": false,
+      "justificativa": "No FCFS a ordem é 10, 1, 2, 3, 5, gerando esperas 0, 10, 11, 13 e 16 ms, com média de 10 ms. No SJF a ordem passa a ser 1, 2, 3, 5, 10, gerando esperas 0, 1, 3, 6 e 11 ms, com média de 4,2 ms; portanto a espera média do SJF é menor, e a assertiva está errada.",
+      "fonte": {
+        "titulo": "Q18902 - Tempo de espera médio com SJF versus FCFS (itens 51 a 60, sistema operacional)",
+        "instituicao": "CESPE/CEBRASPE - ANAC (Prova Analista Administrativo - Tecnologia da Informação, 2009), via banco de questões QConcursos",
+        "tipo": "Questão de concurso público (banco de questões online)",
+        "url": "https://www.qconcursos.com/questoes-de-concursos/questoes/bd9f4234-e0",
+        "data_acesso": "2026-09-26"
+      },
+      "consulta_livro": "SJF menor primeiro espera media FCFS"
+    },
+    {
+      "id": "so_a03",
+      "tema": "Processos - processos órfãos, zumbis e prioridade no Linux",
+      "enunciado": "Sobre gerenciamento de processos no sistema operacional Linux, analise as afirmativas a seguir. I. O PID do processo init é automaticamente atribuído ao PPID de processos que se tornam órfãos. II. Processo zombie é a nomenclatura atribuída ao processo que possui autonomia própria, comportamento errático e que nunca termina sua execução, consumindo recursos do sistema indistintamente. III. A prioridade de execução de um processo é indicada por um número que tem variação de -20 a 19 e quanto menor for este número, maior será a prioridade do processo. Está correto o que se afirma em:",
+      "alternativas": [
+        "a) I, apenas.",
+        "b) II, apenas.",
+        "c) III, apenas.",
+        "d) I e III, apenas.",
+        "e) I, II e III."
+      ],
+      "gabarito": "D",
+      "gabarito_publicado_pela_fonte": true,
+      "justificativa": "Quando o processo pai termina, os filhos órfãos são adotados pelo init/systemd, que passa a figurar como novo PPID (I correta). O processo zumbi já encerrou sua execução e apenas permanece na tabela de processos aguardando o pai ler seu status de saída, não consumindo CPU (II falsa); o valor nice varia de -20 a 19 e quanto menor o número maior a prioridade (III correta), resultando em D.",
+      "fonte": {
+        "titulo": "Q914426 - Gerenciamento de processos no sistema operacional Linux (gabarito comentado publicado na página)",
+        "instituicao": "FGV - MPE-AL (Prova Analista do Ministério Público, 2018), via banco de questões QConcursos",
+        "tipo": "Questão de concurso público (banco de questões online)",
+        "url": "https://www.qconcursos.com/questoes-de-concursos/questoes/21fade16-86",
+        "data_acesso": "2026-09-26"
+      },
+      "consulta_livro": "processo zumbi orfao init prioridade nice"
+    },
+    {
+      "id": "so_a04",
+      "tema": "Multiprocessamento - multiprocessador com memória compartilhada",
+      "enunciado": "Um sistema operacional multiprocessador com memória compartilhada caracteriza-se por:",
+      "alternativas": [
+        "a) permitir que dois ou mais processadores assumam simultaneamente o controle de um processo a ser executado.",
+        "b) impedir a adoção de uma estratégia de processamento mestre-escravo, na qual um processador mantém o domínio sobre os demais processadores.",
+        "c) manter, necessariamente, um único sistema operacional compartilhado entre os diversos processadores.",
+        "d) possibilitar que um processador escreva um dado em determinada região de memória e que esse dado esteja diferente logo na leitura em sequência.",
+        "e) ter independência dos múltiplos processadores em relação à sincronização entre eles mesmos."
+      ],
+      "gabarito": "A",
+      "gabarito_publicado_pela_fonte": false,
+      "justificativa": "Com memória compartilhada todos os processadores acessam o mesmo espaço de endereçamento, o que permite que dois ou mais processadores executem simultaneamente threads do mesmo processo. As demais alternativas falham: a arquitetura mestre-escravo é compatível com memória compartilhada (B), um único sistema operacional não é obrigatório (a palavra 'necessariamente' invalida C), a coerência de cache impede que o dado lido em sequência esteja desatualizado (D) e os processadores precisam sincronizar acessos à memória (E).",
+      "fonte": {
+        "titulo": "Q1057727 - Sistema operacional multiprocessador com memória compartilhada",
+        "instituicao": "CESPE/CEBRASPE - MPC-PA (Prova Analista Ministerial - Tecnologia da Informação, 2019), via banco de questões QConcursos",
+        "tipo": "Questão de concurso público (banco de questões online)",
+        "url": "https://www.qconcursos.com/questoes-de-concursos/questoes/fad72b0b-0c",
+        "data_acesso": "2026-09-26"
+      },
+      "consulta_livro": "multiprocessador memoria compartilhada simetrico processadores"
+    },
+    {
+      "id": "so_a05",
+      "tema": "Escalonamento de CPU - preempção",
+      "enunciado": "No que se refere a sistemas operacionais, Windows Server e serviços de diretório, julgue o item a seguir. O escalonamento preemptivo permite que o sistema operacional interrompa a execução de um processo em andamento para alocar a CPU a outro processo considerado mais prioritário.",
+      "alternativas": [
+        "a) Certo",
+        "b) Errado"
+      ],
+      "gabarito": "Certo",
+      "gabarito_publicado_pela_fonte": false,
+      "justificativa": "A preempção é exatamente a capacidade de o escalonador retirar a CPU de um processo em execução (fim de quantum, chamada de E/S ou chegada de interrupção de maior prioridade) para entregá-la a outro processo mais prioritário. Em um escalonador não preemptivo a troca só ocorreria quando o processo em execução se bloqueia ou termina.",
+      "fonte": {
+        "titulo": "Questões de Algoritmo de Escalonamento (Sistemas Operacionais) - item sobre escalonamento preemptivo",
+        "instituicao": "UDESC - CESPE/CEBRASPE (Técnico Universitário de Desenvolvimento, Analista de Suporte, 2026), via banco de questões Questões Estratégicas",
+        "tipo": "Questão de concurso público (banco de questões online)",
+        "url": "https://www.questoesestrategicas.com.br/questoes/busca/assunto/algoritmo-de-escalonamento",
+        "data_acesso": "2026-09-26"
+      },
+      "consulta_livro": "escalona processos por prioridade preempcao"
+    },
+    {
+      "id": "so_a06",
+      "tema": "Processos e threads - relação entre processo e thread (Windows)",
+      "enunciado": "A capacidade de um sistema operacional moderno de executar múltiplas aplicações de forma aparentemente simultânea é uma de suas características mais fundamentais. Essa funcionalidade depende de um gerenciamento sofisticado das unidades de execução pelo núcleo do sistema, que aloca os recursos computacionais de maneira controlada. A compreensão da natureza teórica dessas unidades e de como os recursos são distribuídos entre elas é essencial para entender o funcionamento interno do sistema. Com base nos princípios de gerenciamento de tarefas no sistema operacional Windows, assinale a alternativa que descreve corretamente a relação entre processos e threads.",
+      "alternativas": [
+        "a) Um processo e uma thread são unidades de execução independentes, mas os processos são gerenciados pelo escalonador do Windows de forma preemptiva, enquanto as threads são gerenciadas de forma cooperativa, dependendo de outras threads para liberar o processador.",
+        "b) Um processo cria múltiplas threads para otimizar a execução, e cada thread recebe do sistema operacional um espaço de endereço de memória completamente isolado e independente, garantindo que a falha em uma thread não afete as demais.",
+        "c) Um processo é a instância de um programa em execução que contém recursos alocados, como espaço de endereço de memória e arquivos, enquanto uma thread é a unidade de execução dentro de um processo, que compartilha esses recursos com outras threads do mesmo processo.",
+        "d) Um processo é a unidade básica de escalonamento da CPU, que opera dentro de uma thread, sendo esta última a responsável por alocar o espaço de memória e os demais recursos do sistema necessários para a execução."
+      ],
+      "gabarito": "C",
+      "gabarito_publicado_pela_fonte": false,
+      "justificativa": "O processo é a instância do programa em execução, responsável por possuir os recursos (espaço de endereçamento, arquivos, objetos), e a thread é a unidade de execução dentro desse processo, compartilhando os recursos do processo com as demais threads. As demais alternativas invertem os papéis ou atribuem à thread coisas que são do processo, como o isolamento de memória e a alocação de recursos.",
+      "fonte": {
+        "titulo": "Questões de Threads (Sistemas Operacionais) - relação entre processos e threads no Windows",
+        "instituicao": "Prefeitura Municipal de Guarujá do Sul - AMEOSC (Professor(a) de Informática, 2025), via banco de questões Questões Estratégicas",
+        "tipo": "Questão de concurso público (banco de questões online)",
+        "url": "https://www.questoesestrategicas.com.br/questoes/busca/assunto/threads",
+        "data_acesso": "2026-09-26"
+      },
+      "consulta_livro": "processo versus thread recursos compartilhados"
+    },
+    {
+      "id": "so_a07",
+      "tema": "Processos e threads - o que é privativo de cada thread",
+      "enunciado": "As Threads são unidades de execução dentro de um processo, permitindo que tarefas sejam realizadas simultaneamente para otimizar o desempenho e a eficiência de programas em ambientes com Linux. Nesse contexto, considere alguns itens importantes de processos e threads: I- Contador de Programa. II- Arquivos Abertos. III- Pilha. IV- Espaço de Endereçamento. Assinale a alternativa que traz itens que são específicos de cada Thread.",
+      "alternativas": [
+        "a) Apenas I e III.",
+        "b) Apenas I e IV.",
+        "c) Apenas II e III.",
+        "d) Apenas II e IV."
+      ],
+      "gabarito": "A",
+      "gabarito_publicado_pela_fonte": false,
+      "justificativa": "Cada thread possui seu próprio estado de execução: contador de programa (I) e pilha (III), além de registradores. Arquivos abertos (II) e espaço de endereçamento (IV) são recursos do processo, compartilhados por todas as suas threads, o que descarta as demais alternativas.",
+      "fonte": {
+        "titulo": "Questões de Threads (Sistemas Operacionais) - itens específicos de cada thread",
+        "instituicao": "Companhia Nacional de Abastecimento (CONAB) - CONSULPAM (Analista em Tecnologia da Infraestrutura, 2025), via banco de questões Questões Estratégicas",
+        "tipo": "Questão de concurso público (banco de questões online)",
+        "url": "https://www.questoesestrategicas.com.br/questoes/busca/assunto/threads",
+        "data_acesso": "2026-09-26"
+      },
+      "consulta_livro": "threads registradores pilha contador programa privado"
+    },
+    {
+      "id": "so_a08",
+      "tema": "Processos e threads - múltiplas threads em servidor web",
+      "enunciado": "Um determinado aplicativo servidor web é baseado em threads e executado em um computador com sistema operacional Windows Server. Nesse contexto, assinale a alternativa correta.",
+      "alternativas": [
+        "a) Por ser baseado em threads e não em processos, o atendimento a uma requisição HTTP deve ser concluído para que a próxima requisição da fila seja processada.",
+        "b) Apenas navegadores web baseados em Windows conseguem acessar os websites hospedados por esse servidor web.",
+        "c) Como threads não podem efetuar acesso a disco, as páginas web precisam ser carregadas previamente em memória RAM antes da chegada de requisições HTTP ao servidor web.",
+        "d) Uma operação chamada fork ocorre no servidor web quando uma nova requisição HTTP é recebida.",
+        "e) Múltiplas requisições HTTP são atendidas simultaneamente pelo servidor web, no contexto do mesmo processo."
+      ],
+      "gabarito": "E",
+      "gabarito_publicado_pela_fonte": false,
+      "justificativa": "Servidores multithread atendem várias requisições concorrentemente, pois todas as threads do processo compartilham o mesmo espaço de endereçamento e podem executar ao mesmo tempo (ou de forma intercalada) no processo. As demais alternativas estão falsas: o atendimento não é serial, o acesso a disco é possível, a compatibilidade não depende do navegador/fork, e fork cria processos novos, não é usado por requisição em modelo por threads.",
+      "fonte": {
+        "titulo": "Questões de Threads (Sistemas Operacionais) - servidor web baseado em threads",
+        "instituicao": "Câmara de Caraguatatuba - VUNESP (Agente de Informática, 2026), via banco de questões Questões Estratégicas",
+        "tipo": "Questão de concurso público (banco de questões online)",
+        "url": "https://www.questoesestrategicas.com.br/questoes/busca/assunto/threads",
+        "data_acesso": "2026-09-26"
+      },
+      "consulta_livro": "threads servidor web processos compartilhamento memoria"
+    },
+    {
+      "id": "so_a09",
+      "tema": "Escalonamento de CPU - sistema de tempo compartilhado",
+      "enunciado": "Avalie se é verdadeiro (V) ou falso (F): Em um sistema de tempo compartilhado, o sistema operacional deve garantir que todos os processos tenham exatamente a mesma quantidade de tempo de CPU.",
+      "alternativas": [
+        "a) Verdadeiro",
+        "b) Falso"
+      ],
+      "gabarito": "Falso",
+      "gabarito_publicado_pela_fonte": true,
+      "justificativa": "Sistemas de tempo compartilhado buscam dar a todos os processos acesso à CPU de forma justa e eficiente, mas a quantidade de tempo efetivamente consumida varia conforme prioridade, comportamento do processo (CPU-bound ou I/O-bound), bloqueios por E/S e a política de escalonamento adotada. O objetivo é a utilização equitativa e eficiente dos recursos, e não a garantia de tempos exatamente iguais; o gabarito da prova (item 5) marca Falso.",
+      "fonte": {
+        "titulo": "TE355 - Sistemas Operacionais Embarcados - Primeira Prova (18/10/2024), questão 1 (itens V/F) com gabarito publicado",
+        "instituicao": "Universidade Federal do Paraná (UFPR) - Engenharia Elétrica, Prof. Carlos Marcelo Pedroso",
+        "tipo": "Prova/lista de disciplina universitária",
+        "url": "http://www.eletrica.ufpr.br/pedroso/2024/TE355/TE355Prova1.pdf.pdf",
+        "data_acesso": "2026-09-26"
+      },
+      "consulta_livro": "tempo compartilhado justica CPU fatia de tempo"
+    },
+    {
+      "id": "so_a10",
+      "tema": "Processos - criação de processos e invocação de programas",
+      "enunciado": "Fale sobre a criação de processos e a invocação de programas em sistemas Unix.",
+      "alternativas": [],
+      "gabarito": "No Unix, a criação de processos é feita com fork(), que cria uma cópia do processo chamador (o filho), e a invocação de programas é feita com exec()/execve(), que substitui a imagem do processo pelo executável indicado. O shell ilustra o par fork() + exec() ao iniciar um programa, e wait() é usado pelo pai para aguardar e coletar o término do filho.",
+      "gabarito_publicado_pela_fonte": false,
+      "justificativa": "A resposta deve descrever o mecanismo em duas etapas: fork() duplica o processo para obter uma nova instância e exec() carrega o novo programa dentro dessa instância, já que fork() sozinho apenas clona o processo. É exatamente essa separação entre criação de processo e invocação de programa que caracteriza a criação de processos em sistemas Unix.",
+      "fonte": {
+        "titulo": "Questões de Provas de Períodos Anteriores - Sistemas Operacionais (2010/1), questão 5",
+        "instituicao": "Universidade Federal do Espírito Santo (UFES) - Material do professor Wilson Zandoná Eguia",
+        "tipo": "Prova/lista de disciplina universitária",
+        "url": "https://www.inf.ufes.br/~zegonc/material/Sistemas_Operacionais/Questoes%20de%20Provas%20Anteriores.pdf",
+        "data_acesso": "2026-09-26"
+      },
+      "consulta_livro": "criacao processos fork exec invocacao programas"
+    },
+    {
+      "id": "so_a11",
+      "tema": "Escalonamento de CPU - prioridade x preempção",
+      "enunciado": "Considerando a afirmação: «um escalonador que apresenta prioridades necessariamente é preemptivo». Responda: a afirmação é correta? Justifique a sua resposta.",
+      "alternativas": [],
+      "gabarito": "Não, a afirmação não é correta. Um escalonador por prioridades pode ser não preemptivo, trocando de processo apenas quando o atual se bloqueia ou termina; preemparam a propriedade é independente da existência de prioridades (por exemplo, escalonamento por prioridade não preemptivo, no qual a CPU só muda de mão no fim da fatia ou bloqueio).",
+      "gabarito_publicado_pela_fonte": false,
+      "justificativa": "Prioridade define quem deve ser escolhido, enquanto preempção define se a CPU pode ser retirada de um processo em execução antes dele terminar; são dimensões independentes. Existem escalonadores por prioridades não preemptivos (a troca ocorre só no bloqueio/fim) e escalonadores preemptivos sem noção clássica de prioridade fixa, logo a necessidade implícita na afirmação é falsa.",
+      "fonte": {
+        "titulo": "Lista de Exercícios 1 - Sistemas Operacionais I - INF01142 (coletânea de questões de prova), exercício 1 - a fonte declara não haver gabarito",
+        "instituicao": "Universidade Federal do Rio Grande do Sul (UFRGS) - Instituto de Informática",
+        "tipo": "Prova/lista de disciplina universitária",
+        "url": "https://www.inf.ufrgs.br/~asc/sisop/pdf/lista_cpu.pdf",
+        "data_acesso": "2026-09-26"
+      },
+      "consulta_livro": "escalona processos por prioridade preempcao"
+    },
+    {
+      "id": "so_a12",
+      "tema": "Processos - estados do processo e transições",
+      "enunciado": "Os três principais estados de um processo são: ready, running e blocked. Descreva quais eventos fazem um processo mudar de estado. Descreva TODAS as situações possíveis envolvendo estes três estados.",
+      "alternativas": [],
+      "gabarito": "Transições: ready -> running quando o escalonador de curto prazo seleciona o processo; running -> ready quando ocorre fim de quantum, interrupção de tempo ou preempção por prioridade; running -> blocked quando o processo solicita uma E/S ou aguarda um evento; blocked -> ready quando o evento/E/S é concluído; e running -> terminated quando o processo termina ou sofre anomalia (exceção). Os estados blocked e ready nunca se comunicam diretamente: o processo bloqueado precisa voltar a ready para depois ser escalonado.",
+      "gabarito_publicado_pela_fonte": false,
+      "justificativa": "Os eventos que alteram estados são exatamente os de atribuição e perda voluntária ou involuntária da CPU (escalonamento, fim de quantum, interrupção) e a espera/liberação de E/S. A resposta completa deve listar todas as quatro transições possíveis entre ready, running e blocked, além do término, lembrando que blocked só transiciona para ready.",
+      "fonte": {
+        "titulo": "Lista de Exercícios 1 - Sistemas Operacionais I - INF01142 (coletânea de questões de prova), exercício 4 - a fonte declara não haver gabarito",
+        "instituicao": "Universidade Federal do Rio Grande do Sul (UFRGS) - Instituto de Informática",
+        "tipo": "Prova/lista de disciplina universitária",
+        "url": "https://www.inf.ufrgs.br/~asc/sisop/pdf/lista_cpu.pdf",
+        "data_acesso": "2026-09-26"
+      },
+      "consulta_livro": "estados processo pronto executando bloqueado transicoes"
+    },
+    {
+      "id": "so_a13",
+      "tema": "Processos - bloco de controle de processo (PCB)",
+      "enunciado": "Um processo é uma abstração interna do Sistema Operacional que encapsula diversas informações sobre um programa em execução. Dê exemplos de informações que o Sistema Operacional guarda sobre cada processo em execução.",
+      "alternativas": [],
+      "gabarito": "O Sistema Operacional guarda essas informações no PCB (Process Control Block), por exemplo: estado atual do processo (novo, pronto, executando, bloqueado, terminado), contador de programa (PC), conjunto de registradores, ponteiro da pilha, uso e limites de memória, identificadores (PID, UID, GID), prioridade, tabelas de arquivos abertos e dispositivos de E/S, além de informações de cobrança/tempo de CPU.",
+      "gabarito_publicado_pela_fonte": false,
+      "justificativa": "É essa estrutura que permite ao sistema salvar e restaurar o contexto de um processo na troca de contexto e retomar sua execução no ponto exato em que parou. A questão refere-se ao PCB, que concentra tanto o contexto de execução (registradores, PC, pilha) quanto os recursos e atributos do processo (estado, identificadores, arquivos, memória).",
+      "fonte": {
+        "titulo": "Exercícios de Revisão 1 - MC504 Sistemas Operacionais (Versão 2025a), questão 5 - Processos e Threads",
+        "instituicao": "Universidade Estadual de Campinas (UNICAMP) - Instituto de Computação, Prof. Isaías Bittencourt Felzmann",
+        "tipo": "Prova/lista de disciplina universitária",
+        "url": "https://ic.unicamp.br/~isaias/materiais/mc504/Lista1.1.pdf",
+        "data_acesso": "2026-09-26"
+      },
+      "consulta_livro": "bloco controle processo PCB contexto"
+    },
+    {
+      "id": "so_b01",
+      "tema": "Deadlock - algoritmo do Banqueiro (evitação de deadlocks)",
+      "enunciado": "Em sistemas operacionais, o “algoritmo do Banqueiro”, desenvolvido por Edsger Dijkstra é utilizado para:",
+      "alternativas": [
+        "a) encerrar deadlocks",
+        "b) resolver deadlocks",
+        "c) recuperar-se de deadlocks",
+        "d) iniciar deadlocks",
+        "e) evitar deadlocks"
+      ],
+      "gabarito": "E",
+      "gabarito_publicado_pela_fonte": true,
+      "justificativa": "O algoritmo do Banqueiro é uma técnica de evitação: antes de conceder um recurso, o sistema verifica se a alocação mantém o sistema em um estado seguro (com sequência de execução possível para todos os processos) e recusa pedidos que levariam a um estado inseguro. Por isso ele evita deadlocks em vez de encerrá-los, resolvê-los após ocorrerem ou recuperar o sistema deles, o que exclui as demais alternativas.",
+      "fonte": {
+        "titulo": "Sistemas Operacionais – Deadlock (questão 1 - UFMA 2023, com gabarito publicado)",
+        "instituicao": "UFMA - Universidade Federal do Maranhão (Prova Analista de Tecnologia da Informação, 2023), via artigo do blog Gran Cursos Online",
+        "tipo": "Blog/artigo especializado com questões e gabarito",
+        "url": "https://blog.grancursosonline.com.br/sistemas-operacionais-deadlock",
+        "data_acesso": "2026-09-26"
+      },
+      "consulta_livro": "algoritmo banqueiro evitacao deadlock estado seguro"
+    },
+    {
+      "id": "so_b02",
+      "tema": "Deadlock - quatro condições necessárias (Coffman)",
+      "enunciado": "O deadlock é a situação na qual os processos envolvidos aguardam por um recurso que nunca estará disponível ou por um evento que nunca ocorrerá. Quatro condições devem ocorrer ao mesmo tempo em um sistema para configurar a situação de deadlock. Além da condição de espera circular, as demais condições são as seguintes:",
+      "alternativas": [
+        "a) estagnação; reentrância; não preempção.",
+        "b) estagnação; exclusão mútua; posse e espera.",
+        "c) estagnação; exclusão mútua; reentrância.",
+        "d) posse e espera; reentrância; não preempção.",
+        "e) exclusão mútua; posse e espera; não preempção."
+      ],
+      "gabarito": "E",
+      "gabarito_publicado_pela_fonte": false,
+      "justificativa": "As quatro condições clássicas de Coffman são exclusão mútua, posse e espera (hold and wait), não preempção e espera circular. Logo, completando a lista com exceção da espera circular, restam exclusão mútua, posse e espera e não preempção, ou seja, a alternativa E. Estagnação (starvation) e reentrância não são condições necessárias para o deadlock.",
+      "fonte": {
+        "titulo": "Questões de Deadlock (Sistemas Operacionais) - questão BANESA/Técnico Bancário III Suporte",
+        "instituicao": "Banco do Estado de Sergipe S.A. (BANESA) - CESGRANRIO (Técnico Bancário III Suporte, 2025), via banco de questões Questões Estratégicas",
+        "tipo": "Questão de concurso público (banco de questões online)",
+        "url": "https://www.questoesestrategicas.com.br/questoes/busca/assunto/deadlock",
+        "data_acesso": "2026-09-26"
+      },
+      "consulta_livro": "condicoes deadlock exclusao mutua posse espera preempcao"
+    },
+    {
+      "id": "so_b03",
+      "tema": "Deadlock - grafo de alocação de recursos com múltiplas instâncias",
+      "enunciado": "Considere um sistema com três processos (P1, P2, P3) e dois tipos de recurso, X e Y, sendo que o tipo X possui duas instâncias e o tipo Y possui uma única instância. No grafo de alocação de recursos do sistema, observa-se a seguinte situação: (i) P1 possui uma instância de X e está esperando pela instância de Y; (ii) P2 possui a instância de Y e está esperando por uma instância de X; (iii) P3 possui a outra instância de X e não está esperando por nenhum recurso. O grafo resultante contém um ciclo envolvendo P1 e P2 (P1 → Y → P2 → X → P1). Assinale a alternativa correta sobre a situação descrita.",
+      "alternativas": [
+        "a) Há impasse envolvendo P1, P2 e P3, já que todos aparecem no grafo.",
+        "b) Há impasse: o ciclo P1 → Y → P2 → X → P1 já reúne processos e recursos suficientes em espera circular, o que, por si só, caracteriza o impasse neste grafo.",
+        "c) Não há impasse: basta observar que o recurso X possui mais de uma instância para concluir isso, sem necessidade de verificar se alguma instância livre de fato rompe o ciclo.",
+        "d) Não há impasse: a instância de X possuída por P3 pode ser liberada e alocada a P2, rompendo o ciclo.",
+        "e) A situação é indeterminada: só o algoritmo do banqueiro permite concluir algo neste caso."
+      ],
+      "gabarito": "D",
+      "gabarito_publicado_pela_fonte": false,
+      "justificativa": "Em grafos com recursos de múltiplas instâncias, a existência de ciclo é condição necessária, mas não suficiente, para o deadlock, o que elimina B. Como P3 não está esperando nenhum recurso, ele pode liberar a instância de X que detém, a qual pode ser alocada a P2, satisfazendo seu pedido e quebrando o ciclo — logo não há impasse (D). A alternativa C está errada porque conclui apressadamente apenas pelo número de instâncias, sem verificar se uma instância livre de fato desfaz a espera.",
+      "fonte": {
+        "titulo": "Questões de Deadlock (Sistemas Operacionais) - questão IF SUL - MG 2026 (grafo de alocação de recursos)",
+        "instituicao": "Instituto Federal de Educação, Ciência e Tecnologia do Sul de Minas Gerais (IF SUL - MG) - Professor - Informática (2026), via banco de questões Questões Estratégicas",
+        "tipo": "Questão de concurso público (banco de questões online)",
+        "url": "https://www.questoesestrategicas.com.br/questoes/busca/assunto/deadlock",
+        "data_acesso": "2026-09-26"
+      },
+      "consulta_livro": "grafo alocacao recursos ciclo espera multiplas instancias"
+    },
+    {
+      "id": "so_b04",
+      "tema": "Sincronização - semáforos bloqueantes e atomicidade em multiprocessadores (SMP)",
+      "enunciado": "Um sistema multiprocessado (SMP) implementa um semáforo cuja operação wait() bloqueia o processo (inserindo-o em uma fila de espera) em vez de mantê-lo em espera em ação (busy waiting), caso o recurso não esteja disponível. Assinale a alternativa correta sobre a relação entre hardware e software na sincronização desse cenário.",
+      "alternativas": [
+        "a) Como o uso de semáforos bloqueantes elimina a espera em ação por parte dos processos que aguardam o recurso, basta desabilitar as interrupções em qualquer processador do sistema para garantir a atomicidade das operações wait()/signal(), independentemente do número de processadores.",
+        "b) Um semáforo de contagem e um semáforo binário são conceitos idênticos, já que ambos podem assumir apenas os valores 0 e 1, diferindo somente na nomenclatura usada por autores distintos.",
+        "c) Mesmo bloqueando o processo que aguarda o recurso, a própria atualização do valor interno do semáforo — dentro das operações wait()/signal() — ainda precisa ser protegida por uma instrução atômica de hardware; eliminar a espera em ação do processo que aguarda o recurso não elimina a necessidade de uma primitiva atômica para a seção crítica interna dessas operações.",
+        "d) Um mutex é uma variante do semáforo de contagem que preserva integralmente sua capacidade de contar múltiplas instâncias de um recurso, sendo restrito apenas a valores não negativos.",
+        "e) A atomicidade das operações wait()/signal() pode ser garantida inteiramente por soluções em software, como o algoritmo de Peterson, sem depender de qualquer instrução especial de hardware."
+      ],
+      "gabarito": "C",
+      "gabarito_publicado_pela_fonte": false,
+      "justificativa": "Bloquear o processo que espera elimina a espera em ação apenas daquele processo; a leitura e a escrita do valor do semáforo dentro de wait()/signal() continuam sendo uma seção crítica que exige instrução atômica de hardware (como test-and-set), como afirma C. Desabilitar interrupções não funciona em multiprocessadores (A), semáforo de contagem aceita valores acima de 1 (B), mutex não preserva contagem de múltiplas instâncias (D) e soluções puramente em software exigem, no mínimo, operações de memória atômicas (E).",
+      "fonte": {
+        "titulo": "Questões de Sistemas Operacionais - questão IF SUL - MG 2026 (semáforo bloqueante em SMP)",
+        "instituicao": "Instituto Federal de Educação, Ciência e Tecnologia do Sul de Minas Gerais (IF SUL - MG) - Professor - Informática (2026), via banco de questões Questões Estratégicas",
+        "tipo": "Questão de concurso público (banco de questões online)",
+        "url": "https://www.questoesestrategicas.com.br/questoes/busca/assunto/sistemas-operacionais",
+        "data_acesso": "2026-09-26"
+      },
+      "consulta_livro": "semaforo wait signal espera acao atomicidade"
+    },
+    {
+      "id": "so_b05",
+      "tema": "Deadlock - prevenção por ordenação de recursos (eliminação da espera circular)",
+      "enunciado": "No contexto do gerenciamento de deadlocks em sistemas operacionais, existem estratégias voltadas para a prevenção, que consistem em invalidar pelo menos uma das quatro condições necessárias para a ocorrência do impasse. Considerando a técnica que obriga todos os processos a solicitarem recursos seguindo estritamente uma ordem linear crescente baseada em uma numeração única atribuída a cada tipo de recurso disponível no sistema, é correto afirmar que essa abordagem específica visa eliminar a(s) seguinte(s) condição(ões) de deadlock:",
+      "alternativas": [
+        "a) exclusão mútua.",
+        "b) inanição.",
+        "c) não preempção.",
+        "d) posse e espera.",
+        "e) espera circular."
+      ],
+      "gabarito": "E",
+      "gabarito_publicado_pela_fonte": false,
+      "justificativa": "Exigir que os recursos sejam solicitados sempre em ordem crescente de numeração impede que um ciclo de espera se forme, já que nenhum processo pode segurar um recurso de numeração maior e esperar por um de numeração menor — logo a técnica elimina a espera circular. As demais condições (exclusão mútua, posse e espera, não preempção) continuam válidas, e inanição nem é condição de deadlock. Trata-se, portanto, de prevenção atacando a espera circular (E).",
+      "fonte": {
+        "titulo": "Q4090992 - Prevenção de deadlock por ordem linear de solicitação de recursos",
+        "instituicao": "Instituto AOCP - IF-CE (Professor EBTT - Sistemas de Computação, 2026), via banco de questões QConcursos",
+        "tipo": "Questão de concurso público (banco de questões online)",
+        "url": "https://www.qconcursos.com/questoes-de-concursos/disciplinas/tecnologia-da-informacao-sistemas-operacionais/deadlock/questoes",
+        "data_acesso": "2026-09-26"
+      },
+      "consulta_livro": "prevencao deadlock ordem recursos espera circular"
+    },
+    {
+      "id": "so_b06",
+      "tema": "Inanição (starvation) versus deadlock e escalonamento",
+      "enunciado": "Em um ambiente Linux de alta concorrência, múltiplos processos passaram a disputar acesso simultâneo a uma mesma estrutura de dados compartilhada. Durante a análise do incidente, verificou-se que determinados processos permaneciam indefinidamente aguardando recursos liberados por outros processos, enquanto alguns nunca obtinham acesso à CPU devido à política de escalonamento adotada. Considerando conceitos de sistemas operacionais, assinale a alternativa correta.",
+      "alternativas": [
+        "a) A paginação elimina integralmente riscos relacionados a condições de corrida em sistemas multiprocessados.",
+        "b) O starvation ocorre quando dois processos compartilham recursos de forma equilibrada sob escalonamento circular.",
+        "c) O deadlock depende exclusivamente de falha física de memória principal para ocorrer em ambientes multitarefa.",
+        "d) A condição conhecida como starvation pode ocorrer quando determinados processos permanecem continuamente preteridos pelo escalonador de CPU.",
+        "e) O gerenciamento de threads impede a ocorrência de impasses em sistemas com múltiplos núcleos de processamento."
+      ],
+      "gabarito": "D",
+      "gabarito_publicado_pela_fonte": false,
+      "justificativa": "Starvation (inanição) é a situação em que um processo fica indefinidamente sem executar porque a política de escalonamento continua favorecendo outros, exatamente como descreve a alternativa D. A paginação não elimina condições de corrida (A), a partilha equilibrada não caracteriza inanição (B), deadlock não deriva de falha de memória (C) e o gerenciamento de threads não impede impasses (E).",
+      "fonte": {
+        "titulo": "Q4163946 - Starvation e deadlock em ambiente Linux de alta concorrência",
+        "instituicao": "IBADE - COREN-AM (Prova Analista de Sistemas, 2026), via banco de questões QConcursos",
+        "tipo": "Questão de concurso público (banco de questões online)",
+        "url": "https://www.qconcursos.com/questoes-de-concursos/disciplinas/tecnologia-da-informacao-sistemas-operacionais/deadlock/questoes",
+        "data_acesso": "2026-09-26"
+      },
+      "consulta_livro": "starvation inanição processo preterido escalonador"
+    },
+    {
+      "id": "so_b07",
+      "tema": "Sincronização - uso inadequado de semáforos e deadlock",
+      "enunciado": "Em sistemas operacionais modernos, o suporte à concorrência exige mecanismos adequados de sincronização, exclusão mútua e coordenação entre processos. Considere um sistema operacional que utiliza semáforos para controlar o acesso a regiões críticas compartilhadas entre processos concorrentes. Analise as assertivas a seguir e assinale a alternativa CORRETA:",
+      "alternativas": [
+        "a) Um semáforo binário pode assumir apenas os valores 0 e 1 e, por isso, não é capaz de garantir exclusão mútua em regiões críticas.",
+        "b) A operação wait (ou P) sobre um semáforo decrementa seu valor e, caso o resultado seja negativo, o processo continua em execução normalmente.",
+        "c) A utilização inadequada de semáforos pode levar a situações de deadlock (impasse), mesmo que cada região crítica esteja corretamente protegida por exclusão mútua.",
+        "d) Em um sistema que utiliza semáforos, a substituição desses mecanismos por variáveis compartilhadas simples não altera a correção dos algoritmos de sincronização.",
+        "e) O uso de semáforos elimina completamente a possibilidade de inanição (starvation), desde que o sistema operacional seja preemptivo."
+      ],
+      "gabarito": "C",
+      "gabarito_publicado_pela_fonte": false,
+      "justificativa": "Semáforos mal utilizados (por exemplo, adquirir dois semáforos em ordem distinta por processos diferentes) produzem espera circular e, portanto, deadlock, mesmo que a proteção de cada região crítica esteja correta — o que confirma C. O semáforo binário garante exclusão mútua (A), wait com resultado negativo bloqueia o processo (B), variáveis compartilhadas simples não substituem semáforos sem perda de correção (D) e semáforos não eliminam inanição (E).",
+      "fonte": {
+        "titulo": "Q4013961 - Semáforos para controle de regiões críticas (assertivas)",
+        "instituicao": "IF-PI - Instituto Federal do Piauí (Prova Professor EBTT - Informática, 2026), via banco de questões QConcursos",
+        "tipo": "Questão de concurso público (banco de questões online)",
+        "url": "https://www.qconcursos.com/questoes-de-concursos/questoes/63662436-3f",
+        "data_acesso": "2026-09-26"
+      },
+      "consulta_livro": "semaforos regiao critica exclusao mutua deadlock"
+    },
+    {
+      "id": "so_b08",
+      "tema": "Seção crítica - requisitos (exclusão mútua, progresso, espera limitada)",
+      "enunciado": "Após a atualização de uma tabela, observou-se que os dados estavam incorretos. Realizada a depuração do problema, percebeu-se que havia três processos em seção crítica. A solução para o problema de seção crítica consiste em atender aos requisitos:",
+      "alternativas": [
+        "a) exclusão mútua, progresso e espera limitada.",
+        "b) throughput, progresso e locking.",
+        "c) throughput, limitação de buffer e espera circular.",
+        "d) exclusão mútua, espera circular e preempção."
+      ],
+      "gabarito": "A",
+      "gabarito_publicado_pela_fonte": false,
+      "justificativa": "Os três requisitos clássicos de uma solução para o problema da seção crítica são exclusão mútua (nunca dois processos na seção ao mesmo tempo), progresso (quem não está na seção não pode impedir quem quer entrar) e espera limitada (nada de espera infinita para entrar), o que corresponde à alternativa A. As demais mesclam conceitos estranhos ao problema, como throughput, limitação de buffer e espera circular, que é condição de deadlock e não requisito de seção crítica.",
+      "fonte": {
+        "titulo": "Q1165413 - Requisitos da solução para o problema de seção crítica (questão 41 da prova)",
+        "instituicao": "Poder Judiciário/AC - IVIN (Prova, 2024), via simulados de Sistemas Operacionais do PCI Concursos",
+        "tipo": "Questão de concurso público (banco de questões online)",
+        "url": "https://www.pciconcursos.com.br/simulados/informatica/sistemas-operacionais/15",
+        "data_acesso": "2026-09-26"
+      },
+      "consulta_livro": "requisitos secao critica exclusao mutua progresso espera"
+    },
+    {
+      "id": "so_b09",
+      "tema": "Deadlock - as quatro condições de Coffman avaliadas em assertivas",
+      "enunciado": "Um impasse, também conhecido como deadlock, representa o cenário no qual um processo bloqueia outro e vice-versa, devido à concorrência de recursos entre esses processos. Sobre as condições para que ocorra um impasse, avalie as afirmações a seguir: I - A condição de exclusão mútua é satisfeita quando, em um determinado instante, um recurso ou está associado a um único processo ou está disponível. II - A condição de posse e espera é atendida quando os processos que já retém recursos podem requisitar novos recursos. III - A condição de não preempção só é verdadeira quando os recursos concedidos previamente a um processo não podem ser forçosamente tomados pelo sistema operacional ou por outros processos. IV - A condição de espera circular determina que, para que um impasse ocorra, deve existir um encadeamento circular entre dois ou mais processos, ou seja, cada um deles encontra-se à espera de um recurso que está sendo usado pelo membro seguinte dessa cadeia. Estão CORRETAS as afirmações:",
+      "alternativas": [
+        "a) I-II-III.",
+        "b) I-III-IV.",
+        "c) II-III-IV.",
+        "d) I-II-III-IV."
+      ],
+      "gabarito": "D",
+      "gabarito_publicado_pela_fonte": false,
+      "justificativa": "A assertiva I descreve corretamente a exclusão mútua (recurso disponível ou associado a um único processo), II descreve a posse e espera, III descreve a não preempção e IV descreve a espera circular. Portanto todas as quatro estão corretas e a alternativa certa é D. Trata-se das mesmas quatro condições necessárias e suficientes (simultâneas) para a ocorrência de deadlock.",
+      "fonte": {
+        "titulo": "Q1070130 - Condições para a ocorrência de impasse (deadlock)",
+        "instituicao": "CONSULPAM - Prefeitura de Irauçuba/CE (Prova Técnico em Manutenção de Informática e Rede, 2022), via banco de questões Estude Grátis",
+        "tipo": "Questão de concurso público (banco de questões online)",
+        "url": "https://www.estudegratis.com.br/questao-de-concurso/1070130",
+        "data_acesso": "2026-09-26"
+      },
+      "consulta_livro": "condicoes impasse deadlock preempcao espera circular"
+    },
+    {
+      "id": "so_b10",
+      "tema": "Sincronização - operação Down em semáforo com valor zero",
+      "enunciado": "Um mecanismo de sincronização clássico é conhecido como semáforo. Um semáforo é uma variável inteira não negativa que só pode ser manipulada por duas instruções, chamadas de instruções Down e Up. Para evitar a espera ocupada, que desperdiça tempo de processamento da máquina, a operação Down utiliza uma estrutura de dados, geralmente uma First In, First Out (FIFO). Quando um processo executa a instrução Down num semáforo que tem o valor zero, o processo:",
+      "alternativas": [
+        "a) segue a sua execução normal, e o semáforo permanece com o valor zero.",
+        "b) segue a sua execução normal, e o semáforo é incrementado de uma unidade.",
+        "c) entra no estado de espera, e o semáforo permanece com o valor zero.",
+        "d) entra no estado de espera, e o semáforo é incrementado de uma unidade.",
+        "e) entra no estado de espera, e outro processo é retirado da fila de espera do semáforo."
+      ],
+      "gabarito": "C",
+      "gabarito_publicado_pela_fonte": false,
+      "justificativa": "Com o semáforo em zero não há recurso disponível, então a operação Down bloqueia o processo, inserindo-o na fila FIFO de espera — daí o processo entrar em estado de espera. O valor do semáforo permanece zero e só aumenta quando outro processo executa a operação Up, que também é quem remove um processo da fila. Assim, a alternativa correta é C.",
+      "fonte": {
+        "titulo": "Exercício de semáforos na sincronização de processos (CESGRANRIO 2025 - operação Down/FIFO)",
+        "instituicao": "CESGRANRIO (Prova, 2025), via banco de questões Didata",
+        "tipo": "Questão de concurso público (banco de questões online)",
+        "url": "https://didata.ai/banco-de-questoes/questoes/tecnologia-da-informacao/sistemas-operacionais/exercicio-de-semaforos-na-sincronizacao-de-processos/p974aenpsdkgbwmgb7rya78nb984thpq",
+        "data_acesso": "2026-09-26"
+      },
+      "consulta_livro": "semaforo down up espera bloqueante fifo"
+    },
+    {
+      "id": "so_b11",
+      "tema": "Deadlock - prevenção, evitação e estado inseguro (algoritmo do banqueiro)",
+      "enunciado": "Sobre deadlocks em sistemas operacionais, analise as assertivas a seguir: I. Para que ocorra um deadlock, quatro condições devem estar presentes simultaneamente no sistema: exclusão mútua, retenção e espera, inexistência de preempção e espera circular. II. A prevenção de deadlocks assegura que pelo menos uma das quatro condições necessárias não possa ocorrer, restringindo como as solicitações de recursos podem ser feitas. Seus efeitos colaterais incluem baixa utilização dos dispositivos e redução do throughput (taxa de processamento). III. Um estado inseguro implica necessariamente que o sistema está em deadlock no momento em que é identificado. IV. A maioria dos sistemas operacionais modernos, incluindo Linux e Windows, adota como política geral não implementar mecanismos abrangentes de prevenção, evasão ou detecção de deadlocks, transferindo a responsabilidade de lidar com o problema para os desenvolvedores de aplicações. Quais estão corretas?",
+      "alternativas": [
+        "a) Apenas I e III.",
+        "b) Apenas II e IV.",
+        "c) Apenas I, II e III.",
+        "d) Apenas I, II e IV.",
+        "e) Apenas II, III e IV."
+      ],
+      "gabarito": "D",
+      "gabarito_publicado_pela_fonte": false,
+      "justificativa": "A assertiva I está correta ao listar as quatro condições de Coffman; II está correta ao descrever a prevenção e seus custos de utilização e throughput; IV está correta porque Linux e Windows, de fato, deixam a maior parte do tratamento de deadlocks a cargo das aplicações. III está incorreta: um estado inseguro não significa deadlock já ocorrido, apenas que existe risco de impasse se os pedidos futuros forem atendidos. Portanto I, II e IV (D).",
+      "fonte": {
+        "titulo": "Q1096276 - Deadlocks: condições, prevenção e estado inseguro (assertivas)",
+        "instituicao": "FUNDATEC - IFC SC (Prova Informática Hardware e Redes, 2026), via banco de questões Gabarite",
+        "tipo": "Questão de concurso público (banco de questões online)",
+        "url": "https://gabarite.com.br/questoes-de-concursos/1096276-questao",
+        "data_acesso": "2026-09-26"
+      },
+      "consulta_livro": "estado inseguro deadlock prevencao evitacao throughput"
+    },
+    {
+      "id": "so_b12",
+      "tema": "Sincronização - problema produtor-consumidor com semáforos e trincos",
+      "enunciado": "Considere o seguinte problema: existem múltiplas tarefas que por vezes podem querer enviar (produtoras) ou receber (consumidoras) mensagens para/de um canal partilhado; o canal tem a capacidade N e é implementado como um buffer circular; a função 'envia' permite enviar múltiplas mensagens para o canal de uma só vez, sendo as mensagens colocadas de forma consecutiva no buffer circular — se não houver espaço suficiente, a função envia espera até que haja; a função 'recebe' permite receber a próxima mensagem disponível no canal — se o canal estiver vazio, a função espera até chegar uma mensagem. Considere a seguinte implementação de uma solução para o problema em causa (em pseudo-código):\n\n1.  Message canal[N];\n2.  int livre = N;\n3.  int envia_ptr=0, recebe_ptr=0;\n4.\n5.  envia(Message messages[], int numMsg) {\n6.      while ( livre < numMsg);\n7.      for each (Message m in messages) {\n8.          canal[envia_ptr] = m;\n9.          envia_ptr = (envia_ptr+1) % N;\n10.         livre--;\n11.         }\n12.     }\n13. Message recebe() {\n14.     while ( livre == N);\n15.     Message m = canal[recebe_ptr];\n16.     recebe_ptr = (recebe_ptr+1) % N;\n17.     livre++;\n18.     return m;\n19. }\n\n2.1) Usando a solução acima apresentada num computador mono-processador, houve utilizadores que detetaram situações anómalas. Para cada situação, explique se e porque pode acontecer, ilustrando com um exemplo de execução: a) \"Dois produtores produziram 1 item cada; no entanto, os consumidores apenas encontraram 1 item para consumir.\"; b) \"Quando um produtor tenta colocar um item no buffer, e este está vazio e há vários consumidores a tentar consumir, o produtor demora muito mais tempo a concluir a operação.\"\n\n2.2) Proponha uma solução, em pseudo-código, que elimine ou minimize os problemas apontados acima, recorrendo a trincos lógicos e/ou semáforos (com operações esperar(identificador_do_semaforo, numero_de_unidades) e assinalar(identificador_do_semaforo, numero_de_unidades)).",
+      "alternativas": [],
+      "gabarito": "Resolução publicada na fonte: 2.1a) Corrida de dados: considere os produtores P1 e P2 executando 'envia' concorrentemente; P1 perde o processador depois de executar a linha 6 (após verificar espaço) e antes da linha 8, P2 percorre o mesmo caminho e escreve na mesma posição do buffer circular, fazendo com que o item de P1 seja sobrescrito — só resta 1 item. 2.1b) Situação análoga entre consumidores, com perda de processador entre as linhas 13 e 14, além do desperdício de CPU das esperas ativas dos laços 'while'. 2.2) Solução com semáforos e trincos: pode_enviar = criar_semaforo(N) e pode_receber = criar_semaforo(0); em envia(): esperar(pode_enviar, numMsg); fechar(trinco_enviar); percorrer o buffer escrevendo as mensagens; abrir(trinco_enviar); assinalar(pode_receber, numMsg); em recebe(): esperar(pode_receber, 1); fechar(trinco_receber); ler a próxima mensagem; abrir(trinco_receber); assinalar(pode_enviar, 1). Trincos distintos para escrita e leitura permitem produtor e consumidor atuarem concorrentemente em posições diferentes do buffer.",
+      "gabarito_publicado_pela_fonte": true,
+      "justificativa": "Os laços 'while (livre < numMsg)' e 'while (livre == N)' apenas testam a condição sem reservar espaço de forma atômica, permitindo que dois produtores passem do teste simultaneamente e escrevam na mesma posição (corrida de dados), além de desperdiçarem CPU em espera ativa. A solução publicada usa semáforos de contagem para representar vagas livres e itens disponíveis, combinados com trincos separados para os índices de escrita e de leitura. Assim o bloqueio passa a ser passivo (espera bloqueante), a seção crítica fica protegida e produtor e consumidor progredem concorrentemente em posições distintas do buffer circular.",
+      "fonte": {
+        "titulo": "Exercícios de Sistemas Operativos - Capítulo 6 (Programação Concorrente), Exercício 2 - canal produtor-consumidor, com resolução publicada",
+        "instituicao": "Instituto Superior Técnico (IST), Universidade de Lisboa - disciplina de Sistemas Operativos (LEIC)",
+        "tipo": "Prova/lista de disciplina universitária",
+        "url": "https://groups.ist.utl.pt/~leic-so.daemon/2017-2018/teoricas_resolucoes",
+        "data_acesso": "2026-09-26"
+      },
+      "consulta_livro": "produtor consumidor buffer circular semaforos espera ativa"
+    },
+    {
+      "id": "so_b13",
+      "tema": "Sincronização - variáveis de condição e trinco (garagem com N lugares)",
+      "enunciado": "Considere uma garagem na qual existem N lugares de estacionamento. O acesso à garagem é gerido por uma aplicação central com múltiplas tarefas, sendo cada tarefa responsável por interagir com um terminal em cada entrada. Cada carro com acesso ao parque é identificado por um inteiro. Cada condutor que se aproxima de uma entrada executa a função ocupa_lugar para reservar um lugar antes de entrar e chama liberta_lugar quando sai da garagem. O vetor lugares[N] mantém o estado de cada lugar: a cada momento, cada entrada no vetor pode conter o valor LIVRE ou o identificador do carro que tem direito a ocupar o lugar.\n\nint lugares[N] = {LIVRE, ..., LIVRE}; /* todos os elementos estão LIVRES */\n\n1. int ocupa_lugar(int carId) {\n2.   int i;\n3.   for (i=0; i<N; i++) {\n4.     if (lugares[i] == LIVRE) {\n5.       lugares[i] = carId;\n6.       return i;\n7.     }\n8.   }\n9.   return -1;\n10. }\n\n11. void liberta_lugar(int carId) {\n12.   int i;\n13.   for (i=0; i<N; i++) {\n14.     if (lugares[i] == carId) {\n15.       lugares[i] = LIVRE;\n16.       return;\n17.     }\n18.   }\n19. }\n\na) Após a inauguração do sistema, verificaram-se situações de conflito entre condutores que reclamaram que, tendo acedido à garagem concorrentemente por entradas diferentes, lhes tinha sido atribuído o mesmo lugar. Analisando a implementação acima, indique a razão deste erro e ilustre-a com um cenário concreto de execução.\n\nb) Proponha uma correção ao programa. Na sua solução não deve recorrer a espera ativa.\n\nc) Sempre que a função ocupa_lugar é chamada mas a garagem está cheia, a função deve esperar até que um lugar esteja finalmente disponível. Partindo da solução anterior, estenda ambas as funções para cumprir este novo requisito usando variáveis de condição.",
+      "alternativas": [],
+      "gabarito": "Resolução publicada na fonte: a) Duas tarefas chamam ocupa_lugar concorrentemente e observam ambas o lugar 0 livre (linha 4, primeira iteração do ciclo) antes de alguma marcar o lugar como ocupado (linha 5), logo ambas ocupam esse lugar. b) Proteger a busca e a marcação com um trinco t: fechar(t) antes do laço e abrir(t) em todos os pontos de saída, tanto em ocupa_lugar quanto em liberta_lugar (exclusão mútua sem espera ativa). c) Acrescentar o contador int livres = N e uma variável de condição varcond condLugar sobre o trinco t: em ocupa_lugar, após fechar(t), executar 'while (livres == 0) wait(condLugar, t)' até haver lugar, decrementar livres ao ocupar e abrir(t); em liberta_lugar, ao liberar, incrementar livres, executar signal(condLugar) e abrir(t). Observação da fonte: uma terceira tarefa pode ocupar o lugar antes da primeira que estava em espera, pois, ao ser sinalizada, a tarefa precisa readquirir o trinco e pode verificar que livres == 0 ainda se verifica.",
+      "gabarito_publicado_pela_fonte": true,
+      "justificativa": "O trecho de teste e atribuição (linhas 4-5) é uma seção crítica não protegida, o que permite que duas tarefas leiam LIVRE ao mesmo tempo e atribuam o mesmo lugar — a correção publicada usa um trinco para garantir a exclusão mútua. Para a garagem cheia, a solução acrescenta um contador de lugares livres e uma variável de condição, com que os condutores bloqueiam passivamente em vez de girarem em espera ativa. O laço 'while (livres == 0)' é essencial porque uma tarefa sinalizada pode ser acordada sem que a condição tenha mudado, devolvendo a wait até o recurso estar de fato disponível.",
+      "fonte": {
+        "titulo": "Exercícios de Sistemas Operativos - Capítulo 6 (Programação Concorrente), Exercício 1 - garagem com N lugares, com resolução publicada",
+        "instituicao": "Instituto Superior Técnico (IST), Universidade de Lisboa - disciplina de Sistemas Operativos (LEIC)",
+        "tipo": "Prova/lista de disciplina universitária",
+        "url": "https://groups.ist.utl.pt/~leic-so.daemon/2017-2018/teoricas_resolucoes",
+        "data_acesso": "2026-09-26"
+      },
+      "consulta_livro": "variaveis condicao trinco espera sinal garagem"
+    },
+    {
+      "id": "so_c01",
+      "tema": "Gerência de memória - endereçamento lógico e físico (cálculo de bits)",
+      "enunciado": "3) Considere um espaço de endereçamento lógico de oito páginas de 1024 palavras de 2 bytes cada, mapeado em uma memória física de 32 quadros. Quantos bits existem no endereço lógico? E no endereço físico?",
+      "alternativas": [],
+      "gabarito": "Endereço lógico: 14 bits; endereço físico: 16 bits",
+      "gabarito_publicado_pela_fonte": false,
+      "justificativa": "O espaço lógico totaliza 8 páginas x 1024 palavras x 2 bytes = 16.384 bytes = 2^14, logo o endereço lógico ocupa 14 bits. Cada quadro tem o mesmo tamanho da página (1024 palavras x 2 bytes = 2048 bytes) e a memória física tem 32 quadros x 2048 bytes = 65.536 bytes = 2^16, portanto o endereço físico ocupa 16 bits. Os 14 bits lógicos se decomõem em 3 bits de índice de página (2^3 = 8 páginas) e 11 bits de deslocamento (2^11 = 2048 bytes), enquanto os 16 bits físicos se decomõem em 5 bits de moldura (2^5 = 32 quadros) e os mesmos 11 bits de deslocamento.",
+      "fonte": {
+        "titulo": "3ª Lista de Exercícios - Sistemas Operacionais (INF09344 / INF02780 / INF02828), Profa. Roberta Lima Gomes, questão 3",
+        "instituicao": "Universidade Federal do Espírito Santo (UFES) - Instituto de Computação",
+        "tipo": "Prova/lista de disciplina universitária",
+        "url": "https://www.inf.ufes.br/~zegonc/material/Sistemas_Operacionais/so-lista3.pdf",
+        "data_acesso": "2026-09-26"
+      },
+      "consulta_livro": "endereço lógico físico bits paginação quadros"
+    },
+    {
+      "id": "so_c02",
+      "tema": "Gerência de memória - veracidade de afirmativas sobre paginação, segmentação e MMU",
+      "enunciado": "12) Analise a veracidade das afirmativas abaixo, justificando sua resposta:\na) Quando se aumenta a quantidade de memória diminui-se a taxa de falta de página.\nb) Um esquema de segmentação pura causa fragmentação interna e externa.\nc) Os motivos que levam o processador a ficar muito ocioso num sistema multitarefa, podem ser pouca quantidade de memória quanto tamanho de página muito pequeno.\nd) Programas mal projetados podem causar muitas faltas de páginas.\ne) MMU é um dispositivo responsável pelo tratamento de falta de página.",
+      "alternativas": [],
+      "gabarito": "a) Verdadeira; b) Falsa; c) Verdadeira; d) Verdadeira; e) Falsa",
+      "gabarito_publicado_pela_fonte": false,
+      "justificativa": "V é a resposta para a): ao aumentar a quantidade de memória há mais quadros disponíveis e a taxa de falta de página diminui, até o limite imposto pelo algoritmo de substituição em uso. A afirmativa b) é falsa, pois na segmentação pura cada segmento ocupa exatamente o espaço de que necessita, havendo apenas fragmentação externa entre os segmentos livres e nunca fragmentação interna. As afirmativas c) e d) são verdadeiras: com pouca memória o processo entra em troca constante de páginas (thrashing), páginas pequenas demais inflam a tabela de páginas e as trocas deixando a CPU ociosa esperando disco, e programas mal projetados, sem localidade de referência, disparam faltas mesmo com memória livre. Por fim, e) é falsa, pois a MMU apenas detecta a condição e gera a interrupção de falta de página, cabendo ao sistema operacional tratar o evento ao buscar a página no disco e reiniciar a instrução.",
+      "fonte": {
+        "titulo": "3ª Lista de Exercícios - Sistemas Operacionais (INF09344 / INF02780 / INF02828), Profa. Roberta Lima Gomes, questão 12",
+        "instituicao": "Universidade Federal do Espírito Santo (UFES) - Instituto de Computação",
+        "tipo": "Prova/lista de disciplina universitária",
+        "url": "https://www.inf.ufes.br/~zegonc/material/Sistemas_Operacionais/so-lista3.pdf",
+        "data_acesso": "2026-09-26"
+      },
+      "consulta_livro": "fragmentação interna externa segmentação MMU falta de página"
+    },
+    {
+      "id": "so_c03",
+      "tema": "Substituição de páginas - NRU, FIFO, LRU e segunda chance",
+      "enunciado": "5. Um computador tem 4 page frames. O tempo de carregamento, tempo de último acesso e os bits M e R para cada página estão mostrados abaixo (tempos em clock ticks):\nPage frame | Carregado | Últ. referência | R | M\n0 | 126 | 279 | 0 | 0\n1 | 230 | 260 | 1 | 0\n2 | 120 | 272 | 1 | 1\n3 | 160 | 280 | 1 | 1\n(a) que página seria substituída por NRU?\n(b) que página seria substituída por FIFO?\n(c) que página seria substituída por LRU?\n(d) que página seria substituída por Segunda Chance?",
+      "alternativas": [],
+      "gabarito": "(a) página 0 (NRU); (b) página 2 (FIFO); (c) página 1 (LRU); (d) página 0 (Segunda Chance)",
+      "gabarito_publicado_pela_fonte": false,
+      "justificativa": "O NRU agrupa as páginas em classes (R,M): a página 0 é a única da classe 0 (R=0, M=0), a de menor prioridade, e por isso é a vítima, enquanto as páginas 1, 2 e 3 estão nas classes 1 e 3. O FIFO remove a página carregada mais antiga, a página 2 (carregada no tick 120, antes de 126, 160 e 230), e o LRU remove a de último acesso mais antigo, a página 1 (referência no tick 260, enquanto as demais foram referenciadas em 272, 279 e 280). Na segunda chance varre-se a fila em procura de R=0: apenas a página 0 tem R=0, que é escolhida sem precisar do segundo giro.",
+      "fonte": {
+        "titulo": "Gerenciamento de Memória - Exercícios extraídos de Modern Operating Systems (A. Tanenbaum), LaSiD/UFBA, Prof. Raimundo Macêdo, exercício 5",
+        "instituicao": "Universidade Federal da Bahia (UFBA) - Laboratório de Sistemas Distribuídos (LaSiD) / DCC",
+        "tipo": "Prova/lista de disciplina universitária",
+        "url": "http://www.macedo.ufba.br/gerenciamemoria2013.pdf",
+        "data_acesso": "2026-09-26"
+      },
+      "consulta_livro": "NRU FIFO LRU segunda chance substituição de páginas"
+    },
+    {
+      "id": "so_c04",
+      "tema": "Substituição de páginas - contagem de faltas em FIFO e LRU",
+      "enunciado": "6. Se o algoritmo FIFO de substituição de páginas é usado com quatro page frames e oito páginas virtuais, quantas faltas de páginas ocorrerão para a cadeia de referências 0172327103 se os quatro page frames estão inicialmente vazios? Repita o problema para LRU.",
+      "alternativas": [],
+      "gabarito": "FIFO: 6 faltas de páginas; LRU: 7 faltas de páginas",
+      "gabarito_publicado_pela_fonte": false,
+      "justificativa": "Com a cadeia 0,1,7,2,3,2,7,1,0,3 e os 4 frames vazios, o FIFO falta nas referências 0, 1, 7 e 2 (que enchem os frames), depois em 3 (remove a página 0, a mais antiga) e em 0 (remove a página 1), totalizando 6 faltas. No LRU as faltas ocorrem em 0, 1, 7, 2, 3, 0 e 3: na sexta referência a página menos recentemente usada é a 1 e ela é removida, de modo que a referência seguinte a 3, que saiu de memória, produz a sétima falta. Assim, o LRU é pior nesta sequência justamente porque remove páginas que voltam a ser referenciadas logo em seguida.",
+      "fonte": {
+        "titulo": "Gerenciamento de Memória - Exercícios extraídos de Modern Operating Systems (A. Tanenbaum), LaSiD/UFBA, Prof. Raimundo Macêdo, exercício 6",
+        "instituicao": "Universidade Federal da Bahia (UFBA) - Laboratório de Sistemas Distribuídos (LaSiD) / DCC",
+        "tipo": "Prova/lista de disciplina universitária",
+        "url": "http://www.macedo.ufba.br/gerenciamemoria2013.pdf",
+        "data_acesso": "2026-09-26"
+      },
+      "consulta_livro": "faltas de página FIFO LRU referências"
+    },
+    {
+      "id": "so_c05",
+      "tema": "Memória virtual - thrashing: definição, detecção e providências",
+      "enunciado": "7. Responda:\n(A) O que é, e qual é a causa do fenômeno de thrashing ?\n(B) Como o sistema operacional pode detectar que está ocorrendo thrashing ? Neste caso, qual a providência que o sistema operacional pode tomar para reduzir/eliminar este problema (em tempo de execução) ?",
+      "alternativas": [],
+      "gabarito": "Resposta dissertativa: (A) thrashing é o estado em que os processos têm muito poucas páginas residentes e dedicam quase todo o tempo a trocas de páginas, com taxa de faltas de página altíssima; causa: o SO compromete mais quadros do que a memória comporta, de modo que o working set de cada processo não cabe na RAM. (B) Detecta-se pela queda na utilização da CPU somada ao aumento da taxa de faltas de página e da fila de E/S de disco; em tempo de execução o SO reduz o grau de multiprogramação (suspendendo processos para o swap), devolve quadros aos processos ativos ou ajusta a política de substituição.",
+      "gabarito_publicado_pela_fonte": false,
+      "justificativa": "O thrashing ocorre quando o grau de multiprogramação ultrapassa a capacidade da memória: cada processo recebe menos quadros que seu working set, a taxa de falta de página dispara e a CPU passa a executar quase apenas código de tratamento de faltas e E/S de paginação. Ele é detectado pela queda da utilização da CPU em conjunto com o aumento da taxa de faltas de páginas e do comprimento da fila de E/S. Em tempo de execução o sistema operacional pode reduzir o grau de multiprogramação (retirando processos para o swap), aumentar a cota de quadros dos processos remanescentes ou trocar a política de substituição de páginas.",
+      "fonte": {
+        "titulo": "Lista de Exercícios 2 - Sistemas Operacionais I N (INF01142) - coletânea de questões de prova de INF01142, questão 7",
+        "instituicao": "Universidade Federal do Rio Grande do Sul (UFRGS) - Instituto de Informática",
+        "tipo": "Prova/lista de disciplina universitária",
+        "url": "https://www.inf.ufrgs.br/~asc/sisop/pdf/lista_mem.pdf",
+        "data_acesso": "2026-09-26"
+      },
+      "consulta_livro": "thrashing working set multiprogramação falta de páginas"
+    },
+    {
+      "id": "so_c06",
+      "tema": "Gerência de memória particionada - first fit, best fit e worst fit",
+      "enunciado": "10. Em um determinado instante de tempo a memória de uma máquina apresenta as seguintes partições livres: 100K, 500K, 200K, 300K e 600K (nesta ordem). Quais partições ocuparão os processos de 212K, 417K, 112K e 426k (considerando que são submetidos a execução nesta ordem) para cada um dos três algoritmos de alocação de mémoria (First-Fit, Best-Fit e Worst-Fit) ? No seu ponto de vista qual, neste caso específico, é o melhor algorítmo ?",
+      "alternativas": [],
+      "gabarito": "First-Fit: 212K na partição 500K, 417K na 600K, 112K na sobra de 288K da partição 500K e o processo de 426K não alocado. Best-Fit: 212K na 300K, 417K na 500K, 112K na 200K e 426K na 600K (todos alocados). Worst-Fit: 212K na 600K, 417K na 500K, 112K na sobra de 388K da partição 600K e o processo de 426K não alocado. Neste caso específico o melhor algoritmo é o Best-Fit, pois é o único que aloca os quatro processos.",
+      "gabarito_publicado_pela_fonte": false,
+      "justificativa": "Percorrendo as partições 100K, 500K, 200K, 300K e 600K em ordem, o First-Fit aloca na primeira partição que cabe: 212K na 500K (sobra 288K), 417K na 600K, 112K nessa sobra de 288K e, restando apenas os blocos livres 100K, 176K, 200K, 300K e 183K, o processo de 426K não encontra partição e não é alocado. O Best-Fit escolhe a menor partição suficiente - 212K na 300K, 417K na 500K, 112K na 200K e 426K na 600K - alocando todos os processos. O Worst-Fit escolhe sempre a maior partição - 212K na 600K (sobra 388K), 417K na 500K, 112K nessa sobra de 388K - e no fim não resta nenhum bloco maior ou igual a 426K, deixando o último processo sem alocação.",
+      "fonte": {
+        "titulo": "Lista de Exercícios 2 - Sistemas Operacionais I N (INF01142) - coletânea de questões de prova de INF01142, questão 10",
+        "instituicao": "Universidade Federal do Rio Grande do Sul (UFRGS) - Instituto de Informática",
+        "tipo": "Prova/lista de disciplina universitária",
+        "url": "https://www.inf.ufrgs.br/~asc/sisop/pdf/lista_mem.pdf",
+        "data_acesso": "2026-09-26"
+      },
+      "consulta_livro": "first fit best fit worst fit partições livres"
+    },
+    {
+      "id": "so_c07",
+      "tema": "Memória virtual - working set (conjunto de trabalho)",
+      "enunciado": "(B) Considerando a seguinte seqüência de acessos a páginas de um processo : 0,9,0,1,8,1,8,7,3,7,1,2,8,2,7,8,2,3,8,3. Qual é o working set W(∆, t) para ∆ = 6 e t igual a um tempo entre o décimo quinto e o décimo sexto acesso ?",
+      "alternativas": [],
+      "gabarito": "W(∆, t) = {1, 2, 7, 8}",
+      "gabarito_publicado_pela_fonte": false,
+      "justificativa": "O working set W(∆,t) reúne as páginas referenciadas na janela dos ∆ = 6 acessos imediatamente anteriores a t; com t entre o 15º e o 16º acesso, a janela cobre as posições 10 a 15 da sequência: 7, 1, 2, 8, 2, 7. Eliminando as repetições, obtém-se o conjunto {1, 2, 7, 8}. As páginas 0, 9 e 3, embora apareçam na sequência, estão fora da janela nesse instante e por isso não integram o working set.",
+      "fonte": {
+        "titulo": "Lista de Exercícios 2 - Sistemas Operacionais I N (INF01142) - coletânea de questões de prova de INF01142, questão 38, item B",
+        "instituicao": "Universidade Federal do Rio Grande do Sul (UFRGS) - Instituto de Informática",
+        "tipo": "Prova/lista de disciplina universitária",
+        "url": "https://www.inf.ufrgs.br/~asc/sisop/pdf/lista_mem.pdf",
+        "data_acesso": "2026-09-26"
+      },
+      "consulta_livro": "working set conjunto de trabalho janela páginas"
+    },
+    {
+      "id": "so_c08",
+      "tema": "Gerência de memória - paginação, memória virtual e algoritmos de substituição (veracidade)",
+      "enunciado": "Considere os conceitos relacionados ao gerenciamento de memória, memória virtual, paginação e algoritmos de substituição de páginas em sistemas operacionais modernos e analise as afirmativas a seguir:\nI. Em sistemas que utilizam paginação, o espaço de endereçamento lógico de um processo é dividido em páginas, enquanto a memória física é dividida em quadros (frames) de mesmo tamanho.\nII. O uso de memória virtual permite que processos utilizem um espaço de endereçamento maior do que a memória física disponível, utilizando o armazenamento secundário como extensão da memória principal.\nIII. O algoritmo de substituição de páginas LRU (Least Recently Used) substitui a página que não é utilizada há mais tempo, aproximando-se do comportamento do algoritmo ótimo, embora seja difícil de implementar de forma exata devido ao custo de atualização de timestamps ou pilhas.\nIV. O algoritmo FIFO (First-In, First-Out) de substituição de páginas está imune ao fenômeno conhecido como anomalia de Belady, pois sempre substitui a página mais antiga.\nV. Em sistemas com paginação sob demanda, ocorre uma falta de página (page fault) quando a página referenciada não se encontra na memória principal, sendo necessária sua busca no disco.\nAssinale a alternativa que apresenta a sequência CORRETA, de cima para baixo:",
+      "alternativas": [
+        "A) V – V – V – F – V",
+        "B) V – F – V – F – V",
+        "C) F – V – V – F – V",
+        "D) V – V – V – V – V",
+        "E) F – V – F – F – V"
+      ],
+      "gabarito": "A",
+      "gabarito_publicado_pela_fonte": false,
+      "justificativa": "As afirmações I, II, III e V são verdadeiras: a paginação divide o espaço lógico em páginas e a memória física em quadros de mesmo tamanho, a memória virtual usa o disco como extensão da RAM, o LRU aproxima-se do ótimo mas é caro de implementar exatamente e a falta de página ocorre quando a página não está na memória principal. A afirmação IV é falsa porque o FIFO é justamente o algoritmo clássico sujeito à anomalia de Belady (com mais quadros podem ocorrer mais faltas), estando longe de ser imune a ela. Assim a sequência correta é V – V – V – F – V, correspondente à alternativa A.",
+      "fonte": {
+        "titulo": "Q4013960 - Prova IF-PI 2026, Professor EBTT - Informática, Sistemas Operacionais / Gerência de Memória (QConcursos)",
+        "instituicao": "Instituto Federal de Educação, Ciência e Tecnologia do Piauí (IF-PI) - banca própria (banco de questões: QConcursos)",
+        "tipo": "Questão de concurso público (banco de questões online)",
+        "url": "https://www.qconcursos.com/questoes-de-concursos/questoes/6362f7cd-3f",
+        "data_acesso": "2026-09-26"
+      },
+      "consulta_livro": "paginação FIFO Belady anomalia LRU memória virtual"
+    },
+    {
+      "id": "so_c09",
+      "tema": "Gerência de memória - paginação, swap, falta de página e substituição de páginas",
+      "enunciado": "Os sistemas operacionais implementam diversos mecanismos para o gerenciamento da memória. Sobre esses mecanismos, marque o item correto.",
+      "alternativas": [
+        "A) O conceito de paginação consiste em enviar todo o conteúdo relacionado a um processo para o disco. Dessa forma, cada página enviada para o disco possui o tamanho do processo relacionado.",
+        "B) A técnica de swap consiste em identificar os processos no estado bloqueado na memória principal e enviar para o disco, liberando a memória para ser utilizada por outros processos.",
+        "C) Uma interrupção de falta de página é ocasionada quando o processador não encontra um determinado processo no disco, gerando um erro no funcionamento do sistema operacional.",
+        "D) Um dos algoritmos utilizados para a substituição de páginas segue a ordem FIFO (First In First Out), onde as páginas mais novas são as primeiras a serem descartadas.",
+        "E) O conceito de memória virtual está relacionado à reserva de parte da memória primária (memória RAM) para a execução de processos prioritários."
+      ],
+      "gabarito": "B",
+      "gabarito_publicado_pela_fonte": false,
+      "justificativa": "A alternativa B está correta: o swap identifica processos bloqueados residentes na memória principal e os envia para o disco, liberando RAM para outros processos. A está errada porque a paginação divide o processo em páginas de tamanho fixo (não em blocos do tamanho do processo); C está errada porque a falta de página é sinalizada quando a página não está na memória, não quando o processador não acha o processo no disco; D está errada porque o FIFO descarta a página mais antiga, nunca as mais novas; e E está errada porque memória virtual não é reserva de RAM para processos prioritários.",
+      "fonte": {
+        "titulo": "Q995561 - Prova CCV-UFC 2019, UFC - Técnico de Laboratório / Informática, Sistemas Operacionais / Gerência de Memória (QConcursos)",
+        "instituicao": "Universidade Federal do Ceará (UFC) - banca CCV-UFC (banco de questões: QConcursos)",
+        "tipo": "Questão de concurso público (banco de questões online)",
+        "url": "https://www.qconcursos.com/questoes-de-concursos/questoes/d0a40609-82",
+        "data_acesso": "2026-09-26"
+      },
+      "consulta_livro": "swap processo bloqueado falta de página substituição"
+    },
+    {
+      "id": "so_c10",
+      "tema": "Memória virtual - thrashing e TLB (tradução de endereços virtuais)",
+      "enunciado": "Um Analista de TI está investigando a queda de desempenho em um servidor de Business Intelligence (BI) e suspeita da ocorrência de thrashing, decorrente do excesso de trocas de páginas. Considerando que o sistema operacional Linux utiliza paginação para gerenciamento de memória, assinale a alternativa que identifica o principal mecanismo de hardware responsável por acelerar a tradução de endereços virtuais em endereços físicos nesse esquema e o risco de segurança associado à sua manipulação inadequada em ambientes multiusuário.",
+      "alternativas": [
+        "A) Cache L3, que armazena blocos de código e dados.",
+        "B) O Superblock do sistema de arquivos, que armazena metadados de paginação.",
+        "C) Header Checksum IP, armazena o valor calculado de todo cabeçalho IPv4.",
+        "D) TLB, cache de hardware da Tabela de Páginas; seu uso inadequado pode expor dados entre processos.",
+        "E) Unidade Aritmética e Lógica (ULA), que armazena o fator de preempção."
+      ],
+      "gabarito": "D",
+      "gabarito_publicado_pela_fonte": false,
+      "justificativa": "A TLB é a cache de hardware que guarda traduções recentes entre endereços virtuais e físicos e é o principal mecanismo que acelera a tradução na paginação, dispensando a leitura da tabela de páginas na memória a cada acesso. Seu uso inadequado em ambientes multiusuário - por exemplo, entradas não invalidadas ao trocar de processo - pode expor dados entre processos, pois um processo passaria a enxergar traduções de outro. As demais alternativas não têm relação com a tradução de endereços: cache L3 guarda dados/instruções, superblock é metadado de sistema de arquivos, checksum de cabeçalho é verificação de rede e ULA é unidade de execução da CPU.",
+      "fonte": {
+        "titulo": "Questão 42 - Prova Assembleia Legislativa do Estado de Rondônia (AL-RO), Analista Legislativo de TI, FGV (2026) (Questões Estratégicas)",
+        "instituicao": "Assembleia Legislativa do Estado de Rondônia (AL-RO) - banca FGV (banco de questões: Questões Estratégicas)",
+        "tipo": "Questão de concurso público (banco de questões online)",
+        "url": "https://www.questoesestrategicas.com.br/questoes/ver/8ac067a4c0c1c417",
+        "data_acesso": "2026-09-26"
+      },
+      "consulta_livro": "TLB thrashing tradução de endereços tabela páginas"
+    },
+    {
+      "id": "so_c11",
+      "tema": "Memória virtual - endereçamento de 32 bits e PAE",
+      "enunciado": "Questão 54 – Em função da forma de endereçamento de memória utilizada pelos sistemas operacionais de 32 bits, a quantidade de memória utilizável por esses sistemas é limitada em 4 gigabytes (GB). A respeito da limitação de endereçamento de memória do sistema operacional Windows, assinale a alternativa correta.\na) A memória virtual dos sistemas operacionais Windows de 32 bits permite o endereçamento de mais de 4 GB de memória RAM.\nb) Se instalados em computadores com tecnologia PAE, alguns sistemas Windows de 32 bits podem endereçar mais de 4 GB de memória RAM.\nc) O endereçamento de mais de 4 GB de memória foi possibilitado após o lançamento do sistema operacional Windows de 64 bits.\nd) Em função do tamanho da palavra de 32 bits, os sistemas operacionais Windows possuem a capacidade de endereçamento de mais de 4 GB de memória RAM.\ne) Os sistemas operacionais Windows de 32 bits têm a capacidade de endereçamento de memória RAM de até 256 GB.",
+      "alternativas": [
+        "a) A memória virtual dos sistemas operacionais Windows de 32 bits permite o endereçamento de mais de 4 GB de memória RAM.",
+        "b) Se instalados em computadores com tecnologia PAE, alguns sistemas Windows de 32 bits podem endereçar mais de 4 GB de memória RAM.",
+        "c) O endereçamento de mais de 4 GB de memória foi possibilitado após o lançamento do sistema operacional Windows de 64 bits.",
+        "d) Em função do tamanho da palavra de 32 bits, os sistemas operacionais Windows possuem a capacidade de endereçamento de mais de 4 GB de memória RAM.",
+        "e) Os sistemas operacionais Windows de 32 bits têm a capacidade de endereçamento de memória RAM de até 256 GB."
+      ],
+      "gabarito": "b)",
+      "gabarito_publicado_pela_fonte": true,
+      "justificativa": "O PAE (Physical Address Extension) amplia a tabela de páginas físicas do processador e permite que sistemas Windows de 32 bits endereçem mais de 4 GB de RAM, o que torna a alternativa b correta. A alternativa a é falsa porque o espaço de endereçamento lógico continua limitado a 2^32 = 4 GB, mesmo que a memória física endereçável ultrapasse esse valor; c é falsa porque o PAE antecede o Windows de 64 bits; d e e são falsas porque uma palavra de 32 bits endereça no máximo 4 GB (2^32 bytes), longe de 256 GB. O blog publica o gabarito \"B\" e o comentário de que o PAE é tecnologia anterior aos sistemas de 64 bits.",
+      "fonte": {
+        "titulo": "Prova PCDF: Comentários às Questões de TI para Perito Criminal (PCDF 2016), questão 54",
+        "instituicao": "Polícia Civil do Distrito Federal (PCDF) - concurso Perito Criminal 2016 (banca IADES), comentado no blog Estratégia Concursos",
+        "tipo": "Blog/artigo especializado com questões e gabarito",
+        "url": "https://www.estrategiaconcursos.com.br/blog/prova-pcdf-2016-ti/",
+        "data_acesso": "2026-09-26"
+      },
+      "consulta_livro": "PAE endereçamento de memória 4 GB Windows"
+    },
+    {
+      "id": "so_c12",
+      "tema": "Memória virtual - uso do armazenamento secundário como extensão da RAM",
+      "enunciado": "Julgue o item subsequente, que versa acerca de sistemas operacionais.\nCaso não exista espaço suficiente na RAM, os sistemas operacionais utilizam a memória virtual, realocando dados da memória principal para a memória secundária.",
+      "alternativas": [
+        "Certo",
+        "Errado"
+      ],
+      "gabarito": "Certo",
+      "gabarito_publicado_pela_fonte": true,
+      "justificativa": "A afirmação é correta: quando a RAM não oferece espaço, o sistema operacional usa o disco (área de swap) como extensão da memória, realocando páginas e processos da memória principal para a secundária, mecanismo conhecido como swapping/paginação por demanda. Esse é exatamente o princípio da memória virtual, que permite executar processos maiores que a memória física disponível. O próprio blog publica \"Gabarito: Certo\", coerente com essa explicação.",
+      "fonte": {
+        "titulo": "Sistemas Operacionais - Gerência de Memória: questão 1 - CESPE/CEBRASPE 2024, CTI (Tecnologista Pleno 2 - I, Indústria 4.0 e Governo Digital)",
+        "instituicao": "Centro de Tecnologia da Informação Renato Archer (CTI) - banca CESPE/CEBRASPE (2024), publicada no blog Gran Cursos Online",
+        "tipo": "Blog/artigo especializado com questões e gabarito",
+        "url": "https://blog.grancursosonline.com.br/sistemas-operacionais-gerencia-de-memoria/",
+        "data_acesso": "2026-09-26"
+      },
+      "consulta_livro": "memória virtual swap realocação memória secundária RAM"
+    },
+    {
+      "id": "so_d01",
+      "tema": "E/S e dispositivos - interrupções e polling",
+      "enunciado": "24. Na gerência de entrada e saída em sistemas operacionais, o mecanismo de _____________ é um recurso baseado na geração de um sinal ao processador sempre que ocorre um determinado evento externo ao processador, enquanto que no procedimento de _____________, o processador deve verificar periodicamente o estado de uma operação de entrada e saída. A alternativa que completa CORRETA e respectivamente as lacunas é:",
+      "alternativas": [
+        "a) interrupções; polling.",
+        "b) DMA; interrupções.",
+        "c) vetor; DMA.",
+        "d) E/S programada; E/S não programada.",
+        "e) E/S não programada; E/S programada."
+      ],
+      "gabarito": "a)",
+      "gabarito_publicado_pela_fonte": false,
+      "justificativa": "A interrupção é um sinal assíncrono disparado por um evento externo que faz a CPU suspender o que executa para atender ao dispositivo, enquanto no polling (E/S programada) a CPU consulta periodicamente o controlador para saber se há dado disponível. Assim a ordem \"interrupções; polling\" completa corretamente as lacunas, o que corresponde à alternativa a. O DMA (alternativa b) não é um mecanismo de notificação: é transferência direta memória-dispositivo com pouca intervenção da CPU.",
+      "fonte": {
+        "titulo": "Caderno de Provas - Concurso Público Federal, Edital 06/2015 - Área: Informática/Organização e Arquitetura de Computadores e Sistemas Operacionais (questão 24)",
+        "instituicao": "Instituto Federal do Rio Grande do Sul (IFRS)",
+        "tipo": "Questão de concurso público (banco de questões online)",
+        "url": "https://ifrs.edu.br/wp-content/uploads/2017/08/Inform%C3%A1tica-Organiza%C3%A7%C3%A3o-e-Arquitetura-de-Computadores-20.pdf",
+        "data_acesso": "2026-09-26"
+      },
+      "consulta_livro": "interrupcoes polling E/S programada dispositivos"
+    },
+    {
+      "id": "so_d02",
+      "tema": "Redes e interconexão - comutação de circuitos",
+      "enunciado": "3. Em um sistema simplificado de comutação, para que o sistema final X envie mensagens ao sistema final Y, a rede deverá, primeiramente, reservar um circuito em cada um dos dois enlaces. Como cada enlace terá n circuitos, para cada enlace usado pela conexão fim a fim, esta ficará com uma fração 1/n da largura de banda durante o período da conexão. A este tipo de comutação denominamos:",
+      "alternativas": [
+        "a) Comutação de mensagens.",
+        "b) Comutação de circuitos.",
+        "c) Comutação de pacotes.",
+        "d) Comutação de células.",
+        "e) Comutação de datagramas."
+      ],
+      "gabarito": "b)",
+      "gabarito_publicado_pela_fonte": false,
+      "justificativa": "A reserva antecipada e exclusiva de um circuito em cada enlace da conexão, com fração fixa (1/n) da largura de banda disponível durante toda a sessão, é a característica definidora da comutação de circuitos (telefonia clássica). Na comutação de pacotes/células nenhum recurso é reservado e cada unidade é encaminhada independentemente, e em datagramas não há estabelecimento de circuito.",
+      "fonte": {
+        "titulo": "Caderno de Provas - Concurso Público Federal, Edital 06/2015 - Área: Informática/Organização e Arquitetura de Computadores e Sistemas Operacionais (questão 3)",
+        "instituicao": "Instituto Federal do Rio Grande do Sul (IFRS)",
+        "tipo": "Questão de concurso público (banco de questões online)",
+        "url": "https://ifrs.edu.br/wp-content/uploads/2017/08/Inform%C3%A1tica-Organiza%C3%A7%C3%A3o-e-Arquitetura-de-Computadores-20.pdf",
+        "data_acesso": "2026-09-26"
+      },
+      "consulta_livro": "comutacao de circuitos enlaces largura de banda"
+    },
+    {
+      "id": "so_d03",
+      "tema": "Redes e interconexão - topologias de rede (física e lógica)",
+      "enunciado": "QUESTÃO 63 - Considerando-se que os computadores de uma rede local padrão Ethernet estejam interligados por meio de um hub, é correto afirmar que as topologias lógica e física dessa rede são, respectivamente",
+      "alternativas": [
+        "A ponto a ponto e estrela.",
+        "B anel e ponto a ponto.",
+        "C barra e estrela.",
+        "D anel e barra.",
+        "E estrela e anel."
+      ],
+      "gabarito": "C",
+      "gabarito_publicado_pela_fonte": false,
+      "justificativa": "O hub simplesmente repete para todas as portas o sinal que recebe, formando um único domínio de colisão: fisicamente os cabos partem em estrela do hub, mas logicamente o meio é compartilhado como uma barra (bus). Portanto a ordem pedida é lógica = barra e física = estrela, o que corresponde à alternativa C.",
+      "fonte": {
+        "titulo": "Prova - Concurso SDS/PE, aplicação 2016 (CESPE/CEBRASPE), Caderno de Conhecimentos Específicos, questão 63",
+        "instituicao": "CESPE/CEBRASPE - concurso SDS/PE (aplicação 2016)",
+        "tipo": "Questão de concurso público (banco de questões online)",
+        "url": "https://cdn.cebraspe.org.br/concursos/sds_pe_16_cientifica/arquivos/260SDSPE_008_01.PDF",
+        "data_acesso": "2026-09-26"
+      },
+      "consulta_livro": "topologia fisica logica hub estrela barra"
+    },
+    {
+      "id": "so_d04",
+      "tema": "Virtualização - contêineres",
+      "enunciado": "Questão 42 - Existem diversos tipos de virtualização disponíveis para uso por administradores de ambientes de rede. Um deles apresenta a virtualização no nível do sistema operacional, permitindo a criação e o gerenciamento de vários ambientes isolados em uma única instância do sistema operacional; tais ambientes não são máquinas virtuais \"verdadeiras\" porque não incluem um sistema operacional. No parágrafo precedente, é descrito o conceito de",
+      "alternativas": [
+        "A hipervisores do tipo 2.",
+        "B paravirtualização.",
+        "C conteinerização.",
+        "D hipervisores do tipo 1."
+      ],
+      "gabarito": "C",
+      "gabarito_publicado_pela_fonte": false,
+      "justificativa": "Contêineres isolam processos dentro de uma única instância do sistema operacional, compartilhando o kernel e usando namespaces/cgroups, sem carregar um sistema operacional próprio no ambiente - exatamente o que o enunciado descreve. Hipervisores tipo 1 e tipo 2, bem como a paravirtualização, criam máquinas virtuais completas, com sistema operacional convidado dedicado.",
+      "fonte": {
+        "titulo": "Prova de Conhecimentos - Parte I (Prova Objetiva), Concurso SEBRAE, Edital 2024, questão 42",
+        "instituicao": "SEBRAE (banca organizadora: CEBRASPE)",
+        "tipo": "Questão de concurso público (banco de questões online)",
+        "url": "https://cdn.cebraspe.org.br/concursos/sebrae_24/arquivos/004_SEBRAE_009_01.PDF",
+        "data_acesso": "2026-09-26"
+      },
+      "consulta_livro": "conteineres virtualizacao kernel isolamento namespaces"
+    },
+    {
+      "id": "so_d05",
+      "tema": "Virtualização - hipervisores tipo 1 e tipo 2, paravirtualização",
+      "enunciado": "31. Em um projeto de consolidação de infraestrutura para uma instituição financeira, a equipe de arquitetura precisa definir a plataforma de execução para uma nova aplicação de High-Frequency Trading (HFT). A aplicação exige latência mínima e garantias estritas de isolamento de segurança entre os ambientes de diferentes clientes. Durante a análise técnica das opções de virtualização baseada em hipervisores e de conteinerização, o arquiteto responsável avaliou os mecanismos de interação com o processador e o gerenciamento de chamadas de sistema (syscalls). Considerando as características arquiteturais e os modos de execução dessas tecnologias, é correto afirmar que:",
+      "alternativas": [
+        "(A) a arquitetura de contêineres em Linux supera as limitações de segurança do compartilhamento de kernel ao implementar namespaces de usuário (User Namespaces) que mapeiam o usuário root do contêiner para um usuário não privilegiado no host, garantindo um isolamento de falhas e de superfície de ataque idêntico ao proporcionado pelas instruções de virtualização assistida por hardware (VT-x/AMD-V) das máquinas virtuais;",
+        "(B) o monitor de máquinas virtuais (VMM), nos hipervisores do Tipo 1 (Bare Metal), opera em um modo de alto privilégio da CPU (como o VMX root mode), enquanto os sistemas operacionais convidados executam em um modo desprivilegiado, o que obriga a ocorrência de uma troca de contexto (VM Exit) sempre que o convidado tenta executar instruções sensíveis que alteram o estado global do sistema;",
+        "(C) os hipervisores do Tipo 2 diferenciam-se dos do Tipo 1 principalmente pela capacidade de delegar a gestão de memória e o escalonamento de CPU diretamente ao hardware através de passthrough, sem a necessidade de intervenção do sistema operacional hospedeiro, o que elimina o overhead de tradução de endereços de memória característico das soluções Bare Metal;",
+        "(D) a paravirtualização é uma técnica de otimização em que o hipervisor apresenta ao sistema operacional convidado uma cópia idêntica e não modificada do hardware subjacente, exigindo que o hipervisor intercepte e emule, via software, todas as instruções privilegiadas, independentemente do suporte de hardware para virtualização;",
+        "(E) os contêineres, diferentemente das máquinas virtuais, que virtualizam o hardware para criar ambientes isolados, realizam a virtualização no nível da aplicação através da duplicação da camada de kernel do sistema operacional hospedeiro para cada instância, permitindo que cada contêiner carregue seus próprios módulos de kernel e drivers de dispositivo."
+      ],
+      "gabarito": "(B)",
+      "gabarito_publicado_pela_fonte": false,
+      "justificativa": "Em hipervisores tipo 1 o VMM roda em modo de altíssimo privilégio (VMX root) e os SOs convidados em modo não privilegiado; instruções sensíveis/privilegiadas executadas pelo convidado provocam VM Exit para o hipervisor, que é o mecanismo descrito na alternativa (B). (A) é falsa porque contêineres compartilham o kernel e não alcançam isolamento idêntico ao de VMs com VT-x; (C) inverte os papéis (quem opera sem SO hospedeiro é o tipo 1); (D) descreve virtualização completa, não paravirtualização, que exige modificar o SO convidado; (E) é falsa porque contêineres compartilham o kernel do host, não o duplicam.",
+      "fonte": {
+        "titulo": "Prova Objetiva e Prova Discursiva - Analista Judiciário - Tecnologia da Informação / Analista de Segurança da Informação, Tipo 1 - Branca (questão 31)",
+        "instituicao": "Tribunal de Justiça do Estado do Rio de Janeiro (banca organizadora: FGV)",
+        "tipo": "Questão de concurso público (banco de questões online)",
+        "url": "https://conhecimento.fgv.br/sites/default/files/concursos/analista-judiciario-tecnologia-da-informacao-analista-de-seguranca-da-informacao-ns-a13-anaseguranca-tipo-1.pdf",
+        "data_acesso": "2026-09-26"
+      },
+      "consulta_livro": "hipervisor tipo 1 tipo 2 paravirtualizacao VMM"
+    },
+    {
+      "id": "so_d06",
+      "tema": "Sistemas de arquivos - tamanho máximo de arquivo (FAT32)",
+      "enunciado": "Julgue os itens seguintes, a respeito de sistema de arquivos.\n\n61 Um disco formatado com sistema de arquivos FAT32 permite armazenar arquivos de tamanho de até 120 gigabaites.",
+      "alternativas": [
+        "C) CERTO",
+        "E) ERRADO"
+      ],
+      "gabarito": "E) ERRADO",
+      "gabarito_publicado_pela_fonte": false,
+      "justificativa": "No FAT32 o tamanho de arquivo é gravado em um campo de 32 bits na entrada de diretório, o que limita cada arquivo a 2^32 - 1 bytes = 4 GiB (≈ 4 GB). Portanto um arquivo de até 120 GB é impossível nesse sistema, e o item é ERRADO (apenas o volume, não o arquivo, pode chegar a dezenas de TB).",
+      "fonte": {
+        "titulo": "Caderno de Provas - Concurso Perito Criminal Federal, DGP/PF, aplicação 2018 (CESPE/CEBRASPE) - item 61",
+        "instituicao": "CESPE/CEBRASPE - concurso Perito Criminal Federal (DGP/PF), 2018",
+        "tipo": "Questão de concurso público (banco de questões online)",
+        "url": "https://apcf.org.br/wp-content/uploads/2022/02/perito_criminal_federal_area_3_informatica.pdf",
+        "data_acesso": "2026-09-26"
+      },
+      "consulta_livro": "FAT32 tamanho maximo arquivo cluster 4GB"
+    },
+    {
+      "id": "so_d07",
+      "tema": "E/S e dispositivos - RAID (striping)",
+      "enunciado": "A respeito dos tipos de RAID e suas principais características, julgue os itens que se seguem.\n\n109 RAID 0, também conhecido como disk striping, requer no mínimo dois discos rígidos: se um disco falhar, os demais garantem o acesso e a recuperação dos dados.",
+      "alternativas": [
+        "C) CERTO",
+        "E) ERRADO"
+      ],
+      "gabarito": "E) ERRADO",
+      "gabarito_publicado_pela_fonte": false,
+      "justificativa": "O RAID 0 distribui (striping) os dados entre dois ou mais discos sem nenhuma redundância, de modo que a falha de qualquer disco destrói parte irrecoverável do conjunto. Só a primeira parte do item é verdadeira (mínimo de dois discos); a promessa de recuperação dos dados é falsa, o que torna o item ERRADO.",
+      "fonte": {
+        "titulo": "Caderno de Provas - Concurso Perito Criminal Federal, DGP/PF, aplicação 2018 (CESPE/CEBRASPE) - item 109",
+        "instituicao": "CESPE/CEBRASPE - concurso Perito Criminal Federal (DGP/PF), 2018",
+        "tipo": "Questão de concurso público (banco de questões online)",
+        "url": "https://apcf.org.br/wp-content/uploads/2022/02/perito_criminal_federal_area_3_informatica.pdf",
+        "data_acesso": "2026-09-26"
+      },
+      "consulta_livro": "RAID 0 striping redundancia discos"
+    },
+    {
+      "id": "so_d08",
+      "tema": "Redes e interconexão - camada de enlace (LLC e MAC)",
+      "enunciado": "35 O protocolo para uso da Ethernet, definido pelo conjunto de padrões IEEE 802.3, divide a camada de Enlace do modelo OSI, no mínimo, nos seguintes elementos:",
+      "alternativas": [
+        "(A) Cliente MAC e CSMA MAC.",
+        "(B) Cliente ADSL e Mensageiro assíncrono.",
+        "(C) Controle de Enlace Lógico e Mensageiro Assíncrono.",
+        "(D) Controle de Enlace Lógico e Controle de Acesso ao Meio.",
+        "(E) Controle de Acesso ao Meio e CSMA MAC."
+      ],
+      "gabarito": "(D)",
+      "gabarito_publicado_pela_fonte": false,
+      "justificativa": "A norma IEEE 802 particiona a camada de enlace em duas subcamadas: LLC (Logical Link Control, IEEE 802.2) e MAC (Medium Access Control, IEEE 802.3 na Ethernet). Assim, LLC + MAC corresponde à alternativa (D); as demais citam elementos que não são subcamadas da camada de enlace (ADSL, SONET, \"mensageiro assíncrono\" etc.).",
+      "fonte": {
+        "titulo": "Boletim de Questões - Concurso Público UFPA, Edital nº 72/2015 - Analista de Tecnologia da Informação (Nível E), Área: Suporte de Redes (questão 35)",
+        "instituicao": "Universidade Federal do Pará (UFPA)",
+        "tipo": "Questão de concurso público (banco de questões online)",
+        "url": "https://ceps.ufpa.br/legado/arquivos/concurso_publico/ufpa2015/Provas/Nivel%20E/PROVA%20DE%20ANALISTA%20DE%20TECNOLOGIA%20DA%20INFORMACAO%20-%20Area-SUPORTE%20DE%20REDES%20-%20Nivel%20E.pdf",
+        "data_acesso": "2026-09-26"
+      },
+      "consulta_livro": "camada de enlace LLC MAC IEEE 802.3"
+    },
+    {
+      "id": "so_d09",
+      "tema": "Redes e interconexão - roteamento (roteador e métrica RIP)",
+      "enunciado": "31 O Routing Information Protocol (RIP) é um protocolo utilizado no roteamento de pacotes. Sobre o RIP, é correto afirmar:",
+      "alternativas": [
+        "(A) Tem como base somente algoritmos de roteamento hierárquico, para otimizar o tempo de roteamento.",
+        "(B) Permite contar, no mínimo, 15 (quinze) saltos de roteamento, para construção da tabela de roteamento.",
+        "(C) Utiliza por padrão o protocolo TCP.",
+        "(D) Não há versões do RIP para IPv6.",
+        "(E) Utiliza como métrica de roteamento o número de roteadores entre uma origem e um destino."
+      ],
+      "gabarito": "(E)",
+      "gabarito_publicado_pela_fonte": false,
+      "justificativa": "A métrica do RIP é a contagem de saltos (hop count), isto é, o número de roteadores entre origem e destino, com limite de 15 saltos (16 = rede inacessível), o que torna (E) verdadeira e (B) falsa por trocar \"máximo\" por \"mínimo\". O RIP trafega sobre UDP (porta 520), não TCP, e existe a versão RIPng para IPv6, invalidando (C) e (D); também não se restringe a roteamento hierárquico, como afirma (A).",
+      "fonte": {
+        "titulo": "Boletim de Questões - Concurso Público UFPA, Edital nº 72/2015 - Analista de Tecnologia da Informação (Nível E), Área: Suporte de Redes (questão 31)",
+        "instituicao": "Universidade Federal do Pará (UFPA)",
+        "tipo": "Questão de concurso público (banco de questões online)",
+        "url": "https://ceps.ufpa.br/legado/arquivos/concurso_publico/ufpa2015/Provas/Nivel%20E/PROVA%20DE%20ANALISTA%20DE%20TECNOLOGIA%20DA%20INFORMACAO%20-%20Area-SUPORTE%20DE%20REDES%20-%20Nivel%20E.pdf",
+        "data_acesso": "2026-09-26"
+      },
+      "consulta_livro": "roteamento RIP metrica saltos roteador tabela"
+    },
+    {
+      "id": "so_d10",
+      "tema": "Sistemas de arquivos - NTFS/ext4, journaling e diretórios",
+      "enunciado": "QUESTÃO 48 - Os sistemas operacionais Windows e Linux adotam sistemas de arquivos com arquiteturas distintas, cada um com mecanismos próprios de controle de integridade, permissões e journaling. Com base nas características dos sistemas de arquivos NTFS e ext4, assinale a alternativa CORRETA.",
+      "alternativas": [
+        "a) O sistema de arquivos ext4, utilizado por padrão em distribuições Linux, não suporta journaling, recorrendo ao utilitário fsck como único mecanismo de recuperação após falhas de energia ou desligamento abrupto.",
+        "b) O NTFS utiliza uma estrutura denominada MFT (Master File Table), na qual cada arquivo ou diretório do volume possui ao menos uma entrada descrevendo seus atributos e a localização de seus dados no disco.",
+        "c) No Linux, as permissões de acesso a arquivos no ext4 são gerenciadas exclusivamente por meio de ACLs (Access Control Lists), não sendo suportado o modelo tradicional de permissões por proprietário, grupo e outros.",
+        "d) O comando chkdsk no Windows e o comando tune2fs no Linux são funcionalmente equivalentes, realizando verificação e reparo de inconsistências no sistema de arquivos.",
+        "e) O ext4 utiliza unidades de alocação chamadas clusters, cuja configuração de tamanho é realizada durante a formatação por meio do comando format no terminal Linux."
+      ],
+      "gabarito": "b)",
+      "gabarito_publicado_pela_fonte": false,
+      "justificativa": "O NTFS indexa todo o volume na MFT (Master File Table), na qual cada arquivo ou diretório possui ao menos uma entrada com seus atributos e a localização dos dados - é a alternativa b, correta. O ext4 tem journaling nativo (a falsa), mantém o modelo tradicional de permissões dono/grupo/outros além de ACLs (c falsa), chkdsk e tune2fs têm funções distintas (d falsa) e o ext4 usa blocos, formatando-se com mkfs.ext4 (e falsa).",
+      "fonte": {
+        "titulo": "Boletim de Prova - Concurso Público UNIFAP, Edital nº 01/2026 - Técnico de Laboratório (Ciências da Computação), questão 48",
+        "instituicao": "Universidade Federal do Amapá (UNIFAP)",
+        "tipo": "Questão de concurso público (banco de questões online)",
+        "url": "https://arquivos.qconcursos.com/prova/arquivo_prova/155128/depsec-2026-unifap-tecnico-de-laboratorio-ciencias-da-computacao-prova.pdf",
+        "data_acesso": "2026-09-26"
+      },
+      "consulta_livro": "NTFS ext4 MFT journaling diretórios"
+    },
+    {
+      "id": "so_d11",
+      "tema": "Sistemas de arquivos - i-nodes, blocos indiretos e tamanho máximo de arquivo",
+      "enunciado": "19) Imagine um sistema de arquivos Unix sobre um disco de 160 Gigabytes, com blocos de 1K. Suponha que sejam usados 8 bytes para descrever o endereço de cada bloco.\n\na. Explique qual seria a dimensão máxima de um arquivo neste sistema considerando que o i-node possui 10 entradas diretas de endereços para blocos, 1 entrada indireta simples (para um bloco de ponteiros), 1 entrada indireta dupla (para um bloco de ponteiros para blocos de ponteiros), e 1 entrada indireta tripla (para um bloco de ponteiros para blocos de ponteiros para blocos de ponteiros).",
+      "alternativas": [],
+      "gabarito": "Aproximadamente 2.113.674 blocos de 1 KB ≈ 2.164.402.176 bytes ≈ 2,16 GB (2,02 GiB), decomposição: 10 blocos diretos (10 KB) + 128 blocos (indireta simples, 128 KB) + 16.384 blocos (indireta dupla, 16 MB) + 2.097.152 blocos (indireta tripla, 2 GB).",
+      "gabarito_publicado_pela_fonte": false,
+      "justificativa": "Cada bloco de 1 KB comporta 1024/8 = 128 ponteiros de 8 bytes. Somando as quatro entradas do i-node: diretos 10 blocos; indireta simples 128; indireta dupla 128² = 16.384; indireta tripla 128³ = 2.097.152, totalizando 2.113.674 blocos de 1 KB, ou seja, 10 KB + 128 KB + 16 MB + 2 GB ≈ 2,16 GB - valor bem inferior aos 160 GB do disco, por isso o limite é o i-node, não a capacidade do volume.",
+      "fonte": {
+        "titulo": "INF09344/INF02780 - Sistemas Operacionais - 3ª Lista de Exercícios (questão 19, alínea a)",
+        "instituicao": "Universidade Federal do Espírito Santo (UFES)",
+        "tipo": "Prova/lista de disciplina universitária",
+        "url": "https://www.inf.ufes.br/~zegonc/material/Sistemas_Operacionais/so-lista3.pdf",
+        "data_acesso": "2026-09-26"
+      },
+      "consulta_livro": "inode blocos indiretos tamanho maximo arquivo"
+    },
+    {
+      "id": "so_d12",
+      "tema": "Sistemas de arquivos - arquivos e blocos em disco",
+      "enunciado": "I. Quanto à forma de armazenamento nas unidades de disco, os arquivos são mantidos como:",
+      "alternativas": [
+        "1) Uma sequência de blocos na memória principal.",
+        "2) Uma sequência de blocos na memória secundária.",
+        "3) Uma sequência de blocos gerada pela CPU.",
+        "4) Uma sequência de blocos gerada pelo gerente de memória."
+      ],
+      "gabarito": "2) Uma sequência de blocos na memória secundária.",
+      "gabarito_publicado_pela_fonte": true,
+      "justificativa": "O sistema de arquivos divide a unidade de armazenamento secundário em blocos e grava o arquivo como uma sequência de blocos (nem sempre contíguos) nesse dispositivo - alternativa 2. A memória principal apenas guarda cópias temporárias em buffers/cache, e nem CPU nem gerente de memória \"geram\" esses blocos; o gabarito comentado publicado pela fonte também aponta a alternativa 2.",
+      "fonte": {
+        "titulo": "Avaliação MP2 - Sistemas Operacionais - Gabarito Comentado (questão I) - Turma 2008.1, curso TADS",
+        "instituicao": "Universidade do Tocantins (UNITINS)",
+        "tipo": "Prova/lista de disciplina universitária",
+        "url": "https://www.unitins.br/BibliotecaMidia/Files/Documento/BM_633586197231398750tads___sistemas_operacionais___gabarito_comentado_a4_a5_a6_a7___2008.2.pdf",
+        "data_acesso": "2026-09-26"
+      },
+      "consulta_livro": "arquivos blocos memoria secundaria sistemas de arquivos"
+    }
+  ]
+}

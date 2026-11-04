@@ -1,0 +1,8 @@
+backend/questions
+backend/static/images/topics
+backend/static/whiteboards/topics
+backend/data/users
+*.pyc
+__pycache__
+.git
+.env

@@ -1,0 +1,1397 @@
+\makeatletter
+\newcommand{\seqcod}[1]{\@tfor\@codseq:=#1\do{\@codseq\allowbreak}}
+\makeatother
+
+\chapter{DOCUMENTO DE REQUISITOS, REGRAS DE NEGÓCIO E DECISÕES DE PROJETO}
+\label{ap:requisitos}
+
+Este apêndice apresenta o documento de requisitos do ExercitaAI, versão 1.0 (outubro de 2026), elaborado por Yago Melo da Costa. Além de formalizar requisitos funcionais e não funcionais, o documento registra o racional por trás de cada escolha do sistema: por que cada funcionalidade funciona da forma como funciona, por que tais regras de negócio foram adotadas, por que tais decisões de arquitetura e tecnologia foram tomadas e como cada uma delas foi validada. Cada item traz uma referência bibliográfica quando o suporte é teórico e, quando não há, é assinalado honestamente como justificativa de engenharia.
+
+\section{Propósito, escopo e como citar}
+\label{ap:req-proposito}
+
+\subsection{Propósito}
+
+Este documento formaliza os requisitos do ExercitaAI e o racional de cada escolha. O documento se destina a \textbf{qualquer trabalho que tenha por objetivo analisar o projeto} --- acadêmico, técnico ou de manutenção ---, fornecendo a base formal para entender, avaliar ou contestar as escolhas do sistema sem recorrer à leitura do código-fonte.
+
+\subsection{Escopo do documento}
+\label{ap:req-escopo}
+
+Inclui requisitos funcionais e não funcionais, histórias de usuário, regras de negócio, decisões de arquitetura e tecnologia, rastreabilidade e evidências de validação, considerando o sistema como um todo: \emph{frontend} (SPA React), \emph{backend} (Flask) e serviço de IA (FastAPI).
+
+\subsection{Fora de escopo deste documento}
+\label{ap:req-fora-escopo}
+
+A Tabela~\ref{tab:req-onde-documentado} indica onde cada assunto correlato está documentado, de modo que este documento não duplique material já existente.
+
+\begin{table}[H]
+\centering
+\setlength{\tabcolsep}{3pt}
+\caption{Assuntos fora do escopo do documento de requisitos e onde estão documentados}
+\label{tab:req-onde-documentado}
+\begin{tabularx}{\textwidth}{|L{4.6cm}|Y|}
+\hline
+\textbf{Assunto} & \textbf{Onde está documentado} \\
+\hline
+Instalação, variáveis de ambiente e execução & \texttt{\seqcod{README.md}} (Guia de Execução) \\
+\hline
+Protocolo, \emph{benchmark} e resultados dos experimentos & TCC --- capítulos~\ref{cap:metodologia} a~\ref{cap:resultados} (protocolo em \ref{sec:metodologia-avaliacao-llm}; resultados em \ref{cap:resultados}) \\
+\hline
+Relatório de testes automatizados com gráficos & \texttt{\seqcod{README.md}} (Relatório de Testes) \\
+\hline
+Conteúdo teórico das técnicas de estudo & TCC --- Seção~\ref{subsec:fundamentacao_referencias} \\
+\hline
+Imagens da interface em execução & TCC --- Apêndice C \\
+\hline
+\end{tabularx}
+\fonteilustracao{Elaborado pelo autor (2026).}
+\end{table}
+
+\subsection{Convenções de identificação}
+\label{ap:req-convenicoes}
+
+A Tabela~\ref{tab:req-convenicoes} define os prefixos de identificação usados neste documento e o formato de cada tipo de item.
+
+\begin{table}[H]
+\centering
+\setlength{\tabcolsep}{3pt}
+\caption{Prefixos de identificação e formato dos itens do documento de requisitos}
+\label{tab:req-convenicoes}
+\begin{tabularx}{\textwidth}{|L{2.2cm}|L{3.4cm}|Y|}
+\hline
+\textbf{Prefixo} & \textbf{Significado} & \textbf{Formato do item} \\
+\hline
+\texttt{\seqcod{RF-nn}} & Requisito funcional & Finalidade, descrição, prioridade, histórico de origem, critérios de aceite, implementação, validação \\
+\hline
+\texttt{\seqcod{US-nn}} & História de usuário & ``Como\dots, quero\dots, para\dots'' + critérios de aceite + prioridade \\
+\hline
+\texttt{\seqcod{RN-nn}} & Regra de negócio & Enunciado, racional/motivação, referência, garantia no código, validação, consequência da violação \\
+\hline
+\texttt{\seqcod{RNF-nn}} & Requisito não funcional & Categoria ISO/IEC 25010, meta mensurável, evidência, referência \\
+\hline
+\texttt{\seqcod{AD-nn}} & Decisão de arquitetura/tecnologia & Contexto, decisão, alternativas, justificativa com referência, consequências \\
+\hline
+\end{tabularx}
+\fonteilustracao{Elaborado pelo autor (2026).}
+\end{table}
+
+Prioridades seguem o método MoSCoW --- \textbf{E}ssencial, \textbf{D}esejável, \textbf{C}onforto, \textbf{N}\~ao exigido nesta versão \cite{wiegers_beatty_2013}; o formato de histórias segue o acrônimo INVEST \cite{cohn_2004}. A taxonomia requisito funcional / requisito não funcional / regra de negócio segue a norma ISO/IEC/IEEE 29148:2018 \cite{iso_29148}.
+
+\subsection{Como citar}
+\label{ap:req-como-citar}
+
+No TCC, o documento é o \textbf{Apêndice D} (\texttt{\seqcod{ap:requisitos}}), inserido no ambiente de apêndices após o Apêndice C. Exemplos de referência interna: ``conforme formalizado no Apêndice D, Seção~\ref{ap:req-regras} (RN-04)''; tabelas do apêndice podem ser citadas pelo identificador, como ``(RN-05)'' ou ``(RF-07)''.
+
+A referência ABNT do material é:
+
+\begin{quote}
+\noindent\textbf{COSTA, Y. M.} \textbf{Documento de requisitos, regras de negócio e decisões de projeto do ExercitaAI.} 2026. Material de apoio ao Trabalho de Conclusão de Curso em Ciência da Computação, Universidade Estadual do Ceará, Fortaleza, 2026.
+\end{quote}
+
+Arquivos relacionados: \texttt{\seqcod{docs/apendice-requisitos.tex}} (versão LaTeX do mesmo conteúdo) e \texttt{\seqcod{docs/resumo-requisitos-apresentacao.md}} (resumo de uma página). Para citações em outros trabalhos, usar a referência ABNT acima (por exemplo: ``a correção de respostas segue o formato de gabarito descrito em COSTA, 2026'') e os identificadores RF, RN e RNF das Seções~\ref{ap:req-funcionais}, \ref{ap:req-regras} e \ref{ap:req-naofuncionais}.
+
+\section{Visão geral e atores}
+\label{ap:req-atores}
+
+O ExercitaAI é uma plataforma de estudo que transforma material bruto (fotos, PDFs, textos) em resoluções, questões, flashcards e planos de estudo gerados por modelos de linguagem, com recuperação aumentada por geração (RAG) sobre o material do próprio usuário e busca integrada de literatura científica.
+
+A arquitetura em três componentes (\emph{frontend}, \emph{backend} e serviço de IA) e suas integrações estão descritas na Seção~\ref{sec:componentes} do TCC e ilustradas na Figura~\ref{fig:architecture}, que este documento referencia e não duplica.
+
+A Tabela~\ref{tab:req-atores} lista os atores do sistema.
+
+\begin{table}[H]
+\centering
+\setlength{\tabcolsep}{3pt}
+\caption{Atores do sistema}
+\label{tab:req-atores}
+\begin{tabularx}{\textwidth}{|L{3.2cm}|Y|L{3.6cm}|}
+\hline
+\textbf{Ator} & \textbf{Descrição} & \textbf{Autenticação} \\
+\hline
+Visitante & Página pública de divulgação e formulário; não acessa conteúdo & Não \\
+\hline
+Estudante & Usuário autenticado; cria tópicos, envia material, gera conteúdo e estuda & Sim (sessão) \\
+\hline
+Sistema de IA (Ollama e provedores) & Executa geração, extração e avaliação; ator não humano & Chaves segregadas \\
+\hline
+Integrações acadêmicas & Crossref, arXiv, PubMed e Semantic Scholar (busca de artigos) & Não (APIs públicas) \\
+\hline
+Suíte de testes & Executa verificações de ponta a ponta na conta de teste & Sim (conta de teste) \\
+\hline
+\end{tabularx}
+\fonteilustracao{Elaborado pelo autor (2026).}
+\end{table}
+
+\section{Partes interessadas e personas}
+\label{ap:req-personas}
+
+A Tabela~\ref{tab:req-personas} relaciona as personas consideradas no desenho da plataforma, suas necessidades centrais e os requisitos que as atendem.
+
+\begin{table}[H]
+\centering
+\setlength{\tabcolsep}{3pt}
+\caption{Partes interessadas, personas e necessidades}
+\label{tab:req-personas}
+\begin{tabularx}{\textwidth}{|L{3.4cm}|L{3.6cm}|Y|L{2.6cm}|}
+\hline
+\textbf{Persona} & \textbf{Perfil} & \textbf{Necessidade central} & \textbf{Requisitos} \\
+\hline
+\textbf{Estudante autodirigido} & Acadêmico que estuda sozinho, com material disperso (fotos de apostilas, PDFs, artigos) & Transformar material em estudo acionável sem perder tempo organizando & RF-02 a RF-12, RF-17 \\
+\hline
+\textbf{Estudante com pouco material} & Estuda um tópico com poucos recursos disponíveis & Saber que o material é insuficiente e como enriquecê-lo, em vez de receber conteúdo genérico & RF-14, RF-20, RN-02, RN-03 \\
+\hline
+\textbf{Orientador/\allowbreak pesquisador} & Avalia a plataforma (avaliação por LLM \emph{judge} e questionário de usabilidade) & Evidências de qualidade e método verificável & RNF-08, Seção~\ref{ap:req-validacao} \\
+\hline
+\textbf{Mantenedor do projeto} & Desenvolvedor que evolui o sistema & Decisões documentadas, código modular e testes reexecutáveis & AD-01 a AD-13, RNF-11 \\
+\hline
+\end{tabularx}
+\fonteilustracao{Elaborado pelo autor (2026).}
+\end{table}
+
+\section{Glossário}
+\label{ap:req-glossario}
+
+A Tabela~\ref{tab:req-glossario} define os termos empregados neste documento.
+
+\begin{table}[H]
+\centering
+\setlength{\tabcolsep}{3pt}
+\caption{Glossário do documento de requisitos}
+\label{tab:req-glossario}
+\begin{tabularx}{\textwidth}{|L{3.6cm}|Y|}
+\hline
+\textbf{Termo} & \textbf{Definição} \\
+\hline
+Tópico & Unidade organizadora do material de um usuário (imagens, questões, notas, sessões) \\
+\hline
+Questão & Registro com enunciado, resposta/gabarito e explicação; pode ser objetiva, verdadeiro/falso ou aberta \\
+\hline
+Flashcard & Cartão pergunta--resposta exibido com a resposta oculta até revelação deliberada \\
+\hline
+Quadro branco & Superfície de desenho e anotação com caixas de texto por questão, exportável como imagem \\
+\hline
+Sessão de estudo & Registro histórico de respostas do usuário em uma questão, com data e aproveitamento \\
+\hline
+Estratégia de estudo & Plano recomendado pela IA a partir do tempo de dedicação e do material do tópico \\
+\hline
+RAG & \emph{Retrieval-Augmented Generation} --- geração com contexto recuperado de base vetorial \\
+\hline
+Chunk & Fragmento de texto indexado para recuperação vetorial \\
+\hline
+Embedding & Representação vetorial de texto (aqui, \texttt{\seqcod{intfloat/multilingual-e5-base}}) \\
+\hline
+Limiar de similaridade & Valor mínimo de similaridade coseno para um trecho ser admitido no contexto \\
+\hline
+Juiz (LLM-as-a-Judge) & Modelo que avalia respostas geradas em critérios objetivos (precisão, completude, clareza, raciocínio) \\
+\hline
+Braço COM/SEM RAG & Condições experimentais de geração com e sem contexto recuperado \\
+\hline
+Provedor & Fonte de modelos (Ollama, OpenAI, Groq, Google Gemini, OpenRouter, DeepSeek, Anthropic, NVIDIA) \\
+\hline
+Tarefa assíncrona & Processamento longo executado em segundo plano, acompanhado por \emph{polling} \\
+\hline
+Instruções de personalização & Texto livre do usuário que direciona gerações e sugestões \\
+\hline
+\end{tabularx}
+\fonteilustracao{Elaborado pelo autor (2026).}
+\end{table}
+
+\section{Requisitos funcionais}
+\label{ap:req-funcionais}
+
+Esta seção apresenta os 20 requisitos funcionais do sistema. Para cada um: prioridade (MoSCoW), histórico de origem, finalidade, descrição, critérios de aceite, implementação, validação e referência quando houver suporte teórico.
+
+\subsection{RF-01 --- Contas, sessão e segurança de acesso}
+
+\textbf{Prioridade:} Essencial \quad \textbf{Histórias:} US-01, US-02 \quad \textbf{Finalidade:} Permitir que o usuário tenha conta própria, com dados segregados e recuperação segura.
+
+\textbf{Descrição.} Cadastro, login e logout por sessão (\emph{cookie} de Flask-Login), recuperação de senha por token de uso único e gestão de chaves de API por usuário.
+
+\textbf{Critérios de aceite.}
+\begin{itemize}
+    \item Senha armazenada exclusivamente como \emph{hash} (Werkzeug); nunca em texto puro.
+    \item Token de redefinição: SHA-256 armazenado, validade de 30 minutos, uso único.
+    \item Limitação de taxa por IP: 5 tentativas de login em 15 minutos, 5 cadastros por hora, 5 redefinições por hora e \emph{cooldown} de 60 segundos para o mesmo e-mail.
+    \item Chaves de API segregadas por usuário e provedor; ocultáveis na interface.
+\end{itemize}
+
+\textbf{Implementação.} \path{backend/auth.py}; \path{backend/services/rate_limit.py}; \path{backend/models/user_model.py}; rotas \texttt{\seqcod{/register}}, \texttt{\seqcod{/login}}, \texttt{\seqcod{/logout}}, \texttt{\seqcod{/current\_user}}, \texttt{\seqcod{/forgot\_password}}, \texttt{\seqcod{/reset\_password}} e \texttt{\seqcod{/update\_keys}}; páginas \texttt{\seqcod{Login}}, \texttt{\seqcod{Register}}, \texttt{\seqcod{ForgotPassword}} e \texttt{\seqcod{ResetPassword}} em \path{frontend/src/pages/}.
+
+\textbf{Validação.} Login da conta de teste exercitado pela suíte de integração (\texttt{\seqcod{README.md}}, Seções~1 a~3); limitação de taxa sem cobertura automatizada (ver Seção~\ref{ap:req-sem-cobertura}).
+
+\textbf{Referência.} \cite{owasp_asvs_2021} para verificação de autenticação e controle de força bruta; \cite{iso_25010} (segurança).
+
+\subsection{RF-02 --- Gestão de tópicos}
+
+\textbf{Prioridade:} Essencial \quad \textbf{Histórias:} US-03 \quad \textbf{Finalidade:} Organizar o material por assunto.
+
+\textbf{Descrição.} O usuário cria, lista, abre, renomeia e exclui tópicos; a exclusão remove conteúdo e vetores associados.
+
+\textbf{Critérios de aceite.}
+\begin{itemize}
+    \item Criação com nome sanitizado (\texttt{[\textasciicircum{}\textbackslash{}w\textbackslash{}-\_]} $\rightarrow$ \texttt{\seqcod{\_}}) apenas na criação/renomeação; rotas aceitam nomes crus na URL.
+    \item Renomear atualiza URL, nome exibido e limpa/reescreve os vetores do tópico (\texttt{\seqcod{rename\_topic\_vectors}}).
+    \item Excluir remove tópico, as pastas de imagens, quadros, questões e material de apoio, arquivos legados e vetores (\texttt{\seqcod{remove\_topic\_vectors}}); tarefa em execução não recria o tópico excluído.
+    \item Erros de renomeação (nome repetido, nome vazio) aparecem no próprio modal e somem ao reabrir.
+    \item Tópico sem conteúdo apresenta, junto da orientação de material, as ferramentas de estudo (gerar questões, flashcards, estratégia de estudo e pesquisar artigos), cada uma com atalho direto.
+    \item Nome genérico (ex.: \texttt{novo}) avisa na criação e o aluno pode pedir uma sugestão de nome mais específica pela IA, a partir do nome digitado ou apenas de uma descrição opcional do foco; a sugestão preenche o campo de nome automaticamente (refazível alterando a descrição), a área abre e fecha por um único controle e tópicos com nomes simples abrem normalmente.
+\end{itemize}
+
+\textbf{Implementação.} \path{backend/controllers/topic_controller.py}; \path{backend/controllers/api_controller.py}; \path{backend/models/topic_model.py}; \path{llm_api/prompts/suggest_topic_name.md}; \path{frontend/src/pages/TopicView.js}, \path{frontend/src/pages/TopicsList.js} e \path{frontend/src/components/NewTopicModal.js}; rotas \texttt{\seqcod{/api/topics}}, \texttt{\seqcod{/api/topics/suggest-name}}, \texttt{\seqcod{/topic/<nome>}}, \texttt{\seqcod{/topic/<antigo>/rename}} e \texttt{\seqcod{/topic/<nome>/delete}}.
+
+\textbf{Validação.} Relatório de testes: \texttt{\seqcod{GET/POST /api/topics}} e \texttt{\seqcod{GET /api/topics/TesteTemp}} OK ($\leq$ 0,010 s); suíte de interface: 10 verificações de renomeação (abrir \emph{popup}, pré-preencher, renomear, erro de nome repetido e limpeza de erro).
+
+\subsection{RF-03 --- Ingestão de material do tópico}
+
+\textbf{Prioridade:} Essencial \quad \textbf{Histórias:} US-04, US-15 \quad \textbf{Finalidade:} Digitalizar e indexar o material do usuário.
+
+\textbf{Descrição.} Envio de imagens (PNG/JPG/JPEG) e PDFs por tópico, com processamento assíncrono, pré-visualização, colagem de área de transferência e exclusão por arquivo.
+
+\textbf{Critérios de aceite.}
+\begin{itemize}
+    \item Até 50 arquivos por envio; pré-visualização antes do envio; envio não bloqueia a interface.
+    \item O envio cria a tarefa \texttt{\seqcod{upload\_images}}, visível no indicador de tarefas com rótulo próprio.
+    \item Ao excluir arquivo, vetores e imagens derivadas são removidos.
+    \item Textos de apoio (\texttt{\seqcod{upload\_rag}}) seguem o mesmo fluxo e alimentam a indexação vetorial.
+    \item As duas funcionalidades têm listas separadas: ``Adicionar arquivos'' lista apenas as imagens e PDFs enviados por ela; ``Adicionar material de apoio'' lista apenas o material indexado, com opção de excluí-lo.
+    \item Um botão de interrogação ao lado do bloco ``Material'' explica, em um modal curto, a diferença entre as duas funcionalidades.
+    \item O visualizador do tópico filtra a navegação por arquivo de origem (cada PDF vira um grupo com suas páginas) e por questões geradas; com filtro ativo, contador e setas percorrem só o grupo escolhido, e o filtro não aparece quando não há o que separar.
+\end{itemize}
+
+\textbf{Implementação.} \path{backend/controllers/upload_controller.py}; \path{frontend/src/components/UploadFilesModal.js}, \path{UploadRAGModal.js}, \path{Sidebar.js} e \path{ImageViewer.js}, \path{frontend/src/pages/TopicView.js}; rotas \texttt{\seqcod{/topic/<nome>/upload}}, \texttt{\seqcod{/upload\_rag}}, \texttt{\seqcod{/topic/<nome>/files}}, \texttt{\seqcod{/topic/<nome>/material\_files}} e \texttt{\seqcod{/topic/<nome>/delete\_image/<arquivo>}}.
+
+\textbf{Validação.} Suíte de interface: modal abre com texto esperado, 2 imagens no pré-visualização, modal fecha após envio, indicador de tarefas aparece, tarefa concluída e tópico atualizado com as imagens; suíte de material: listas separadas por funcionalidade e modal de ajuda; relatório de testes: rotas de \emph{upload} de imagem, PDF e RAG OK.
+
+\subsection{RF-04 --- Extração de conteúdo (OCR e transcrição)}
+
+\textbf{Prioridade:} Essencial \quad \textbf{Histórias:} US-05 \quad \textbf{Finalidade:} Disponibilizar o texto das imagens e PDFs enviados.
+
+\textbf{Descrição.} Extração do texto por OCR local (Tesseract, línguas \texttt{\seqcod{por}} e \texttt{\seqcod{eng}}) com reserva para serviço externo, e transcrição por modelo de visão.
+
+\textbf{Critérios de aceite.}
+\begin{itemize}
+    \item PDFs extraídos com correção de ordem de colunas e descarte de capas/índices.
+    \item Análise de página única e de documento completo funcionam como tarefas assíncronas.
+    \item Texto extraído é normalizado (remoção de controles e \emph{backslashes} de LaTeX) antes de persistir.
+\end{itemize}
+
+\textbf{Implementação.} Serviços em \path{backend/services/} (\texttt{\seqcod{ocr\_service}}, \texttt{\seqcod{image\_service}}, \texttt{\seqcod{analise\_utils}} e \texttt{\seqcod{json\_modelo}}); rotas \texttt{\seqcod{/analyze\_with\_image}} e \texttt{\seqcod{/analyze\_full\_document}}; componentes \texttt{\seqcod{OCRInfoModal.js}} e \texttt{\seqcod{VisionInfoModal.js}}.
+
+\textbf{Validação.} Relatório de testes: \texttt{\seqcod{POST /analyze\_with\_image}} OK (24,684 s com geração); qualidade da resolução extraída avaliada pelo LLM \emph{judge} (ver Seção~\ref{ap:req-juiz-qualidade}).
+
+\textbf{Referência.} \cite{smith_2007} (motor Tesseract).
+
+\subsection{RF-05 --- Resolução e registro de questões}
+
+\textbf{Prioridade:} Essencial \quad \textbf{Histórias:} US-05, US-06 \quad \textbf{Finalidade:} Disponibilizar resolução completa para cada questão extraída.
+
+\textbf{Descrição.} Para cada questão extraída, a IA gera a resolução (passo a passo e explicação), que o usuário confere, edita e salva; respostas dadas em sessão também são persistidas.
+
+\textbf{Critérios de aceite.}
+\begin{itemize}
+    \item Resolução gerada com ou sem contexto RAG, conforme disponibilidade do material.
+    \item Respostas de sessão são salvas por questão e consultáveis no histórico.
+    \item Conteúdo gerado passa por camadas de reparo de LaTeX antes de persistir e renderizar.
+\end{itemize}
+
+\textbf{Implementação.} \path{backend/controllers/question_controller.py} (rotas \texttt{\seqcod{/save}} e \texttt{\seqcod{/save\_answers}}); \path{backend/services/resposta_utils.py}; \path{llm_api/main.py} (rotas \texttt{\seqcod{/generate}} e \texttt{\seqcod{/verify\_response}}).
+
+\textbf{Validação.} Relatório de testes: \texttt{\seqcod{POST /save\_answers}} OK (0,037 s); notas do LLM \emph{judge} para clareza das resoluções (Seção~\ref{ap:req-juiz-qualidade}).
+
+\subsection{RF-06 --- Edição e complementação manual de questões}
+
+\textbf{Prioridade:} Essencial \quad \textbf{Histórias:} US-06 \quad \textbf{Finalidade:} Manter o material sob controle do usuário.
+
+\textbf{Descrição.} Editor completo de questões (enunciado, resposta, explicação) em Markdown, criação manual de questões (inclusive a partir de texto colado) e exclusão.
+
+\textbf{Critérios de aceite.}
+\begin{itemize}
+    \item Edição pré-visualiza Markdown; salvar regrava somente os campos alterados.
+    \item ``Enriquecer questão'' gera melhoria via tarefa \texttt{\seqcod{enhance\_question}}, sem alterar sem confirmação.
+    \item Adição de questões de texto cria um registro por questão (navegação por índice), com marcador de origem para as que vêm do gerador — é ele que alimenta o filtro do visualizador.
+    \item Texto de questão pode ser baixado individualmente.
+\end{itemize}
+
+\textbf{Implementação.} \path{backend/controllers/question_controller.py} (rotas \texttt{\seqcod{/add\_question}}, \texttt{\seqcod{/add\_text\_question(s)}}, \texttt{\seqcod{/delete\_question}} e tarefa \texttt{\seqcod{enhance\_question}}); \path{frontend/src/components/QuestionEditor.js} e \path{EditableMarkdown.js}.
+
+\textbf{Validação.} Suíte de interface utiliza a injeção de questões de texto como cenário das verificações da aba Responder (RF-07).
+
+\subsection{RF-07 --- Aba Responder e correção automática}
+
+\textbf{Prioridade:} Essencial \quad \textbf{Histórias:} US-07, US-08 \quad \textbf{Finalidade:} Praticar com correção imediata.
+
+\textbf{Descrição.} Aba de prática com seleção da questão, exibição do enunciado, resposta pelo formato adequado ao tipo e conferência imediata com veredito, gabarito e explicação.
+
+\textbf{Critérios de aceite.}
+\begin{itemize}
+    \item \textbf{Objetiva} ($\geq$ 2 alternativas \texttt{\seqcod{A)}} a \texttt{\seqcod{F)}} no enunciado): as alternativas saem do enunciado e viram rádios; o enunciado não as repete.
+    \item \textbf{Verdadeiro/Falso sem alternativas no enunciado}: rádios \texttt{\seqcod{A) Verdadeiro}} e \texttt{\seqcod{B) Falso}}, independentemente do campo \texttt{\seqcod{tipo}} declarar \texttt{\seqcod{vf}}.
+    \item \textbf{Aberta}: campo de texto livre.
+    \item Gabarito oculto antes de conferir; ``Conferir'' desabilitado sem resposta; a conferência compara por letra (\texttt{\seqcod{B)}}, \texttt{\seqcod{B}}, \texttt{\seqcod{b}}, \texttt{\seqcod{B.}}) e, na ausência de letra, textualmente normalizada (remove o prefixo \texttt{\seqcod{X)}}); gabarito vazio $\rightarrow$ sem veredito.
+    \item Após conferir: ``Você acertou!'' ou aviso de não confere + gabarito + explicação; ``Tentar de novo'' reoculta o gabarito.
+    \item Questão aberta: a resposta escrita é avaliada pela IA contra o gabarito, com julgamento por sentido (outra redação, resumo ou exemplos a mais não invalidam a resposta) e apresentação de um parecer; texto sem sentido ou resposta em branco é dado como incorreto.
+    \item Gabarito de ``Verdadeiro'' ou ``Falso'' é tratado como questão de duas alternativas mesmo quando o tipo gravado é ``aberta''; gabarito prefixado por ``Resposta final:'' é lido pelo valor da resposta, e não pelo prefixo.
+    \item Área de rolagem própria; quebras de linha do enunciado preservadas.
+    \item A aba ``Responder'' é a aba padrão do Conteúdo da resolução: ao abrir o tópico ou trocar de imagem, o usuário já cai nela.
+\end{itemize}
+
+\textbf{Implementação.} \path{frontend/src/components/ResponderQuestao.js} e \path{frontend/src/utils/questoes.js}; \path{backend/controllers/question_controller.py} (rota \texttt{\seqcod{/evaluate\_answer}}) e \path{backend/services/resposta_utils.py}; \path{llm_api/main.py} (rota \texttt{\seqcod{/evaluate\_answer}}); estilos \texttt{\seqcod{.responder-*}} em \path{frontend/src/App.css}.
+
+\textbf{Validação.} Suíte de interface: 13 verificações (rádios objetivos, enunciado sem duplicidade, rolagem, gabarito oculto, conferir desabilitado, erro/acierto, gabarito letra simples, verdadeiro/falso com e sem alternativas, botão desabilitado, gabarito textual \texttt{\seqcod{Falso}} e aberta em \textit{textarea}) e suíte de avaliação: 6 verificações (aba \texttt{\seqcod{Responder}} ativa, gabarito verdadeiro/falso vira alternativa, questão aberta mantém campo de texto, resposta avaliada pela IA como correta e parecer exibido).
+
+\textbf{Referência.} \cite{alshahrani_2025_qg} (tipagem de questões); \cite{roediger_karpicke_2006} (correção imediata e recuperação ativa).
+
+\subsection{RF-08 --- Anotações por questão e insight}
+
+\textbf{Prioridade:} Desejável \quad \textbf{Histórias:} US-09 \quad \textbf{Finalidade:} Fixar observações no contexto certo.
+
+\textbf{Descrição.} O usuário escreve anotações por questão (persistidas por questão) e pode pedir um \emph{insight} gerado pela IA sobre o conteúdo da anotação/resolução.
+
+\textbf{Critérios de aceite.}
+\begin{itemize}
+    \item Anotações listadas, criadas, atualizadas e excluídas por questão.
+    \item \emph{Insight} gerado pela tarefa \texttt{\seqcod{analyze\_image\_insight}} e exibido sem sobrescrever a nota.
+\end{itemize}
+
+\textbf{Implementação.} \path{backend/controllers/note_controller.py} (\texttt{\seqcod{list\_notes}}, \texttt{\seqcod{add\_note}}, \texttt{\seqcod{update\_note}}, \texttt{\seqcod{delete\_note}}); \path{frontend/src/components/AnnotationEditor.js}; rota \texttt{\seqcod{/save\_example}}; tarefa \texttt{\seqcod{analyze\_image\_insight}}.
+
+\textbf{Validação.} Sem cobertura automatizada específica (Seção~\ref{ap:req-sem-cobertura}); fluxo exercitado manualmente.
+
+\subsection{RF-09 --- Quadro branco por questão}
+
+\textbf{Prioridade:} Desejável \quad \textbf{Histórias:} US-10 \quad \textbf{Finalidade:} Representar visualmente a solução.
+
+\textbf{Descrição.} Área de desenho livre com seletor de ferramentas (Selecionar, Pincel e Borracha), caixas de texto, formas geométricas e setas livres, acoplada a cada questão, com persistência e exportação como imagem.
+
+\textbf{Critérios de aceite.}
+\begin{itemize}
+    \item Seletor de ferramentas explícito: Selecionar (padrão) move e seleciona itens, Pincel desenha traços e Borracha apaga; as cores escolhidas valem para traços, textos, formas e setas.
+    \item Elementos do quadro (traços, caixas, formas, setas e imagens coladas) persistidos localmente por questão: reabertos editáveis e re-renderizados no tema claro/escuro vigente, sem reassentar a aparência antiga.
+    \item Caixas de texto digitáveis, arrastáveis e redimensionáveis em largura e altura; o texto digitado parte do tamanho indicado pelo controle ``Texto'', o redimensionamento ajusta a fonte proporcionalmente (para mais e para menos) e a altura nunca fica menor que o conteúdo; o duplo clique reabre a edição.
+    \item O que foi desenhado no quadro não muda ao entrar ou sair da tela cheia: caixas, formas, setas e tamanho da letra permanecem exatamente iguais, e o canvas apenas passa a mostrar mais área.
+    \item Formas geométricas planas básicas (círculo, quadrado, retângulo e triângulo) criadas por clique, arrastáveis e redimensionáveis; nas formas com texto, o texto permanece centralizado e contido dentro da forma mesmo após ampliá-la.
+    \item O corpo do texto independe do modo de exibição: entrar ou sair da tela cheia não altera o tamanho da letra.
+    \item Setas como figuras livres: escolhidas em ``Formas'', traçadas com o mouse no sentido e ângulo desejados, selecionadas, movidas e com as pontas ajustadas; Delete remove o item selecionado.
+    \item Download de um quadro ou de todos os quadros do tópico pelo modal dedicado.
+\end{itemize}
+
+\textbf{Implementação.} \path{frontend/src/components/Whiteboard.js} e \path{EmptyDownloadModal.js}; \path{backend/controllers/download_controller.py}; rotas \texttt{\seqcod{/save\_whiteboard}}, \texttt{\seqcod{/whiteboard\_image}}, \texttt{\seqcod{/download\_whiteboards}} e \texttt{\seqcod{/topic/.../download\_question\_whiteboard}}.
+
+\textbf{Validação.} Relatório de testes: \texttt{\seqcod{POST /save\_whiteboard}} OK (0,013 s); exportação sem teste automatizado dedicado.
+
+\subsection{RF-10 --- Geração de questões com IA}
+
+\textbf{Prioridade:} Essencial \quad \textbf{Histórias:} US-11, US-18 \quad \textbf{Relacionados:} RN-02, RN-03, RN-15.
+
+\textbf{Descrição.} Modal de geração com tipos (objetiva, aberta, verdadeiro/falso), quantidade, instruções personalizadas e sugestões de \emph{prompt}; resultados exibidos em lista editável antes de inserir no tópico.
+
+\textbf{Critérios de aceite.}
+\begin{itemize}
+    \item Dica estática antes do envio orienta sobre material de apoio.
+    \item Sugestões de \emph{prompt} aparecem apenas no campo acionado (RN-13).
+    \item O resultado carrega o metadado \texttt{\seqcod{contexto}} (\texttt{\seqcod{chars}}, \texttt{\seqcod{com\_rag}}, \texttt{\seqcod{insuficiente}}, \texttt{\seqcod{instrucoes}}) para orientar o usuário.
+    \item Com material insuficiente, exibe aviso e sugestões de busca personalizadas (RF-20).
+\end{itemize}
+
+\textbf{Implementação.} \path{frontend/src/components/QuestionGeneratorModal.js} e \path{GeneratedQuestionsView.js}; \path{backend/controllers/task_controller.py} (\texttt{\seqcod{\_worker\_generate\_questions}}); rota \texttt{\seqcod{/generate\_questions}}; prompt \path{llm_api/prompts/generate_questions.md}.
+
+\textbf{Validação.} Relatório: \texttt{\seqcod{POST /generate\_questions}} OK (4,904 s); \emph{judge}: 7,0 (com RAG); suíte de interface: dica de material no gerador.
+
+\subsection{RF-11 --- Flashcards}
+
+\textbf{Prioridade:} Essencial \quad \textbf{Histórias:} US-12 \quad \textbf{Relacionados:} RN-02, RN-10.
+
+\textbf{Descrição.} Geração de cartões a partir de assunto/instruções, exibição com resposta oculta até a revelação deliberada e persistência das sessões para revisitação.
+
+\textbf{Critérios de aceite.}
+\begin{itemize}
+    \item A resposta só é exibida após ação explícita do usuário (recuperação ativa).
+    \item Sessão salva com carimbo de tempo, instruções e metadado de contexto.
+    \item Aviso de pouco material com sugestões de busca personalizadas (RF-20).
+\end{itemize}
+
+\textbf{Implementação.} \path{frontend/src/components/FlashcardGeneratorModal.js} e \path{FlashcardsViewer.js}; \texttt{\seqcod{\_worker\_generate\_flashcards}}; rota \texttt{\seqcod{/generate\_flashcards}}.
+
+\textbf{Validação.} Relatório: \texttt{\seqcod{POST /generate\_flashcards}} OK (36,109 s); \emph{judge}: 8,4 (com RAG) --- maior nota entre as funcionalidades de geração.
+
+\subsection{RF-12 --- Estratégia de estudo}
+
+\textbf{Prioridade:} Essencial \quad \textbf{Histórias:} US-13 \quad \textbf{Relacionados:} RN-10, RN-02.
+
+\textbf{Descrição.} Recomendação de plano de estudo a partir do tempo de dedicação, instruções personalizadas e conteúdo do tópico, com técnicas devidamente referenciadas e histórico de recomendações.
+
+\textbf{Critérios de aceite.}
+\begin{itemize}
+    \item Plano fundamentado no compêndio de técnicas com referência científica (Seção~\ref{ap:req-pedagogico}).
+    \item Termos sugeridos para busca já vêm como consultas prontas para o navegador.
+    \item Histórico de estratégias revisitável sem nova geração.
+    \item Aviso de pouco material com sugestões personalizadas (RF-20).
+\end{itemize}
+
+\textbf{Implementação.} \path{frontend/src/components/StudyStrategyModal.js}; \texttt{\seqcod{\_worker\_study\_strategy}}; rotas \texttt{\seqcod{POST/GET /topic/<nome>/study\_strategy}}; prompt \texttt{\seqcod{recommend\_study\_strategy}}.
+
+\textbf{Validação.} Relatório: \texttt{\seqcod{POST /topic/.../study\_strategy}} OK (10,682 s) e \texttt{\seqcod{GET}} (0,005 s); \emph{judge}: 8,2 (com RAG).
+
+\subsection{RF-13 --- Busca de artigos científicos}
+
+\textbf{Prioridade:} Desejável \quad \textbf{Histórias:} US-14 \quad \textbf{Relacionados:} RN-03, RN-13.
+
+\textbf{Descrição.} Busca em quatro bases acadêmicas (Crossref, arXiv, PubMed e Semantic Scholar) com refino, sugestões automáticas do que pesquisar e leitura do resultado.
+
+\textbf{Critérios de aceite.}
+\begin{itemize}
+    \item Sugestões de busca aparecem automaticamente em toda abertura do modal, rotuladas ``Sugestões do que pesquisar'', considerando o foco do usuário quando houver (RN-03).
+    \item Estado inicial orienta o que digitar; estado vazio explica como refinar.
+    \item Clique em sugestão de outras telas abre a consulta no navegador do usuário (nova aba).
+\end{itemize}
+
+\textbf{Implementação.} \path{backend/controllers/article_controller.py} (Crossref/arXiv/PubMed/Semantic Scholar); \path{frontend/src/components/ArticleSearchModal.js}; tarefa \texttt{\seqcod{search\_articles}}; prompt \texttt{\seqcod{suggest\_search\_articles}}.
+
+\textbf{Validação.} Relatório: \texttt{\seqcod{POST /search\_articles}} OK (3,919 s); \emph{judge}: 7,6 (condição única); suíte de interface: estado inicial e sugestões automáticas.
+
+\subsection{RF-14 --- Recuperação e enriquecimento de contexto (RAG)}
+
+\textbf{Prioridade:} Essencial \quad \textbf{Histórias:} US-15 \quad \textbf{Relacionados:} RN-01, RN-06, RN-07, RN-08.
+
+\textbf{Descrição.} Indexação do material em base vetorial (\texttt{\seqcod{documents}}, \texttt{\seqcod{examples}}, \texttt{\seqcod{corrections}}) com recuperação filtrada por tópico e usuário, uso nas gerações e limpeza quando o conteúdo sai do sistema.
+
+\textbf{Critérios de aceite.}
+\begin{itemize}
+    \item Embeddings com prefixos obrigatórios \texttt{\seqcod{query:}}/\texttt{\seqcod{passage:}} (RN-07).
+    \item Recuperação com limiar de similaridade e filtro de auto-correspondência (RN-06).
+    \item A indexação pula \emph{chunks} idênticos já existentes (reuso); exclusão/renomeação de tópico sincroniza os vetores (RN-08).
+    \item Isolamento por \texttt{\seqcod{user\_id}} em \texttt{\seqcod{documents}} e \texttt{\seqcod{examples}}; a coleção \texttt{\seqcod{questions}} é compartilhada por desenho (RN-01).
+    \item Índice de remoção por tópico/arquivo disponível para a suíte de testes.
+\end{itemize}
+
+\textbf{Implementação.} \path{llm_api/rag.py}, \path{embeddings.py} e \path{data_loader.py}; \path{llm_api/main.py} (rotas \texttt{\seqcod{/retrieve\_context}}, \texttt{\seqcod{/retrieve\_examples}}, \texttt{\seqcod{/index\_documents}}, \texttt{\seqcod{/remove\_topic\_vectors}}, \texttt{\seqcod{/rename\_topic\_vectors}}); \path{backend/services/rag_client.py}.
+
+\textbf{Validação.} Experimento controlado COM vs SEM RAG (Seção~\ref{ap:req-impacto-rag}); relatório: \texttt{\seqcod{POST llm\_api/index}} OK.
+
+\subsection{RF-15 --- Catálogo de modelos e provedores}
+
+\textbf{Prioridade:} Desejável \quad \textbf{Histórias:} US-02, US-16 \quad \textbf{Relacionados:} RN-11.
+
+\textbf{Descrição.} Catálogo dinâmico de modelos (Ollama + seis provedores externos), com listas obtidas das próprias APIs, filtros de modelo livre e seleção por usuário.
+
+\textbf{Critérios de aceite.}
+\begin{itemize}
+    \item \texttt{\seqcod{/models}} só oferece provedor com chave disponível (usuário ou ambiente).
+    \item Nomes Ollama ocultos para usuário sem chave Ollama; \texttt{\seqcod{provedor/id}} no seletor.
+    \item Listas de permitidos por provedor (\texttt{\seqcod{<PROV>\_MODELS}}): vazio $\rightarrow$ padrão do registro; \texttt{\seqcod{*}} $\rightarrow$ tudo.
+    \item Padrões de geração sensíveis ao usuário: usuário só de provedor não recebe modelo Ollama padrão.
+\end{itemize}
+
+\textbf{Implementação.} \path{llm_api/provedores.py} e \path{model_info.py}; \path{backend/controllers/api_controller.py} (rotas \texttt{\seqcod{/api/models}}, \texttt{\seqcod{/provedores}}), \path{auth.py} (rota \texttt{\seqcod{/update\_keys}}); \path{frontend/src/components/ConfigModal.js}.
+
+\textbf{Validação.} Relatório: \texttt{\seqcod{GET /api/models}} e \texttt{\seqcod{GET llm\_api/models}} OK (0,003 s e 0,002 s).
+
+\subsection{RF-16 --- Tarefas assíncronas e acompanhamento}
+
+\textbf{Prioridade:} Essencial \quad \textbf{Histórias:} US-16.
+
+\textbf{Descrição.} Trabalhos longos rodam como tarefas com progresso, mensagem e resultado; a interface acompanha por \emph{polling} e permite reabrir resultados concluídos.
+
+\textbf{Critérios de aceite.}
+\begin{itemize}
+    \item Início, progresso, conclusão e erro visíveis no indicador de tarefas (rótulo por tipo).
+    \item Cliques repetidos na mesma funcionalidade não duplicam a execução: a tarefa em andamento é reaproveitada (mesmo identificador) e o indicador mostra uma única entrada; a proteção vale no servidor, por chave de negócio da tarefa, e no botão, que fica bloqueado enquanto houver execução do mesmo tipo.
+    \item Trabalho genuinamente diferente (outro documento, outra página, outra consulta) segue em paralelo.
+    \item A seta de progresso gira centrada no indicador, tanto na bola quanto ao lado do rótulo de processamento.
+    \item A lista de execução fica aberta por padrão enquanto houver tarefa em andamento, e o usuário pode ocultá-la quando quiser.
+    \item Resultado concluído pode ser reaberto (``Ver resultado'') \textbf{apenas} quando pertence ao tópico aberto (filtro por \texttt{\seqcod{params.topic}}/\texttt{\seqcod{topic\_name}}).
+    \item Falha de tarefa não derruba a interface.
+\end{itemize}
+
+\textbf{Implementação.} \path{backend/services/task_manager.py} (\texttt{\seqcod{create\_task}} com \texttt{\seqcod{dedup\_key}}); \path{backend/controllers/task_controller.py} (\texttt{\seqcod{\_chave\_dedup}} e rotas \texttt{\seqcod{/tasks}}, \texttt{\seqcod{/tasks/start}}, \texttt{\seqcod{/tasks/<id>}}), \path{controllers/upload_controller.py}; \path{frontend/src/contexts/TaskContext.js} (\texttt{\seqcod{isRunning}}) e \path{components/TaskIndicator.js}; \path{ImageViewer.js}, \path{QuestionGeneratorModal.js}, \path{FlashcardGeneratorModal.js}, \path{StudyStrategyModal.js}, \path{AnnotationEditor.js}, \path{QuestionEditor.js}; \path{App.css} (\texttt{\seqcod{.task-fab-spinner}}, \texttt{\seqcod{.girando-processando}}).
+
+\textbf{Validação.} Suíte de interface: indicador aparece, tarefa concluída e rótulo correto; filtro de tópico verificado por sonda (tela nova abre sem modal de geração antiga sobreposta); suíte de tarefas: cliques repetidos reaproveitam a mesma execução, o painel lista uma única entrada, o botão fica bloqueado e a seta gira centrada.
+
+\subsection{RF-17 --- Sessões de estudo e histórico}
+
+\textbf{Prioridade:} Desejável \quad \textbf{Histórias:} US-17.
+
+\textbf{Descrição.} Registro histórico de respostas por questão, listagem e exclusão de sessões e reabertura de estratégias anteriores.
+
+\textbf{Critérios de aceite.}
+\begin{itemize}
+    \item Sessão salva com data, questão, respostas e resultado.
+    \item Histórico navegável por tópico; sessões antigas podem ser removidas.
+    \item Anotações ficam salvas por questão entre sessões.
+    \item Em ``Editar respostas'', além da resposta do usuário, é possível editar a resposta (gabarito) e a resolução (explicação) depois de abrir ``Ver explicação''.
+    \item Quando a questão já está no tópico, um aviso informa isso e, ao salvar, a resposta e a resolução editadas são aplicadas também na questão do tópico, mantendo histórico e tópico iguais.
+\end{itemize}
+
+\textbf{Implementação.} \path{backend/controllers/topic_controller.py} (rotas \texttt{\seqcod{/topic/<nome>/sessions}} e \texttt{\seqcod{/save}}); tabela \texttt{\seqcod{study\_session}} (\path{backend/models/topic_tables.py}); \path{frontend/src/components/SessionsViewer.js} e \path{GeneratedQuestionsView.js}.
+
+\textbf{Validação.} Relatório: \texttt{\seqcod{GET /topic/.../sessions}} OK (0,005 s).
+
+\subsection{RF-18 --- Exportação e downloads}
+
+\textbf{Prioridade:} Conforto \quad \textbf{Histórias:} US-17.
+
+\textbf{Descrição.} Exportação de imagens, quadros brancos, resoluções em texto e status de processamento, sempre por modal dedicado (RN-13).
+
+\textbf{Critérios de aceite.}
+\begin{itemize}
+    \item Download individual ou em lote por tópico.
+    \item Downloads de imagens e quadros \textbf{somente} via \texttt{\seqcod{EmptyDownloadModal}}.
+    \item Baixar resoluções em texto para uso externo.
+\end{itemize}
+
+\textbf{Implementação.} \path{backend/controllers/download_controller.py}; rotas \texttt{\seqcod{/download\_all\_images}}, \texttt{\seqcod{/download\_image}}, \texttt{\seqcod{/download\_whiteboards}}, \texttt{\seqcod{/download\_text\_resolutions}} e \texttt{\seqcod{/download\_status}}; \path{frontend/src/components/EmptyDownloadModal.js}.
+
+\textbf{Validação.} Sem teste automatizado dedicado (Seção~\ref{ap:req-sem-cobertura}); fluxo exercitado manualmente.
+
+\subsection{RF-19 --- Configurações e tema}
+
+\textbf{Prioridade:} Conforto \quad \textbf{Histórias:} US-18.
+
+\textbf{Descrição.} Modal de configurações com chaves por provedor, modelo padrão, seção de provedores e informações auxiliares; tema claro/escuro persistido localmente.
+
+\textbf{Critérios de aceite.}
+\begin{itemize}
+    \item Chaves cadastradas/ocultáveis; listagem de provedores sem expor segredos.
+    \item Tema alternável e persistido; sem dependência de servidor para o tema.
+\end{itemize}
+
+\textbf{Implementação.} \path{frontend/src/components/ConfigModal.js}; estilos \texttt{\seqcod{body.dark-mode}} em \path{frontend/src/App.css}; rotas \texttt{\seqcod{/update\_keys}} e \texttt{\seqcod{/provedores}}.
+
+\textbf{Validação.} Sem teste automatizado dedicado (Seção~\ref{ap:req-sem-cobertura}).
+
+\subsection{RF-20 --- Transparência de contexto e orientação com pouco material}
+
+\textbf{Prioridade:} Essencial \quad \textbf{Histórias:} US-11, US-12, US-13 \quad \textbf{Relacionados:} RN-02, RN-03.
+
+\textbf{Descrição.} Quando o material recuperado é insuficiente, o sistema informa isso de forma explícita e orienta o próximo passo, em vez de entregar conteúdo genérico sem aviso.
+
+\textbf{Critérios de aceite.}
+\begin{itemize}
+    \item Metadado \texttt{\seqcod{contexto}} (\texttt{\seqcod{chars}}, \texttt{\seqcod{com\_rag}}, \texttt{\seqcod{insuficiente}} abaixo de 3000 caracteres, \texttt{\seqcod{instrucoes}}) presente nas tarefas de questões, flashcards e estratégia.
+    \item Aviso em caixa destacada nos três resultados, com as ações ``Adicionar material de apoio'' e ``Pesquisar artigos''.
+    \item Chips ``Sugestões do que pesquisar'' exibidos dentro do próprio aviso, buscadas automaticamente.
+    \item Clicar numa sugestão abre a busca no navegador padrão (nova aba), não outro modal.
+    \item As sugestões consideram o foco do usuário (instruções de personalização) além do tópico e do RAG.
+    \item Sessões antigas sem metadado não exibem o aviso (sem falsos positivos).
+\end{itemize}
+
+\textbf{Implementação.} \path{backend/controllers/task_controller.py} (metadado nas três tarefas); \path{backend/controllers/question_controller.py} (\texttt{\seqcod{\_contexto\_sugestoes}} com foco rotulado); \path{llm_api/prompts/suggest_search_articles.md}; componentes \texttt{\seqcod{SugestoesContexto}}, \texttt{\seqcod{GeneratedQuestionsView}}, \texttt{\seqcod{FlashcardsViewer}}, \texttt{\seqcod{StudyStrategyModal}} e \texttt{\seqcod{ArticleSearchModal}} em \path{frontend/src/components/}.
+
+\textbf{Validação.} Suíte de interface: dica de material e sugestões automáticas na busca; teste de API: \texttt{\seqcod{/suggest\_prompts}} com \texttt{\seqcod{instrucoes}} de foco em correlação retornou sugestões específicas (``\texttt{\seqcod{"Pearson correlation" AND "Spearman correlation"}}\dots'') em vez de termos genéricos.
+
+\subsection{RF-21 --- Ajuda embutida de uso}
+
+\textbf{Prioridade:} Conforto \quad \textbf{Histórias:} US-03.
+
+\textbf{Descrição.} A marca ``Exercita AI'' na barra superior da lista de tópicos abre um modal de documentação breve, organizado por funcionalidade, para o usuário entender o app sem sair dele.
+
+\textbf{Critérios de aceite.}
+\begin{itemize}
+    \item Clicar na marca (ou teclar Enter/Espaço com ela focada) abre o modal ``Como usar o Exercita AI''.
+    \item O conteúdo cobre material do tópico, ferramentas de estudo, verificação de resposta, quadro branco, sessões, tarefas e histórico, em linguagem direta e sem jargão.
+    \item O modal fecha pelo botão de fechar, pelo fundo e pela tecla Escape, como os demais modais.
+\end{itemize}
+
+\textbf{Implementação.} \path{frontend/src/components/HelpModal.js}; \path{frontend/src/pages/TopicsList.js} (marca clicável).
+
+\textbf{Validação.} Suíte de interface: marca abre a ajuda com as seções principais e a tecla Escape fecha.
+
+\section{Histórias de usuário}
+\label{ap:req-historias}
+
+O formato segue \cite{cohn_2004}; as prioridades seguem MoSCoW \cite{wiegers_beatty_2013}; as histórias observam o acrônimo INVEST (independente, negociável, valiosa, estimável, pequena, testável). A Tabela~\ref{tab:req-historias} lista as 18 histórias, seus requisitos e critérios de aceite resumidos.
+
+\begin{table}[H]
+\centering
+\setlength{\tabcolsep}{2.5pt}
+\caption{Histórias de usuário do ExercitaAI}
+\label{tab:req-historias}
+\begin{tabularx}{\textwidth}{|C|Y|L{1.5cm}|C|Y|}
+\hline
+\textbf{ID} & \textbf{História} & \textbf{RF} & \textbf{Prioridade} & \textbf{Critérios de aceite (resumo)} \\
+\hline
+US-01 & Como estudante, quero criar conta e entrar, para ter meu material separado dos outros & RF-01 & Essencial & Cadastro valida e-mail/senha; login estabelece sessão; senha nunca armazenada em claro; logout encerra a sessão \\
+\hline
+US-02 & Como usuário, quero recuperar minha senha e cadastrar chaves de API, para retomar o acesso sem depender de suporte & RF-01, RF-15 & Essencial & Token de redefinição válido por 30 min e uso único; chaves segregadas e ocultáveis; limite de tentativas respeitado \\
+\hline
+US-03 & Como estudante, quero organizar meus tópicos (criar, renomear, excluir), para agrupar o material por assunto & RF-02 & Essencial & Renomear muda URL e limpa vetores; excluir remove conteúdo e vetores; erro de nome repetido aparece no modal e some ao reabrir \\
+\hline
+US-04 & Como estudante, quero enviar fotos e PDFs de uma vez, para ter meu material digitalizado e indexado & RF-03 & Essencial & Pré-visualização antes do envio; envio assíncrono com indicador; tópico atualizado ao concluir; exclusão remove vetores do arquivo \\
+\hline
+US-05 & Como estudante, quero que a plataforma leia e resolva as questões das minhas imagens, para não transcrever à mão & RF-04, RF-05 & Essencial & Texto extraído com OCR/transcrição; resolução com passo a passo e explicação; resultado editável antes de salvar \\
+\hline
+\end{tabularx}
+\end{table}
+
+\begin{table}[H]
+\centering
+\setlength{\tabcolsep}{2.5pt}
+\caption*{Tabela \thetable\ -- Histórias de usuário do ExercitaAI (continuação)}
+\begin{tabularx}{\textwidth}{|C|Y|L{1.5cm}|C|Y|}
+\hline
+\textbf{ID} & \textbf{História} & \textbf{RF} & \textbf{Prioridade} & \textbf{Critérios de aceite (resumo)} \\
+\hline
+US-06 & Como estudante, quero corrigir e acrescentar questões manualmente, para o material refletir o que sei que importa & RF-05, RF-06 & Essencial & Edição em Markdown com pré-visualização; criação manual/texto; enriquecimento opcional por IA; exclusão com confirmação \\
+\hline
+US-07 & Como estudante, quero responder questões objetivas com uma bolinha e conferir na hora, para praticar com correção imediata & RF-07 & Essencial & Rádios para objetivas; gabarito oculto; veredito e explicação após conferir; tentar de novo reoculta \\
+\hline
+US-08 & Como estudante, quero questões de verdadeiro/falso e discursivas na mesma aba, para praticar em diferentes formatos & RF-07 & Essencial & V/F com rádios Verdadeiro/Falso mesmo sem alternativas no enunciado; aberta em texto livre; mesmo fluxo de conferência \\
+\hline
+US-09 & Como estudante, quero anotar por questão e pedir um insight, para fixar observações no contexto certo & RF-08 & Desejável & Notas persistem por questão; insight gerado sem sobrescrever a nota \\
+\hline
+US-10 & Como estudante, quero desenhar e anotar num quadro branco por questão, para representar visualmente a solução & RF-09 & Desejável & Desenho e caixas de texto salvos e recarregados; exportação individual e em lote pelo modal dedicado \\
+\hline
+\end{tabularx}
+\end{table}
+
+\begin{table}[H]
+\centering
+\setlength{\tabcolsep}{2.5pt}
+\caption*{Tabela \thetable\ -- Histórias de usuário do ExercitaAI (continuação)}
+\begin{tabularx}{\textwidth}{|C|Y|L{1.5cm}|C|Y|}
+\hline
+\textbf{ID} & \textbf{História} & \textbf{RF} & \textbf{Prioridade} & \textbf{Critérios de aceite (resumo)} \\
+\hline
+US-11 & Como estudante, quero gerar um conjunto de questões sob medida (tipo, quantidade, instruções), para treinar exatamente o que preciso & RF-10, RF-20 & Essencial & Sugestões só no campo acionado; dica antes do envio; aviso + sugestões personalizadas quando o material é curto \\
+\hline
+US-12 & Como estudante, quero criar flashcards e revisar com a resposta oculta, para ativar a recuperação ativa & RF-11, RF-20 & Essencial & Resposta só revela por ação explícita; sessão salva; aviso de pouco material com sugestões \\
+\hline
+US-13 & Como estudante, quero receber um plano de estudo com base no meu tempo, para organizar a rotina & RF-12, RF-20 & Essencial & Plano fundamentado em técnicas referenciadas; histórico revisitável; termos de busca prontos \\
+\hline
+US-14 & Como estudante, quero pesquisar artigos em quatro bases dentro da plataforma, para não abrir várias abas & RF-13 & Desejável & Sugestões automáticas a cada abertura; estado inicial/vazio orienta; resultados navegáveis \\
+\hline
+US-15 & Como estudante, quero adicionar textos de apoio para melhorar o que a IA gera para mim & RF-14 & Essencial & Indexação com prefixos corretos; recuperação com limiar; limpeza ao excluir; isolamento por usuário \\
+\hline
+\end{tabularx}
+\end{table}
+
+\begin{table}[H]
+\centering
+\setlength{\tabcolsep}{2.5pt}
+\caption*{Tabela \thetable\ -- Histórias de usuário do ExercitaAI (continuação)}
+\begin{tabularx}{\textwidth}{|C|Y|L{1.5cm}|C|Y|}
+\hline
+\textbf{ID} & \textbf{História} & \textbf{RF} & \textbf{Prioridade} & \textbf{Critérios de aceite (resumo)} \\
+\hline
+US-16 & Como usuário, quero escolher modelo/provedor e ver o progresso das tarefas, para controlar custo e espera & RF-15, RF-16 & Essencial & Catálogo só com provedores com chave; progresso visível; resultado reaberto só do tópico atual \\
+\hline
+US-17 & Como estudante, quero revisitar sessões e exportar meu conteúdo, para revisar e arquivar meu progresso & RF-17, RF-18 & Desejável & Histórico navegável; downloads pelo modal dedicado; resoluções em texto \\
+\hline
+US-18 & Como usuário, quero alternar tema e ver informações do modelo, para usar com conforto e transparência & RF-19 & Conforto & Tema persistido localmente; modelo e provedores visíveis nas configurações \\
+\hline
+\end{tabularx}
+\fonteilustracao{Elaborado pelo autor (2026).}
+\end{table}
+
+\section{Regras de negócio}
+\label{ap:req-regras}
+
+Cada regra traz enunciado, racional (motivação), referência, como o sistema a garante e como é validada. Regras sem suporte bibliográfico direto são assinaladas como \emph{justificativa de engenharia}.
+
+\subsection{RN-01 --- Isolamento de dados por usuário}
+
+\textbf{Enunciado.} Conteúdo (tópicos, questões, anotações, sessões) e vetores pertencem exclusivamente ao usuário dono; a coleção \texttt{\seqcod{questions}} é um corpus compartilhado deliberadamente.
+
+\textbf{Racional.} A plataforma manipula material de estudo pessoal e credenciais; a segregação é pré-requisito de privacidade. O compartilhamento da coleção \texttt{\seqcod{questions}} existe porque perguntas e padrões de correção não expõem conteúdo pessoal e seu reuso melhora a consistência do módulo de questões --- decisão consciente, limitada a metadados anônimos.
+
+\textbf{Referência.} \cite{iso_25010} (fator segurança: confidencialidade); \cite{owasp_asvs_2021} (controle de acesso).
+
+\textbf{Garantia no código.} Chaves estrangeiras \texttt{\seqcod{user.id}} com \texttt{\seqcod{ON DELETE CASCADE}} em \path{backend/models/topic_tables.py}; filtro opcional \texttt{\seqcod{user\_id}} em toda rota de recuperação (\texttt{\seqcod{/retrieve\_context}}, \texttt{\seqcod{/retrieve\_examples}}, \texttt{\seqcod{/generate}}) e em \texttt{\seqcod{documents}}/\texttt{\seqcod{examples}}; \texttt{\seqcod{questions}} sem filtro de usuário.
+
+\textbf{Validação.} Verificação estática (código) --- sem teste automatizado dedicado (Seção~\ref{ap:req-sem-cobertura}).
+
+\textbf{Consequência da violação.} Exposição de material entre usuários.
+
+\subsection{RN-02 --- Aviso obrigatório quando o material é insuficiente}
+
+\textbf{Enunciado.} Se o contexto usado numa geração ficar abaixo de 3000 caracteres, o resultado deve informar o usuário e orientar como enriquecer o material.
+
+\textbf{Racional.} Gerar sem avisar entrega conteúdo genérico que parece completo; o aviso transforma uma limitação em orientação acionável e evita que o usuário confie em saída montada sem base.
+
+\textbf{Referência.} \cite{zhou_2024_mitigating} (mitigação de alucinações em LLMs); \cite{kluibenschadl_2024_rag} (RAG educacional); \cite{kirschner_sweller_clark_2006} (carga cognitiva extrínseca --- evitar sobrecarregar a decisão com conteúdo sem direção).
+
+\textbf{Garantia no código.} Metadado \texttt{\seqcod{contexto.insuficiente}} nos workers de questões, flashcards e estratégia (\path{backend/controllers/task\_controller.py}); avisos \texttt{\seqcod{contexto-aviso}} em \texttt{\seqcod{GeneratedQuestionsView}}, \texttt{\seqcod{FlashcardsViewer}} e \texttt{\seqcod{StudyStrategyModal}}.
+
+\textbf{Validação.} Suíte de interface: ``dica de material no gerador de questões''; ausência de falso positivo em sessões antigas (sem metadado).
+
+\textbf{Consequência da violação.} Usuário recebe conteúdo repetitivo sem entender por quê.
+
+\subsection{RN-03 --- Foco do usuário propagado às sugestões de busca}
+
+\textbf{Enunciado.} As instruções de personalização dadas na geração devem influenciar as sugestões do que pesquisar (no aviso e na busca de artigos), junto do tópico e do RAG.
+
+\textbf{Racional.} Sem o foco, sugestões genéricas conflitam com o que o usuário pediu e desperdiçam a atenção.
+
+\textbf{Referência.} \cite{kirschner_sweller_clark_2006} (reduzir carga extrínseca); \cite{lewis_2020} (RAG --- o contexto deve ser o mais aderente possível à intenção).
+
+\textbf{Garantia no código.} \texttt{\seqcod{instrucoes}} incluído no metadado \texttt{\seqcod{contexto}} das três tarefas; \texttt{\seqcod{SugestoesContexto}} e \texttt{\seqcod{ArticleSearchModal}} enviam \texttt{\seqcod{instrucoes}} no \emph{payload}; \texttt{\seqcod{\_contexto\_sugestoes}} insere a linha rotulada ``Foco pedido pelo usuario\dots'' \textbf{antes} do trecho de RAG (que é truncado); regra explícita em \path{llm_api/prompts/suggest_search_articles.md}.
+
+\textbf{Validação.} Teste de API: \texttt{\seqcod{/suggest\_prompts}} com foco em correlação gerou sugestões específicas de correlação.
+
+\textbf{Consequência da violação.} Sugestões irrelevantes e redundantes com as sugestões próprias da busca.
+
+\subsection{RN-04 --- Temperatura simétrica entre os braços COM e SEM RAG}
+
+\textbf{Enunciado.} \texttt{\seqcod{ANALYZE\_TEMPERATURE\_WITH\_RAG}} e \texttt{\seqcod{ANALYZE\_TEMPERATURE\_WITHOUT\_RAG}} devem ser iguais (ambas 0,0 em produção).
+
+\textbf{Racional.} Diferença de temperatura entre condições introduz confundimento: a diferença de qualidade passaria a ser atribuída ao RAG quando poderia vir da amostragem.
+
+\textbf{Referência.} \cite{shadish_cook_campbell_2002} (controle de variáveis confundidoras em desenhos experimentais).
+
+\textbf{Garantia no código.} Duas variáveis lidas em \path{llm_api/main.py} (linhas 76--77); valor de produção em \texttt{\seqcod{.env}} (ambas 0,0); regra documentada em \path{AGENTS.md}.
+
+\textbf{Validação.} Verificação estática do \texttt{\seqcod{.env}} e da suíte; atenção registrada: o \texttt{\seqcod{.env.example}} traz valores desiguais (0,3/0,0) e deve ser alinhado (ver Seção~\ref{ap:req-limitacoes}).
+
+\textbf{Consequência da violação.} Resultados do experimento COM vs SEM RAG invalidados.
+
+\subsection{RN-05 --- Juiz com mediana de três execuções, \emph{seeds} fixos e sem \emph{nonces}}
+
+\textbf{Enunciado.} A avaliação do LLM \emph{judge} usa mediana de \texttt{\seqcod{TEST\_JUDGE\_MEDIANA\_EXECUCOES}} (3) chamadas, temperatura 0, \emph{seeds} determinísticos distintos e \textbf{sem} \emph{nonces} no prompt.
+
+\textbf{Racional.} Avaliadores LLM são instáveis e enviesados; a mediana reduz variância e os \emph{nonces} fabricariam ``instabilidade'' que na verdade é ruído de prompt.
+
+\textbf{Referência.} \cite{zheng_2023} (LLM-as-a-Judge); \cite{wang_2023_not_fair} (viéses de juízes LLM).
+
+\textbf{Garantia no código.} \path{readme.py} (mediana, \emph{seeds} distintos); mesmo tratamento dos braços COM e SEM (sem viés direcional).
+
+\textbf{Validação.} Seção~\ref{sec:resultados-consistencia} do TCC e Tabela~\ref{tab:consistencia}.
+
+\textbf{Consequência da violação.} Notas infladas ou instáveis, comparabilidade perdida.
+
+\subsection{RN-06 --- Recuperação vetorial com limiar e filtro de auto-correspondência}
+
+\textbf{Enunciado.} Só trechos com similaridade $\geq$ ao limiar entram no contexto; trechos que são o próprio OCR da imagem analisada (auto-correspondência) são filtrados.
+
+\textbf{Racional.} Sem limiar, trechos fracos entram e degradam a resposta; sem o filtro de auto-\emph{match}, o próprio conteúdo da imagem duplica no prompt e piora completude (fenômeno documentado nas regressões do experimento).
+
+\textbf{Referência.} \cite{reimers_gurevych_2019} (similaridade de cosseno com embeddings); \cite{kluibenschadl_2024_rag}.
+
+\textbf{Garantia no código.} \texttt{\seqcod{RAG\_SIMILARITY\_THRESHOLD}} (0,60 de exemplo no \texttt{\seqcod{.env.example}}; 0,72 na execução do relatório) e \texttt{\seqcod{RAG\_N\_RESULTS}}; filtro \texttt{\seqcod{exclude\_source}} em \path{llm_api/rag.py}.
+
+\textbf{Validação.} Experimento de impacto do RAG (Seção~\ref{ap:req-impacto-rag}): 7 regressões associadas a auto-correspondência, com hipótese registrada.
+
+\textbf{Consequência da violação.} Respostas com contexto irrelevante ou duplicado.
+
+\subsection{RN-07 --- Prefixos obrigatórios \texttt{query:}/\texttt{passage:} nos embeddings}
+
+\textbf{Enunciado.} Consultas são embeddadas com prefixo \texttt{\seqcod{query:}} e documentos com \texttt{\seqcod{passage:}}.
+
+\textbf{Racional.} O modelo exige os prefixos; omiti-los distorce o espaço vetorial e reduz a qualidade da recuperação.
+
+\textbf{Referência.} \cite{reimers_gurevych_2019} (modelo e5); documentação do \texttt{\seqcod{intfloat/multilingual-e5-base}}.
+
+\textbf{Garantia no código.} \path{llm_api/embeddings.py} aplica os prefixos em todas as chamadas.
+
+\textbf{Validação.} Coberto indiretamente pelas fases da suíte de RAG (recuperação com \texttt{\seqcod{n\_raw}} mínimo exigido).
+
+\textbf{Consequência da violação.} Recuperação sistematicamente pior, com limiares ``corrigidos'' por cima.
+
+\subsection{RN-08 --- Sincronização vetorial e reuso de \emph{chunks} idênticos}
+
+\textbf{Enunciado.} Excluir/renomear tópico ou arquivo sincroniza os vetores; a indexação pula \emph{chunks} idênticos já existentes.
+
+\textbf{Racional.} Vetores órfãos contaminam a recuperação; reaproveitar \emph{chunks} idênticos evita \emph{tombstones} que degradam o índice HNSW.
+
+\textbf{Referência.} \cite{chromadb_2025} (comportamento de coleções e índice); justificativa de engenharia para o reuso.
+
+\textbf{Garantia no código.} \texttt{\seqcod{POST /remove\_topic\_vectors}} e \texttt{\seqcod{/rename\_topic\_vectors}} (\path{llm_api/main.py}); resposta de indexação com \texttt{\seqcod{reaproveitados}} e sonda de leitura \texttt{\seqcod{visivel}}; ganchos em \texttt{\seqcod{topic\_controller}} e \texttt{\seqcod{upload\_controller}}.
+
+\textbf{Validação.} Limpeza executada ao fim de cada execução da suíte de testes; sem cobertura automatizada dedicada de reuso (Seção~\ref{ap:req-sem-cobertura}).
+
+\textbf{Consequência da violação.} Respostas vazias ocasionais (degradação do índice) e vazamento de material excluído.
+
+\subsection{RN-09 --- Tipos de questão e regra de correção}
+
+\textbf{Enunciado.} Objetiva: rádios pelas alternativas \texttt{\seqcod{A)}} a \texttt{\seqcod{F)}} do enunciado; verdadeiro/falso: rádios \texttt{\seqcod{A) Verdadeiro}} e \texttt{\seqcod{B) Falso}} quando não houver alternativas; aberta: texto livre. Correção: letra do gabarito quando houver; senão comparação textual normalizada; gabarito vazio $\rightarrow$ sem veredito.
+
+\textbf{Racional.} O formato da resposta deve seguir o formato do enunciado, não o rótulo declarado (rótulos vêm de LLM e podem estar errados); comparar por letra tolera \texttt{\seqcod{B)}}, \texttt{\seqcod{B}}, \texttt{\seqcod{b}}, \texttt{\seqcod{B.}}; a normalização tolera texto com prefixo; gabarito vazio não pode virar ``errado'' falso.
+
+\textbf{Referência.} \cite{alshahrani_2025_qg} (geração e tipagem de questões); \cite{roediger_karpicke_2006} (correção imediata reforça a recuperação ativa).
+
+\textbf{Garantia no código.} \path{frontend/src/components/ResponderQuestao.js} (detecção por expressão regular de alternativas, independente do campo \texttt{\seqcod{tipo}}; mapeamento \texttt{\seqcod{v/f/verdadeiro/falso}}).
+
+\textbf{Validação.} Suíte de interface: 13 verificações da aba Responder (inclui gabarito letra simples, verdadeiro/falso com e sem alternativas e aberta em \textit{textarea}).
+
+\textbf{Consequência da violação.} Questão impossível de responder ou veredito falso-negativo.
+
+\subsection{RN-10 --- Estratégia de estudo só com técnicas referenciadas}
+
+\textbf{Enunciado.} O módulo de estratégia só recomenda técnicas do compêndio com base empírica mapeado no TCC.
+
+\textbf{Racional.} Recomendação sem lastro científico é opinião; o compêndio garante reprodutibilidade e defesa acadêmica.
+
+\textbf{Referência.} \citeonline{robinson_1941}; \citeonline{thomas_robinson_1972}; \citeonline{roediger_karpicke_2006}; \citeonline{cepeda_pashler_vul_wixted_rohrer_2006}; \citeonline{leitner_1972}; \citeonline{rohrer_2012}; \citeonline{zimmerman_2000}; \citeonline{bonwell_eison_1991} --- ver Tabela~\ref{tab:study_strategy_references} do TCC.
+
+\textbf{Garantia no código.} \path{llm_api/prompts/recommend_study_strategy.md}; \texttt{\seqcod{\_worker\_study\_strategy}}.
+
+\textbf{Validação.} \emph{Judge}: 8,2 (com RAG); fundamentação na Seção~\ref{subsec:fundamentacao_referencias} do TCC.
+
+\textbf{Consequência da violação.} Recomendações genéricas ou sem evidência.
+
+\subsection{RN-11 --- Chaves segregadas por usuário e provedor, com rodízio}
+
+\textbf{Enunciado.} Cada usuário usa suas próprias chaves por provedor; na ausência, cai para as chaves do ambiente; requisições percorrem as chaves em rodízio, com \emph{cooldown} em HTTP 429 e descarte temporário de chaves recusadas.
+
+\textbf{Racional.} Separação de credenciais evita contaminação entre usuários; rodízio com degradação controlada evita que um limite de cota derrube o serviço.
+
+\textbf{Referência.} \cite{owasp_asvs_2021} (gestão de credenciais); \cite{iso_25010} (segurança, confiabilidade).
+
+\textbf{Garantia no código.} \path{llm_api/provedores.py}, \texttt{\seqcod{MiddlewareChavesOllama}}; \path{llm_api/ollama_client.py} (escada de parâmetros, \emph{backoff}).
+
+\textbf{Validação.} Relatório: \texttt{\seqcod{GET /api/models}} OK; suíte com conta de teste autenticada.
+
+\textbf{Consequência da violação.} Vazamento de chaves ou indisponibilidade em cascata.
+
+\subsection{RN-12 --- Limitação de taxa nas rotas de autenticação}
+
+\textbf{Enunciado.} 5 tentativas de login em 15 minutos; 5 cadastros por hora; 5 redefinições por hora; \emph{cooldown} de 60 segundos para o mesmo e-mail.
+
+\textbf{Racional.} Controle de força bruta e evitamento de envio abusivo de e-mails.
+
+\textbf{Referência.} \cite{owasp_asvs_2021} (anti automação/força bruta).
+
+\textbf{Garantia no código.} \path{backend/services/rate_limit.py} (janela deslizante por chave) usado em \path{backend/auth.py}; limites configuráveis em \path{backend/config.py}.
+
+\textbf{Validação.} Sem cobertura automatizada (Seção~\ref{ap:req-sem-cobertura}).
+
+\textbf{Consequência da violação.} Tentativa de força bruta ou inundação de e-mails.
+
+\subsection{RN-13 --- Intervenções de IA só sob demanda}
+
+\textbf{Enunciado.} Sugestões de \emph{prompt} aparecem apenas no campo que o usuário acionou; downloads de imagens e quadros acontecem só pelo modal dedicado.
+
+\textbf{Racional.} Intervenções gerais poluem a interface, criam ruído e ações acidentais; o controle fica com o usuário.
+
+\textbf{Referência.} \cite{nielsen_1993} (heurísticas ``controle e liberdade do usuário'' e ``visibilidade do estado do sistema'').
+
+\textbf{Garantia no código.} \path{frontend/src/components/PromptSuggestions.js} com gatilho por campo/\texttt{\seqcod{resetKey}}; \texttt{\seqcod{EmptyDownloadModal}} como único caminho de download de mídia.
+
+\textbf{Validação.} Suíte de interface: sugestões presentes após acionamento, não antes.
+
+\textbf{Consequência da violação.} Interface ruidosa e perda de previsibilidade.
+
+\subsection{RN-14 --- Interface em português, sem emojis, tema claro/escuro}
+
+\textbf{Enunciado.} Todo texto de interface em pt-BR, sem emojis e sem padrões visuais que remetam a saída de IA; tema claro/escuro alternável e persistido.
+
+\textbf{Racional.} Consistência linguística e de identidade (documentação, mensagens e interface no mesmo idioma) e legibilidade em ambos os temas; ausência de emojis mantém tom neutro e acessível.
+
+\textbf{Referência.} \cite{nielsen_1993} (consistência); \cite{w3c_wcag_22} (contraste e legibilidade).
+
+\textbf{Garantia no código.} Convenção de projeto (\path{AGENTS.md}); revisão em cada alteração de interface.
+
+\textbf{Validação.} Convenção verificada em revisão de código; sem teste automatizado de estilo.
+
+\textbf{Consequência da violação.} Quebra de identidade e inconsistência com a documentação.
+
+\subsection{RN-15 --- Limites de geração e nova tentativa por baixa saída}
+
+\textbf{Enunciado.} Contexto truncado em 12000 caracteres com marcação explícita; limite de \emph{tokens} por modelo; nova tentativa quando a resposta vem curta demais (\texttt{\seqcod{min\_chars}}).
+
+\textbf{Racional.} Controla custo, latência e risco de respostas truncadas ou interrompidas.
+
+\textbf{Referência.} \cite{iso_25010} (eficiência de desempenho); \cite{ollama_2025} (limites de geração); justificativa de engenharia para a regra de nova tentativa.
+
+\textbf{Garantia no código.} \path{llm_api/main.py} (\texttt{\seqcod{OLLAMA\_MAX\_TOKENS}}, truncamento de contexto) e \path{llm_api/ollama_client.py} (\texttt{\seqcod{min\_chars}}).
+
+\textbf{Validação.} Relatório: tempos de geração medidos por endpoint (Seção~\ref{ap:req-desempenho}).
+
+\textbf{Consequência da violação.} Respostas incompletas ou consumo descontrolado de \emph{tokens}.
+
+\section{Requisitos não funcionais}
+\label{ap:req-naofuncionais}
+
+A Tabela~\ref{tab:req-rnf} classifica os 12 requisitos não funcionais pela família de características de qualidade da ISO/IEC 25010:2011 \cite{iso_25010}, com meta mensurável, evidência e referência.
+
+\begin{table}[H]
+\centering
+\setlength{\tabcolsep}{2.5pt}
+\caption{Requisitos não funcionais por categoria da ISO/IEC 25010}
+\label{tab:req-rnf}
+\begin{tabularx}{\textwidth}{|C|L{2.3cm}|Y|Y|L{3.3cm}|}
+\hline
+\textbf{ID} & \textbf{Categoria (ISO/IEC 25010)} & \textbf{Requisito e meta mensurável} & \textbf{Evidência} & \textbf{Referência} \\
+\hline
+RNF-01 & Adequação funcional & Cobertura dos fluxos principais de estudo: material $\rightarrow$ extração $\rightarrow$ resolução $\rightarrow$ prática $\rightarrow$ revisão $\rightarrow$ estratégia & Suíte de integração (18 endpoints + 9 páginas) e experimento COM/SEM RAG & \cite{iso_25010} \\
+\hline
+RNF-02 & Eficiência de desempenho & Operações CRUD $<$ 1 s no cliente; P95 do teste de carga $\leq$ 0,05 s & Relatório: CRUD 0,003--0,119 s; carga P95 0,036 s & \cite{iso_25010}; \cite{pressman_maxim_2014} \\
+\hline
+RNF-03 & Eficiência de desempenho & Suportar 50 requisições com até 10 \emph{threads} concorrentes com 100\% de sucesso & Relatório, Seção ``Teste de Carga'' & \cite{iso_25010} \\
+\hline
+RNF-04 & Confiabi\-lidade & Disponibilidade observável dos três serviços (\emph{health checks}) durante a execução da suíte & Relatório: 3 serviços online (HTTP 200) & \cite{iso_25010} \\
+\hline
+\end{tabularx}
+\end{table}
+
+\begin{table}[H]
+\centering
+\setlength{\tabcolsep}{2.5pt}
+\caption*{Tabela \thetable\ -- Requisitos não funcionais por categoria da ISO/IEC 25010 (continuação)}
+\begin{tabularx}{\textwidth}{|C|L{2.3cm}|Y|Y|L{3.3cm}|}
+\hline
+\textbf{ID} & \textbf{Categoria (ISO/IEC 25010)} & \textbf{Requisito e meta mensurável} & \textbf{Evidência} & \textbf{Referência} \\
+\hline
+RNF-05 & Confiabi\-lidade & Tolerância a falhas: reintentativas com \emph{backoff} e limite máximo, reserva (\emph{fallback}) de juiz, cache de catálogo com expiração, reexecução de fases incompletas da suíte & \path{ollama_client.py} e \path{readme.py} (retries robustos, \emph{clamping}, mediana) & \cite{iso_25010} \\
+\hline
+RNF-06 & Segurança & Senhas só em \emph{hash}; tokens de redefinição SHA-256 com validade; limitação de taxa nas rotas de autenticação & \path{auth.py} e \path{rate_limit.py} (RN-12) & \cite{owasp_asvs_2021}; \cite{iso_25010} \\
+\hline
+RNF-07 & Segurança & Isolamento de dados por usuário; chaves de API segregadas e ocultáveis na interface & RN-01, RN-11 & \cite{iso_25010} \\
+\hline
+RNF-08 & Usabilidade & Usabilidade percebida medida por instrumento Likert + SUS (meta: SUS $\geq$ 68, \emph{benchmark} da literatura) & Protocolo no Apêndice B; \textbf{coleta pendente} (Seção~\ref{ap:req-validacao-perceptiva}) & \cite{brooke_1996}; \cite{davis_1989}; \cite{hyzy_2022_sus_benchmark}; \cite{djamaluddin_2024_sus_online_learning} \\
+\hline
+\end{tabularx}
+\end{table}
+
+\begin{table}[H]
+\centering
+\setlength{\tabcolsep}{2.5pt}
+\caption*{Tabela \thetable\ -- Requisitos não funcionais por categoria da ISO/IEC 25010 (continuação)}
+\begin{tabularx}{\textwidth}{|C|L{2.3cm}|Y|Y|L{3.3cm}|}
+\hline
+\textbf{ID} & \textbf{Categoria (ISO/IEC 25010)} & \textbf{Requisito e meta mensurável} & \textbf{Evidência} & \textbf{Referência} \\
+\hline
+RNF-09 & Usabilidade & Acessibilidade operacional: foco gerenciado em modais, navegação por teclado, fechamento por teclado/clique externo, contraste nos dois temas, erros de renderização matemático nunca em vermelho & \texttt{\seqcod{useModalAcessibilidade.js}}; estilos \texttt{\seqcod{body.dark-mode}}; KaTeX com \texttt{\seqcod{errorColor: currentColor}} & \cite{w3c_wcag_22} \\
+\hline
+RNF-10 & Portabilidade & Execução reproduzível em máquina nova apenas com Docker, \texttt{\seqcod{.env}} e chaves & \texttt{\seqcod{docker-compose.yml}}, \texttt{\seqcod{README.md}} (pré-requisitos) & \cite{iso_25010} \\
+\hline
+RNF-11 & Manuteni\-bilidade & Código modular (\emph{Blueprints} no \emph{backend}, componentes no \emph{frontend}), documentação executável (guia + relatório de testes) e suíte de integração única e reexecutável & \path{backend/controllers/}, \texttt{\seqcod{README.md}}, \path{readme.py} & \cite{sommerville_2015}; \cite{iso_25010} \\
+\hline
+RNF-12 & Compati\-bilidade & Navegadores modernos via SPA compilada e servida por nginx; roteamento declarado explícito no proxy & \path{frontend/nginx.conf}, build CRA & \cite{iso_25010} \\
+\hline
+\end{tabularx}
+\fonteilustracao{Elaborado pelo autor (2026).}
+\end{table}
+
+\section{Decisões de arquitetura e tecnologia}
+\label{ap:req-decisoes}
+
+Formato ADR (\emph{Architecture Decision Record}) enxuto, conforme \cite{nygard_2011}, com atributos de qualidade discutidos conforme \cite{bass_clements_kazman_2021}.
+
+\subsection{AD-01 --- Arquitetura em três componentes (microsserviços)}
+
+\textbf{Contexto.} Operações de IA têm latência variável e altamente distinta das operações de dados.
+
+\textbf{Decisão.} \emph{Frontend}, \emph{backend} e serviço de IA como componentes independentes comunicando por HTTP REST.
+
+\textbf{Alternativas.} Monolítico com LLM embutido; serviço de IA como biblioteca.
+
+\textbf{Justificativa.} Isola latências variáveis, permite escalonamento independente do serviço de IA e testes por componente \cite{newman_2015}; atributos de qualidade (desempenho, escalabilidade) \cite{bass_clements_kazman_2021}.
+
+\textbf{Consequências.} Comunicação por rede exige contratos de API estáveis; orquestração por Docker Compose.
+
+\subsection{AD-02 --- \emph{Frontend} em React 19 (SPA compilada)}
+
+\textbf{Contexto.} Interface rica em modais, pré-visualização de Markdown e edição em tempo real.
+
+\textbf{Decisão.} React 19 com Create React App, servido por nginx.
+
+\textbf{Alternativas.} SSR (Next.js); Vue/Svelte.
+
+\textbf{Justificativa.} Ecossistema amplo (KaTeX, Chart.js), componentes funcionais com \emph{hooks} e pré-visualização direta --- escolha de \emph{framework} por adoção e produtividade \cite{pressman_maxim_2014}.
+
+\textbf{Consequências.} Cliente único (SEO irrelevante para o caso); rotas do \emph{backend} devem ser declaradas no nginx.
+
+\subsection{AD-03 --- \emph{Backend} em Flask com \emph{Blueprints}}
+
+\textbf{Contexto.} Orquestração de dados, sessão e controle de fluxo.
+
+\textbf{Decisão.} Flask 3.0 com \emph{Blueprints} por domínio (\texttt{\seqcod{api}}, \texttt{\seqcod{topic}}, \texttt{\seqcod{question}}, \texttt{\seqcod{upload}}, \texttt{\seqcod{download}}, \texttt{\seqcod{note}}, \texttt{\seqcod{article}}, \texttt{\seqcod{task}}, \texttt{\seqcod{auth}}).
+
+\textbf{Alternativas.} Django (peso); FastAPI no \emph{backend}.
+
+\textbf{Justificativa.} Modularização explícita e baixo acoplamento \cite{sommerville_2015}; maturidade do ecossistema \cite{pressman_maxim_2014}.
+
+\textbf{Consequências.} Sem geração automática de documentação (o serviço de IA a tem).
+
+\subsection{AD-04 --- Serviço de IA em FastAPI}
+
+\textbf{Contexto.} Orquestração de LLMs, OCR e base vetoriais com latência variável.
+
+\textbf{Decisão.} FastAPI com \emph{async/await} e validação por \emph{type hints}.
+
+\textbf{Alternativas.} Flask no serviço de IA; fila externa na frente.
+
+\textbf{Justificativa.} Assíncrono nativo evita bloqueio de requisições simultâneas; documentação OpenAPI --- eficiência de desempenho \cite{iso_25010}; justificativa de engenharia.
+
+\textbf{Consequências.} Dois \emph{stacks} Python no projeto (duplicação parcial de utilitários, documentada).
+
+\subsection{AD-05 --- Base vetorial em ChromaDB}
+
+\textbf{Contexto.} Indexar e recuperar trechos com filtros.
+
+\textbf{Decisão.} ChromaDB em disco, coleções \texttt{\seqcod{documents}}, \texttt{\seqcod{examples}} e \texttt{\seqcod{corrections}} (mais o corpus compartilhado de \texttt{\seqcod{questions}}).
+
+\textbf{Alternativas.} FAISS (sem metadados gerenciados); pgvector; SQLite-VSS.
+
+\textbf{Justificativa.} Leve, embutido e guarda metadados junto aos documentos, permitindo filtro por tópico, usuário e arquivo \cite{chromadb_2025}.
+
+\textbf{Consequências.} Índice degradável com \emph{tombstones} (motiva RN-08).
+
+\subsection{AD-06 --- \emph{Embeddings} multilíngues \texttt{intfloat/multi\allowbreak lingual-e5-base}}
+
+\textbf{Contexto.} O conteúdo é majoritariamente em português, com termos técnicos em inglês.
+
+\textbf{Decisão.} Modelo e5 multilíngue com prefixos \texttt{\seqcod{query:}}/\texttt{\seqcod{passage:}}.
+
+\textbf{Alternativas.} Modelos só em inglês; \emph{hash embeddings}.
+
+\textbf{Justificativa.} Cobertura multilíngue e desempenho de similaridade \cite{reimers_gurevych_2019}.
+
+\textbf{Consequências.} Prefixos obrigatórios (RN-07); custo de inferência local no serviço de IA.
+
+\subsection{AD-07 --- LLMs via Ollama + catálogo multiprovedor}
+
+\textbf{Contexto.} Precisa gerar, transcrever e avaliar sem licença comercial cara.
+
+\textbf{Decisão.} Ollama (local ou nuvem) + registro de seis provedores externos endereçados por \texttt{\seqcod{provedor/modelo}}.
+
+\textbf{Alternativas.} API única fechada; apenas Ollama.
+
+\textbf{Justificativa.} Código aberto, API REST simples e ausência de custo de licença \cite{ollama_2025}; flexibilidade de custo e limite do catálogo multiprovedor (justificativa de engenharia).
+
+\textbf{Consequências.} Necessidade de rodízio de chaves e listas de permitidos (RN-11, RF-15).
+
+\subsection{AD-08 --- Tarefas assíncronas por \emph{thread} com \emph{polling} (sem fila externa)}
+
+\textbf{Contexto.} Gerações e \emph{uploads} levam de 4 s a 36 s; a requisição HTTP não pode bloquear.
+
+\textbf{Decisão.} Gerenciador de tarefas em processo (com trava, limpeza e histórico) + cliente consultando \texttt{\seqcod{/tasks}}.
+
+\textbf{Alternativas.} Celery/RQ com Redis; SSE/WebSockets.
+
+\textbf{Justificativa.} Escopo de usuário único com volume baixo: fila externa adicionaria operação sem benefício proporcional \cite{sommerville_2015} (simplicidade e alinhamento de arquitetura); justificativa de engenharia.
+
+\textbf{Consequências.} Reinício do \emph{backend} reinicia o estado de tarefas; padrão prevalece para novos endpoints pesados.
+
+\subsection{AD-09 --- Persistência em SQLite (WAL) com JSON legado congelado}
+
+\textbf{Contexto.} O conteúdo era gravado em JSON por tópico: leitura-modificação-escrita sem bloqueio e sem integridade referencial.
+
+\textbf{Decisão.} Tabelas em SQLite (modo WAL) com chaves estrangeiras para \texttt{\seqcod{user}}; arquivos JSON antigos mantidos como \emph{backup} congelado e importados na subida.
+
+\textbf{Alternativas.} PostgreSQL; manter JSON.
+
+\textbf{Justificativa.} Transações, integridade referencial e migração idempotente \cite{sqlite_2024}; justificativa de engenharia.
+
+\textbf{Consequências.} O sistema exige \texttt{\seqcod{migrate.py}} na subida (feito no CMD do Docker).
+
+\subsection{AD-10 --- Markdown + KaTeX com camada de reparo de LaTeX}
+
+\textbf{Contexto.} LLMs escapam mal caracteres de LaTeX (\texttt{\seqcod{\textbackslash frac}} vira \texttt{\seqcod{form}} + \texttt{\seqcod{rac}}).
+
+\textbf{Decisão.} Três camadas de reparo: saneamento antes do \texttt{\seqcod{json.loads}}, reparo de texto persistido e reparo em tempo de renderização, com listas de comandos sincronizadas.
+
+\textbf{Alternativas.} Exigir JSON estrito do modelo; renderizar como texto puro.
+
+\textbf{Justificativa.} Defesa em profundidade sobre saída não confiável --- justificativa de engenharia; KaTeX valida cada trecho antes de envolver (evita erros em vermelho).
+
+\textbf{Consequências.} Três cópias sincronizadas de listas de comandos (risco documentado).
+
+\subsection{AD-11 --- RAG em três coleções com semânticas distintas}
+
+\textbf{Contexto.} Material do usuário, exemplos de resolução e padrões de correção têm naturezas diferentes.
+
+\textbf{Decisão.} \texttt{\seqcod{documents}} (material), \texttt{\seqcod{examples}} (exemplos) e \texttt{\seqcod{corrections}} (padrões de correção), além do corpus compartilhado de \texttt{\seqcod{questions}}.
+
+\textbf{Alternativas.} Uma coleção única com metadados.
+
+\textbf{Justificativa.} Recuperação por domínio semântico com filtro por metadados \cite{lewis_2020}; \cite{chromadb_2025}; \cite{kluibenschadl_2024_rag}.
+
+\textbf{Consequências.} Manutenção de limpeza por coleção (RN-08).
+
+\subsection{AD-12 --- Avaliação por LLM-as-a-Judge com dois avaliadores}
+
+\textbf{Contexto.} Milhares de respostas não podem ser avaliadas manualmente.
+
+\textbf{Decisão.} Juiz principal com reserva (\emph{fallback}) e mediana de três execuções (RN-05), isolado de qualquer dado do usuário.
+
+\textbf{Alternativas.} Avaliação humana em escala; juiz único.
+
+\textbf{Justificativa.} Paradigma consolidado \cite{zheng_2023}; viéses conhecidos \cite{wang_2023_not_fair}.
+
+\textbf{Consequências.} Custo de avaliação; necessidade de controle de confundimento (RN-04).
+
+\subsection{AD-13 --- OCR local (Tesseract) com reserva externa}
+
+\textbf{Contexto.} Extração de texto de fotos e PDFs.
+
+\textbf{Decisão.} Tesseract (\texttt{\seqcod{por}}, \texttt{\seqcod{eng}}) como padrão, com API externa de reserva.
+
+\textbf{Alternativas.} Modelo de visão puro; OCR pago por padrão.
+
+\textbf{Justificativa.} Custo zero e execução local; reserva para casos difíceis --- justificativa de engenharia, com uso de OCR documentado como prática estabelecida de reconhecimento óptico \cite{smith_2007}.
+
+\textbf{Consequências.} Qualidade variável em fotos de baixa resolução; transcrição por modelo de visão cobre o caso.
+
+\section{Racional pedagógico das funcionalidades}
+\label{ap:req-pedagogico}
+
+Cada funcionalidade de estudo se apoia em um princípio com base empírica, detalhado na Seção~\ref{subsec:fundamentacao_referencias} do TCC. A Tabela~\ref{tab:req-pedagogico} sintetiza o vínculo.
+
+\begin{table}[H]
+\centering
+\setlength{\tabcolsep}{3pt}
+\caption{Funcionalidades, princípios de aprendizagem e referências}
+\label{tab:req-pedagogico}
+\begin{tabularx}{\textwidth}{|L{4.4cm}|Y|L{4.6cm}|}
+\hline
+\textbf{Funcionalidade} & \textbf{Princípio} & \textbf{Referência} \\
+\hline
+Flashcards com resposta oculta & Recuperação ativa (\textit{testing effect}) & \cite{roediger_karpicke_2006, karpicke_roediger_2008} \\
+\hline
+Aba Responder com conferência imediata & Recuperação ativa e correção imediata & \cite{roediger_karpicke_2006, ericsson_1993} \\
+\hline
+Sessões e histórico com revisitação & Repetição espaçada; sistema Leitner & \cite{cepeda_pashler_vul_wixted_rohrer_2006, leitner_1972, wozniak_gorzelanczyk_1994} \\
+\hline
+Estratégia de estudo & SQ3R, PQ4R, intercalação e autorregulação & \cite{robinson_1941, thomas_robinson_1972, rohrer_2012, zimmerman_2000} \\
+\hline
+Quadro branco e anotações & Pensamento visual e representações externas & \cite{arnheim_1969}; TCC, Seção 2.8 \\
+\hline
+Questões objetivas e discursivas geradas & Aprendizagem baseada em problemas, aprendizagem ativa e níveis de domínio & \cite{barrows_tamblyn_1980, bonwell_eison_1991, bloom_1956} \\
+\hline
+Fluxo completo material $\rightarrow$ prática & Prática deliberada & \cite{ericsson_1993} \\
+\hline
+Recomendação fundamentada & Ensino pela explicação / aprender ensinando & \cite{koh_lee_lim_2018} \\
+\hline
+\end{tabularx}
+\fonteilustracao{Elaborado pelo autor (2026).}
+\end{table}
+
+\section{Matriz de rastreabilidade}
+\label{ap:req-rastreabilidade}
+
+A Tabela~\ref{tab:req-rastreabilidade} liga cada requisito funcional às histórias de usuário, às regras/não funcionais relacionadas, à implementação principal, à evidência de validação e à seção correspondente do TCC.
+
+\begin{table}[H]
+\centering
+\setlength{\tabcolsep}{2pt}
+\caption{Matriz de rastreabilidade: requisitos, implementação, validação e TCC}
+\label{tab:req-rastreabilidade}
+\begin{tabularx}{\textwidth}{|C|L{1.6cm}|L{2.5cm}|Y|Y|C|}
+\hline
+\textbf{RF} & \textbf{US} & \textbf{RN/RNF} & \textbf{Implemen\-tação principal} & \textbf{Validação} & \textbf{Seção do TCC} \\
+\hline
+RF-01 & US-01, US-02 & RN-12; RNF-06 & \texttt{\seqcod{auth.py}}, \texttt{\seqcod{rate\_limit.py}} & Suíte (login), verificação estática (rate limit) & 4.1 \\
+\hline
+RF-02 & US-03 & RNF-01 & \texttt{\seqcod{topic\_controller.py}}, \texttt{\seqcod{TopicView.js}} & Endpoints \texttt{\seqcod{/api/topics}}; 10 verificações de rename & 4.1, 5.2 \\
+\hline
+RF-03 & US-04, US-15 & RNF-01 & \texttt{\seqcod{upload\_controller.py}}, \texttt{\seqcod{UploadFilesModal.js}} & Fluxo de upload completo na suíte de interface & 5.2 \\
+\hline
+RF-04 & US-05 & RNF-05 & \texttt{\seqcod{ocr\_service.py}}, \texttt{\seqcod{image\_service.py}} & Endpoint \texttt{\seqcod{/analyze\_with\_image}}; juiz (resoluções) & \ref{sec:componentes} \\
+\hline
+RF-05 & US-05, US-06 & RNF-01 & \texttt{\seqcod{question\_controller.py}} (\texttt{\seqcod{/save}}) & Endpoint \texttt{\seqcod{/save\_answers}}; juiz (clareza) & \ref{sec:componentes}, 5.2 \\
+\hline
+\end{tabularx}
+\end{table}
+
+\begin{table}[H]
+\centering
+\setlength{\tabcolsep}{2pt}
+\caption*{Tabela \thetable\ -- Matriz de rastreabilidade: requisitos, implementação, validação e TCC (continuação)}
+\begin{tabularx}{\textwidth}{|C|L{1.6cm}|L{2.5cm}|Y|Y|C|}
+\hline
+\textbf{RF} & \textbf{US} & \textbf{RN/RNF} & \textbf{Implemen\-tação principal} & \textbf{Validação} & \textbf{Seção do TCC} \\
+\hline
+RF-06 & US-06 & RNF-11 & \texttt{\seqcod{QuestionEditor.js}}, \texttt{\seqcod{question\_controller.py}} & Cenário de questões de texto na suíte & 5.2 \\
+\hline
+RF-07 & US-07, US-08 & RN-09 & \texttt{\seqcod{ResponderQuestao.js}} & 13 verificações da aba Responder & 5.2 \\
+\hline
+RF-08 & US-09 & RNF-01 & \texttt{\seqcod{note\_controller.py}}, \texttt{\seqcod{AnnotationEditor.js}} & Manual (sem teste dedicado) & 5.2 \\
+\hline
+RF-09 & US-10 & RNF-01 & \texttt{\seqcod{Whiteboard.js}}, \texttt{\seqcod{download\_controller.py}} & Endpoint \texttt{\seqcod{/save\_whiteboard}} & 5.2 \\
+\hline
+RF-10 & US-11, US-18 & RN-02, RN-03, RN-15; RNF-08 & \texttt{\seqcod{QuestionGeneratorModal.js}}, \texttt{\seqcod{\_worker\_generate\_questions}} & Endpoint \texttt{\seqcod{/generate\_questions}}; juiz 7,0; dica de material & 5.3 \\
+\hline
+\end{tabularx}
+\end{table}
+
+\begin{table}[H]
+\centering
+\setlength{\tabcolsep}{2pt}
+\caption*{Tabela \thetable\ -- Matriz de rastreabilidade: requisitos, implementação, validação e TCC (continuação)}
+\begin{tabularx}{\textwidth}{|C|L{1.6cm}|L{2.5cm}|Y|Y|C|}
+\hline
+\textbf{RF} & \textbf{US} & \textbf{RN/RNF} & \textbf{Implemen\-tação principal} & \textbf{Validação} & \textbf{Seção do TCC} \\
+\hline
+RF-11 & US-12 & RN-02, RN-10 & \texttt{\seqcod{FlashcardsViewer.js}}, \texttt{\seqcod{\_worker\_generate\_flashcards}} & Endpoint \texttt{\seqcod{/generate\_flashcards}}; juiz 8,4 & 5.3 \\
+\hline
+RF-12 & US-13 & RN-10, RN-02 & \texttt{\seqcod{StudyStrategyModal.js}}, \texttt{\seqcod{\_worker\_study\_strategy}} & Endpoints de estratégia; juiz 8,2 & 5.3 \\
+\hline
+RF-13 & US-14 & RN-03, RN-13 & \texttt{\seqcod{article\_controller.py}}, \texttt{\seqcod{ArticleSearchModal.js}} & Endpoint \texttt{\seqcod{/search\_articles}}; juiz 7,6; sugestões & 5.3 \\
+\hline
+RF-14 & US-15 & RN-01, RN-06, RN-07, RN-08 & \texttt{\seqcod{rag.py}}, \texttt{\seqcod{embeddings.py}}, \texttt{\seqcod{data\_loader.py}} & Experimento COM/SEM RAG & \ref{sec:metodologia-rag-impact}, \ref{sec:rag-implementacao} \\
+\hline
+RF-15 & US-02, US-16 & RN-11 & \texttt{\seqcod{provedores.py}}, \texttt{\seqcod{api\_controller.py}} & Endpoints \texttt{\seqcod{/api/models}}, \texttt{\seqcod{/models}} & \ref{sec:componentes} \\
+\hline
+\end{tabularx}
+\end{table}
+
+\begin{table}[H]
+\centering
+\setlength{\tabcolsep}{2pt}
+\caption*{Tabela \thetable\ -- Matriz de rastreabilidade: requisitos, implementação, validação e TCC (continuação)}
+\begin{tabularx}{\textwidth}{|C|L{1.6cm}|L{2.5cm}|Y|Y|C|}
+\hline
+\textbf{RF} & \textbf{US} & \textbf{RN/RNF} & \textbf{Implemen\-tação principal} & \textbf{Validação} & \textbf{Seção do TCC} \\
+\hline
+RF-16 & US-16 & RNF-05 & \texttt{\seqcod{task\_manager.py}}, \texttt{\seqcod{TaskContext.js}} & Indicador de tarefas na suíte; sonda de tópico & \ref{sec:componentes} \\
+\hline
+RF-17 & US-17 & RNF-01 & \texttt{\seqcod{SessionsViewer.js}}, rotas \texttt{\seqcod{sessions}} & Endpoint \texttt{\seqcod{/sessions}} & 5.2 \\
+\hline
+RF-18 & US-17 & RN-13 & \texttt{\seqcod{download\_controller.py}}, \texttt{\seqcod{EmptyDownloadModal.js}} & Manual (sem teste dedicado) & 5.2 \\
+\hline
+RF-19 & US-18 & RNF-09 & \texttt{\seqcod{ConfigModal.js}} & Manual (sem teste dedicado) & 5.2 \\
+\hline
+RF-20 & US-11, US-12, US-13 & RN-02, RN-03 & \texttt{\seqcod{SugestoesContexto.js}}, \texttt{\seqcod{\_contexto\_sugestoes}} & Suíte (dica, sugestões) + teste de API com foco & 5.3 \\
+\hline
+\end{tabularx}
+\fonteilustracao{Elaborado pelo autor (2026).}
+\end{table}
+
+\section{Validação e conformidade}
+\label{ap:req-validacao}
+
+\subsection{Desempenho, endpoints e carga}
+\label{ap:req-desempenho}
+
+Evidências do Relatório de Testes Automatizados (\texttt{\seqcod{README.md}}, execução de 30/09/2026, status final \textbf{APROVADO}), reproduzidas na Tabela~\ref{tab:req-metricas}.
+
+\begin{table}[H]
+\centering
+\setlength{\tabcolsep}{3pt}
+\caption{Métricas de desempenho e cobertura da suíte de integração}
+\label{tab:req-metricas}
+\begin{tabularx}{\textwidth}{|L{4.6cm}|Y|}
+\hline
+\textbf{Métrica} & \textbf{Valor} \\
+\hline
+Serviços online & 3/3 (\emph{frontend}, \emph{backend}, serviço de IA) \\
+\hline
+Endpoints testados & 18 --- 100\% OK \\
+\hline
+Páginas/recursos do \emph{frontend} & 9 --- 100\% OK \\
+\hline
+Teste de carga & 50 requisições, 100\% de sucesso, média 0,024 s, P95 0,036 s, máx. 0,037 s \\
+\hline
+Tempo de geração & questões 4,904 s; flashcards 36,109 s; estratégia 10,682 s; artigos 3,919 s; análise de imagem 24,684 s \\
+\hline
+Operações CRUD & 0,003--0,119 s \\
+\hline
+\end{tabularx}
+\fonteilustracao{Adaptado do Relatório de Testes Automatizados do ExercitaAI (2026).}
+\end{table}
+
+\subsection{Qualidade das respostas (LLM \emph{judge})}
+\label{ap:req-juiz-qualidade}
+
+Notas médias por funcionalidade (condição com RAG), conforme Tabela~\ref{tab:functionality_avg} do TCC e reproduzidas na Tabela~\ref{tab:req-juiz}.
+
+\begin{table}[H]
+\centering
+\setlength{\tabcolsep}{3pt}
+\caption{Notas médias do LLM \emph{judge} por funcionalidade (escala 0--10, com RAG)}
+\label{tab:req-juiz}
+\begin{tabularx}{\textwidth}{|Y|L{5.2cm}|}
+\hline
+\textbf{Funcionalidade} & \textbf{Nota (0--10)} \\
+\hline
+Flashcards & 8,4 \\
+\hline
+Estratégia de estudo & 8,2 \\
+\hline
+Pesquisa de artigos & 7,6 (condição única) \\
+\hline
+Geração de questões & 7,0 \\
+\hline
+Clareza global das resoluções & 6,91 \\
+\hline
+\end{tabularx}
+\fonteilustracao{Elaborado pelo autor (2026).}
+\end{table}
+
+\subsection{Impacto do RAG (COM vs SEM)}
+\label{ap:req-impacto-rag}
+
+Experimento controlado de 50 casos (TCC, Tabela~\ref{tab:rag_delta}): $\Delta$ precisão \textbf{+0,14}, $\Delta$ completude \textbf{+0,12}, $\Delta$ clareza \textbf{0,00}, $\Delta$ raciocínio \textbf{+0,12}, com 7 regressões registradas e hipótese de auto-correspondência (\textit{self-match}) --- base da regra RN-06.
+
+\subsection{Suíte de verificação da interface}
+\label{ap:req-suite-interface}
+
+43 verificações automatizadas de navegador executadas durante o desenvolvimento, cobrindo: renomeação de tópico (10), aba Responder e correção em todos os formatos (13), fluxo de \emph{upload} com tarefas (8), geração com orientação de pouco material (1), busca de artigos e sugestões automáticas (2) e \texttt{\seqcod{/suggest\_prompts}} com instruções de foco (1), além de verificações de abertura e fechamento de modais. Registro de execução: 43/43.
+
+\noindent\textit{Nota.} Esta suíte é auxiliar e não está versionada no repositório; a suíte de integração oficial e reexecutável é \texttt{\seqcod{python readme.py}} (Seção~\ref{ap:req-desempenho}).
+
+\subsection{Itens sem cobertura automatizada}
+\label{ap:req-sem-cobertura}
+
+A Tabela~\ref{tab:req-sem-cobertura} elenca, de forma explícita, os itens que não possuem cobertura automatizada, com a justificativa de cada um.
+
+\begin{table}[H]
+\centering
+\setlength{\tabcolsep}{3pt}
+\caption{Itens sem cobertura automatizada e justificativa}
+\label{tab:req-sem-cobertura}
+\begin{tabularx}{\textwidth}{|L{5.4cm}|Y|}
+\hline
+\textbf{Item} & \textbf{Justificativa / plano} \\
+\hline
+Isolamento por usuário (RN-01) & Verificação estática; incluir teste de dois usuários no plano de expansão \\
+\hline
+Limitação de taxa (RN-12) & Verificação estática da configuração (5/15 min, 5/h) \\
+\hline
+Anotações (RF-08) & Fluxo manual \\
+\hline
+Downloads (RF-18) & Fluxo manual (modal único já garante o caminho) \\
+\hline
+Configurações e tema (RF-19) & Fluxo manual \\
+\hline
+Reuso de \emph{chunks} idênticos (RN-08) & A resposta de indexação (\texttt{\seqcod{reaproveitados}}) existe; asserção automática pendente \\
+\hline
+Suíte de interface (Seção~\ref{ap:req-suite-interface}) & Não versionada; candidata a entrar no repositório \\
+\hline
+\end{tabularx}
+\fonteilustracao{Elaborado pelo autor (2026).}
+\end{table}
+
+\subsection{Validação perceptiva (pendente)}
+\label{ap:req-validacao-perceptiva}
+
+O questionário do Apêndice B está elaborado e fundamentado (TAM \cite{davis_1989}; SUS \cite{brooke_1996}), \textbf{sem coleta concluída até esta versão}: nenhuma nota perceptiva é reportada como resultado. O TCC apresenta o modelo de consolidação com as colunas perceptivas em aberto (Tabela~\ref{tab:usabilidade_vs_judge}), e este documento reforça o mesmo estado (RNF-08).
+
+\section{Fora de escopo e limitações deliberadas}
+\label{ap:req-limitacoes}
+
+A Tabela~\ref{tab:req-limitacoes} registra as limitações conscientes e as decisões que ficaram fora desta versão, para que nenhum leitor as confunda com omissões.
+
+\begin{table}[H]
+\centering
+\setlength{\tabcolsep}{3pt}
+\caption{Limitações deliberadas e decisões fora de escopo}
+\label{tab:req-limitacoes}
+\begin{tabularx}{\textwidth}{|L{5.2cm}|Y|}
+\hline
+\textbf{Item} & \textbf{Natureza da decisão} \\
+\hline
+Colaboração multiusuário em um mesmo tópico & Fora de escopo da versão: o sistema é individual (RN-01) \\
+\hline
+Aplicação nativa \emph{mobile} & Fora de escopo: \emph{web} responsiva atende ao caso de uso \\
+\hline
+Interface multilíngue & Deliberado: documentação e interface em pt-BR (RN-14) \\
+\hline
+Serviço de IA sem autenticação & Deliberado: componente interno atrás do proxy do \emph{frontend}; não expor publicamente \\
+\hline
+Fila externa de tarefas & Adiado: gerenciador em processo atende ao volume (AD-08) \\
+\hline
+Coleta de usabilidade & Em andamento: instrumento pronto, coleta não concluída (Seção~\ref{ap:req-validacao-perceptiva}) \\
+\hline
+\texttt{\seqcod{.env.example}} com temperaturas desiguais & Inconsistência conhecida do modelo: produção usa 0,0/0,0 (RN-04); alinhar o exemplo \\
+\hline
+Suíte de interface não versionada & Limite de processo (Seção~\ref{ap:req-sem-cobertura}) \\
+\hline
+Questões históricas sem metadado \texttt{\seqcod{contexto}} & Avisos só aparecem em gerações a partir desta versão (RF-20) \\
+\hline
+\end{tabularx}
+\fonteilustracao{Elaborado pelo autor (2026).}
+\end{table}
+
+\noindent\textit{Documento elaborado por Yago Melo da Costa (2026).}
