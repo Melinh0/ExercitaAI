@@ -1,0 +1,115 @@
+services:
+  backend:
+    build: ./backend
+    env_file:
+      - .env
+    ports:
+      - "127.0.0.1:5000:5000"
+    volumes:
+      - ./backend:/app
+      - ./backend/data:/app/data
+    environment:
+      - FLASK_ENV=development
+      - OLLAMA_API_KEY=${OLLAMA_API_KEY}
+      - OLLAMA_HOST=${OLLAMA_HOST}
+      - OLLAMA_AVAILABLE_MODELS=${OLLAMA_AVAILABLE_MODELS}
+      - OLLAMA_VISION_MODELS=${OLLAMA_VISION_MODELS}
+      - RAG_SERVICE_URL=${RAG_SERVICE_URL}
+      - USE_OCR=false
+    command:
+      - /bin/sh
+      - -c
+      - |
+        uv sync --frozen --no-dev || echo "[backend] uv sync falhou - seguindo com o venv existente"
+        python migrate.py
+        exec python app.py
+    depends_on:
+      - llm_api
+    restart: unless-stopped
+
+  llm_api:
+    build: ./llm_api
+    env_file:
+      - .env
+    ports:
+      - "127.0.0.1:8001:8001"
+    volumes:
+      - ./llm_api:/app
+      - chroma_data:/app/chroma_db
+    environment:
+      - OLLAMA_API_KEY=${OLLAMA_API_KEY}
+      - OLLAMA_HOST=${OLLAMA_HOST}
+      - OLLAMA_AVAILABLE_MODELS=${OLLAMA_AVAILABLE_MODELS}
+      - OLLAMA_VISION_MODELS=${OLLAMA_VISION_MODELS}
+      - RAG_SERVICE_URL=${RAG_SERVICE_URL}
+    command:
+      - /bin/sh
+      - -c
+      - |
+        uv sync --frozen --no-dev || echo "[llm_api] uv sync falhou - seguindo com o venv existente"
+        exec uvicorn main:app --host 0.0.0.0 --port 8001 --reload --reload-include "*.md" --reload-exclude .venv --reload-exclude chroma_db
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        - REACT_APP_BACKEND_URL=http://backend:5000
+    ports:
+      - "80:80"
+    volumes:
+      - frontend_build:/usr/share/nginx/html
+      - ./frontend/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+  frontend_watch:
+    image: node:20-alpine
+    working_dir: /app
+    volumes:
+      - ./frontend:/app
+      - frontend_build:/build
+      - frontend_cache:/app/node_modules/.cache
+    environment:
+      - GENERATE_SOURCEMAP=false
+      - NODE_OPTIONS=--max-old-space-size=4096
+      - BUILD_PATH=/etapa
+    depends_on:
+      - frontend
+    command:
+      - /bin/sh
+      - -c
+      - |
+        publicar() {
+          find /build -mindepth 1 -maxdepth 1 -exec rm -rf {} \; 2>/dev/null || true
+          cp -a /etapa/. /build/
+        }
+        tentar_build() {
+          if npm run build; then
+            publicar
+            return 0
+          fi
+          return 1
+        }
+        echo "[frontend] build inicial a partir do codigo atual de frontend/..."
+        touch /tmp/ultimo_build
+        tentar_build || echo "[frontend] build inicial com erro - veja os erros acima"
+        while true; do
+          if find src public package.json package-lock.json -type f \( -name "*.js" -o -name "*.jsx" -o -name "*.css" -o -name "*.html" -o -name "*.json" \) -newer /tmp/ultimo_build 2>/dev/null | grep -q .; then
+            echo "[frontend] alteracao detectada - reconstruindo (~40-60 s)..."
+            touch /tmp/ultimo_build
+            if tentar_build; then
+              echo "[frontend] publicado na porta 80"
+            else
+              echo "[frontend] build com erro - a pagina continua servindo a versao anterior"
+            fi
+          fi
+          sleep 2
+        done
+    restart: unless-stopped
+
+volumes:
+  chroma_data:
+  frontend_build:
+  frontend_cache:
